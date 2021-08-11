@@ -133,7 +133,7 @@ class SidebarContent extends Component {
                 </ul>
               </li>
 
-              <li className="menu-title">{this.props.t("Apps")}</li>
+              {/*<li className="menu-title">{this.props.t("Apps")}</li>
 
               <li>
                 <Link to="/calendar" className="">
@@ -810,7 +810,7 @@ class SidebarContent extends Component {
                     </ul>
                   </li>
                 </ul>
-              </li>
+            </li>*/}
             </ul>
           </div>
         </SimpleBar>
