@@ -149,7 +149,7 @@ class Header extends Component {
                 </div>
               </form>
 
-              <Dropdown
+              {/*<Dropdown
                 className="dropdown-mega d-none d-lg-block ms-2"
                 isOpen={this.state.megaMenuDrp}
                 toggle={() => {
@@ -304,7 +304,7 @@ class Header extends Component {
                     </Col>
                   </Row>
                 </DropdownMenu>
-              </Dropdown>
+              </Dropdown>*/}
             </div>
             <div className="d-flex">
               <div className="dropdown d-inline-block d-lg-none ms-2">
