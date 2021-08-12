@@ -1,6 +1,25 @@
 import React, { Component } from "react"
 import { Col, Card, CardBody, Button } from "reactstrap"
 import ReactApexChart from "react-apexcharts"
+import axios from 'axios';
+
+
+function Get(yourUrl){
+  var Httpreq = new XMLHttpRequest(); 
+  Httpreq.open("GET",yourUrl,false);
+  Httpreq.send(null);
+  return Httpreq.responseText;          
+}
+const apr = JSON.parse(Get('https://api.alphadefi.fund/historical/longaprs/mAAPL'))
+let parsedData = []
+apr.forEach(element => {
+  parsedData.push([
+    new Date(element.date).getTime(),
+    element.apr
+  ]);
+})
+console.log(parsedData)
+
 
 class OverView extends Component {
   constructor(props) {
@@ -8,7 +27,7 @@ class OverView extends Component {
     this.state = {
       series: [
         {
-          name: "BTC",
+          name: apr[0].ticker,
           data: [
             [13273596e5, 30.95],
             [1327446e6, 31.34],
@@ -308,6 +327,9 @@ class OverView extends Component {
             opacityTo: 0.05,
             stops: [42, 100, 100, 100],
           },
+        },
+        noData: {
+          text: 'Loading...'
         },
       },
       activeM: false,
