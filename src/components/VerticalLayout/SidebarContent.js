@@ -108,7 +108,7 @@ class SidebarContent extends Component {
         <SimpleBar className="h-100" ref={this.refDiv}>
           <div id="sidebar-menu">
             <ul className="metismenu list-unstyled" id="side-menu">
-              <li className="menu-title">{this.props.t("Menu")}</li>
+              <li className="menu-title">{this.props.t("alphaLabs")}</li>
               <li>
                 <Link to="/#">
                   <i className="bx bx-home-circle" />
@@ -119,13 +119,13 @@ class SidebarContent extends Component {
                 </Link>
                 <ul className="sub-menu" aria-expanded="false">
                   <li>
-                    <Link to="/dashboard">{this.props.t("Default")}</Link>
+                    <Link to="/dashboard">{this.props.t("Commission APRs")}</Link>
                   </li>
                   <li>
-                    <Link to="/dashboard-saas">{this.props.t("Saas")}</Link>
+                    <Link to="/dashboard-saas">{this.props.t("APR Volatility")}</Link>
                   </li>
                   <li>
-                    <Link to="/dashboard-crypto">{this.props.t("Crypto")}</Link>
+                    <Link to="/dashboard-crypto">{this.props.t("mAsset Spreads")}</Link>
                   </li>
                   <li>
                     <Link to="/dashboard-blog">{this.props.t("Blog")}</Link>

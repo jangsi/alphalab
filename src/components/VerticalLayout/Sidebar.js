@@ -29,19 +29,19 @@ class Sidebar extends Component {
           <div className="navbar-brand-box">
             <Link to="/" className="logo logo-dark">
               <span className="logo-sm">
-                <img src={logo} alt="" height="22" />
+                <img src={"https://alphadefi.fund/wp-content/uploads/2021/05/Capture-300x91.jpg"} alt="" height="22" />
               </span>
               <span className="logo-lg">
-                <img src={logoDark} alt="" height="17" />
+                <img src={"https://alphadefi.fund/wp-content/uploads/2021/05/Capture-300x91.jpg"} alt="" height="17" />
               </span>
             </Link>
 
             <Link to="/" className="logo logo-light">
               <span className="logo-sm">
-                <img src={logoLightSvg} alt="" height="22" />
+                <img src={"https://alphadefi.fund/wp-content/uploads/2021/05/Capture-300x91.jpg"} alt="" height="50" />
               </span>
               <span className="logo-lg">
-                <img src={logoLightPng} alt="" height="19" />
+                <img src={"https://alphadefi.fund/wp-content/uploads/2021/05/Capture-300x91.jpg"} alt="" height="50" />
               </span>
             </Link>
           </div>

@@ -129,23 +129,24 @@ class Header extends Component {
                 </Link>
               </div>
 
-              <button
+              {/*<button
                 type="button"
                 onClick={this.toggleMenu}
                 className="btn btn-sm px-3 font-size-16 header-item"
                 id="vertical-menu-btn"
               >
                 <i className="fa fa-fw fa-bars"></i>
-              </button>
+              </button>*/}
 
               <form className="app-search d-none d-lg-block">
-                <div className="position-relative">
+                <div >
                   <input
                     type="text"
                     className="form-control"
                     placeholder={this.props.t("Search") + "..."}
                   />
-                  <span className="bx bx-search-alt"></span>
+                  <span></span>
+                  
                 </div>
               </form>
 
@@ -346,9 +347,9 @@ class Header extends Component {
                 </div>
               </div>
 
-              <LanguageDropdown />
+              {/*<LanguageDropdown />*/}
 
-              <Dropdown
+              {/*<Dropdown
                 className="d-none d-lg-inline-block ms-1"
                 isOpen={this.state.socialDrp}
                 toggle={() => {
@@ -406,7 +407,7 @@ class Header extends Component {
                     </Row>
                   </div>
                 </DropdownMenu>
-              </Dropdown>
+              </Dropdown>*/}
 
               <div className="dropdown d-none d-lg-inline-block ms-1">
                 <button
@@ -419,30 +420,30 @@ class Header extends Component {
                 </button>
               </div>
 
-              <NotificationDropdown />
-              <ProfileMenu />
+              {/*<NotificationDropdown />
+              <ProfileMenu />*/}
 
               <div
                 onClick={this.toggleRightDrawer} disabled={this.state.open}
                 className="dropdown d-inline-block"
               >
-                <button
+                {/*<button
                   type="button"
                   className="btn header-item noti-icon right-bar-toggle"
                 >
                   <i className="bx bx-cog bx-spin"></i>
-                </button>
+                </button>*/}
               </div>
             </div>
           </div>
         </header>
-        <ReactDrawer
+        {/*<ReactDrawer
           open={this.state.open}
           position={this.state.position}
           onClose={this.onDrawerClose}
         >
           <RightSidebar onClose={this.onDrawerClose} />
-        </ReactDrawer>
+        </ReactDrawer>*/}
       </React.Fragment>
     )
   }
