@@ -35,12 +35,12 @@ class Transactions extends Component {
   render() {
     return (
       <React.Fragment>
-        <Col xl="4">
+        <Col xl="10">
           <Card>
             <CardBody>
-              <h4 className="card-title mb-4">Transactions</h4>
+              <h4 className="card-title mb-4">Quantitative Analysis</h4>
 
-              <Nav pills className="bg-light rounded" role="tablist">
+             {/* <Nav pills className="bg-light rounded" role="tablist">
                 <NavItem>
                   <NavLink
                     className={classnames({
@@ -77,10 +77,10 @@ class Transactions extends Component {
                     Sell
                   </NavLink>
                 </NavItem>
-              </Nav>
+              </Nav>*/}
               <TabContent activeTab={this.state.activeTab} className="mt-4">
                 <TabPane tabId="1">
-                  <SimpleBar style={{ maxHeight: "330px" }}>
+                  <SimpleBar style={{ maxHeight: "1000px" }}>
                     <div className="table-responsive">
                       <Table className="align-middle table-nowrap">
                         <tbody>

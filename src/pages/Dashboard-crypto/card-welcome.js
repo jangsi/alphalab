@@ -13,21 +13,21 @@ class CardWelcome extends Component {
             <Row>
               <Col lg="9" sm="8">
                 <div className="p-4">
-                  <h5 className="text-primary">Welcome Back !</h5>
-                  <p>Skote Crypto Dashboard</p>
+                  <h5 className="text-primary">alphaDefi Spread Tracker</h5>
+                  <p>Alpha Astronaut</p>
 
                   <div className="text-muted">
                     <p className="mb-1">
                       <i className="mdi mdi-circle-medium align-middle text-primary me-1"/>{" "}
-                      If several languages coalesce
+                      Track Realtime Spreads
                     </p>
                     <p className="mb-1">
                       <i className="mdi mdi-circle-medium align-middle text-primary me-1"/>{" "}
-                      Sed ut perspiciatis unde
+                      View Live Quantative Spread Statistics
                     </p>
                     <p className="mb-0">
                       <i className="mdi mdi-circle-medium align-middle text-primary me-1"/>{" "}
-                      It would be necessary
+                      Locate Trading Opportunities
                     </p>
                   </div>
                 </div>

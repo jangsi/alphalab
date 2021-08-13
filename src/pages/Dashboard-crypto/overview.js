@@ -20,7 +20,7 @@ class OverView extends Component {
         markers: { size: 0, style: "hollow" },
         xaxis: {
           type: "datetime",
-          min: new Date("01 Mar 2012").getTime(),
+          min: new Date("29 Apr 2021").getTime(),
           tickAmount: 6,
         },
         tooltip: { x: { format: "dd MMM yyyy" } },
@@ -70,14 +70,17 @@ class OverView extends Component {
   }
 
   updateChartMonthly() {
+    var d = new Date()
     var newxaxis = {
-      min: new Date("28 Jan 2013").getTime(),
-      max: new Date("27 Feb 2013").getTime(),
+      min: d.setDate(d.getDate() - 30),
+      max: d.getTime(),
     }
+    var newyaxis = { forceNiceScale: true }
     this.setState(prevState => ({
       options: {
         ...prevState.options,
         xaxis: newxaxis,
+        yaxis: newyaxis
       },
     }))
     this.setState({
@@ -149,10 +152,10 @@ class OverView extends Component {
   render() {
     return (
       <React.Fragment>
-        <Col xl="4">
+        <Col xl="10">
           <Card>
             <CardBody>
-              <h4 className="card-title mb-3">Overview</h4>
+              <h4 className="card-title mb-3">Tracker</h4>
 
               <div>
                 <div id="overview-chart" className="apex-charts" dir="ltr">
@@ -203,7 +206,8 @@ class OverView extends Component {
                       options={this.state.options}
                       series={this.state.series}
                       type="area"
-                      height={240}
+                      height={500}
+                      
                     />
                   </div>
                 </div>

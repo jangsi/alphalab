@@ -125,7 +125,7 @@ class SidebarContent extends Component {
                     <Link to="/dashboard-saas">{this.props.t("APR Volatility")}</Link>
                   </li>
                   <li>
-                    <Link to="/dashboard-crypto">{this.props.t("mAsset Spreads")}</Link>
+                    <Link to="/dashboard-crypto">{this.props.t("Spread Tracker")}</Link>
                   </li>
                   <li>
                     <Link to="/dashboard-blog">{this.props.t("Blog")}</Link>

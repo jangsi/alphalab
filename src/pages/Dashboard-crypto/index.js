@@ -84,8 +84,8 @@ class Dashboard extends Component {
     this.state = {
       reports: [
         {
-          title: "Bitcoin",
-          icon: "mdi mdi-bitcoin",
+          title: "LUNA",
+          //icon: "mdi mdi-bitcoin",
           color: "warning",
           value: "$ 57,986.76",
           arrow: 'mdi-arrow-up text-success',
@@ -94,8 +94,8 @@ class Dashboard extends Component {
           options: options1,
         },
         {
-          title: "Ethereum",
-          icon: "mdi mdi-ethereum",
+          title: "ANC",
+          //icon: "mdi mdi-ethereum",
           color: "primary",
           arrow: 'mdi-arrow-down text-danger',
           value: "$ 2,077.53",
@@ -104,8 +104,8 @@ class Dashboard extends Component {
           options: options2,
         },
         {
-          title: "litecoin",
-          icon: "mdi mdi-litecoin",
+          title: "MIR",
+          //icon: "mdi mdi-litecoin",
           color: "info",
           arrow: 'mdi-arrow-up text-success',
           value: "$ 225.01",
@@ -121,17 +121,17 @@ class Dashboard extends Component {
     return (
       <React.Fragment>
         <div className="page-content">
-          <MetaTags>
+          {/*<MetaTags>
             <title>Crypto Dashboard | Skote - React Admin & Dashboard Template</title>
-          </MetaTags>
+          </MetaTags>*/}
           <Container fluid>
             {/* Render Breadcrumb */}
-            <Breadcrumbs title="Dashboards" breadcrumbItem="Crypto" />
+            <Breadcrumbs title="Dashboards" breadcrumbItem="SPREAD TRACKER" />
             <Row>
               {/* card user */}
-              <CardUser />
+              {/*<CardUser />*/}
 
-              <Col xl="8">
+              <Col xl="10">
                 {/* card welcome */}
                 <CardWelcome />
 
@@ -143,8 +143,8 @@ class Dashboard extends Component {
             </Row>
 
             <Row>
-              {/* wallet balance */}
-              <WalletBalance />
+              {/* wallet balance 
+              <WalletBalance />*/}
 
               {/* overview */}
               <OverView />
@@ -154,11 +154,11 @@ class Dashboard extends Component {
               {/* transactions */}
               <Transactions />
 
-              {/* notifications */}
-              <Notifications />
+              {/* notifications 
+              <Notifications />*/}
 
-              {/* buy sell */}
-              <BuySell />
+              {/* buy sell 
+              <BuySell />*/}
             </Row>
           </Container>
         </div>
