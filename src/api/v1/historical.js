@@ -1,7 +1,7 @@
 import * as api from '../../helpers/api_helper'
 
-const getHistoricalLongAprs = (ticker, _from, _to) => {
-  return api.get(`/historical/longaprs/${ticker}`)
+const getHistoricalLongAprs = (filters) => {
+  return api.get(`/historical/longaprs/${filters.ticker}`, { params: filters })
 }
 
 export default {

@@ -169,10 +169,11 @@ import BlogGrid from "../pages/Blog/BlogGrid/index"
 import BlogDetails from "../pages/Blog/BlogDetails"
 
 const authProtectedRoutes = [
-  { path: "/dashboard", component: Dashboard },
-  { path: "/dashboard-saas", component: DashboardSaas },
-  { path: "/dashboard-blog", component: DashboardBlog },
-  { path: "/dashboard-crypto", component: DashboardCrypto },
+  // moved to public
+  // { path: "/dashboard", component: Dashboard },
+  // { path: "/dashboard-saas", component: DashboardSaas },
+  // { path: "/dashboard-blog", component: DashboardBlog },
+  // { path: "/dashboard-crypto", component: DashboardCrypto },
 
   //Crypto
   { path: "/crypto-wallet", component: CryptoWallet },
@@ -315,7 +316,6 @@ const authProtectedRoutes = [
 ]
 
 const publicRoutes = [
-  //{ path: "/dashboard-crypto", component: DashboardCrypto }, // TODO: move to the appropriate place
   { path: "/logout", component: Logout },
   { path: "/login", component: Login },
   { path: "/forgot-password", component: ForgetPwd },
@@ -348,6 +348,12 @@ const publicRoutes = [
   { path: "/auth-email-verification-2", component: EmailVerification2 },
   { path: "/auth-two-step-verification", component: TwostepVerification },
   { path: "/auth-two-step-verification-2", component: TwostepVerification2 },
+
+  // moved from  private
+  { path: "/dashboard", component: Dashboard },
+  { path: "/dashboard-saas", component: DashboardSaas },
+  { path: "/dashboard-blog", component: DashboardBlog },
+  { path: "/dashboard-crypto", component: DashboardCrypto },
 ]
 
 export { authProtectedRoutes, publicRoutes }

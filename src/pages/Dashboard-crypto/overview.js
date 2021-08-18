@@ -20,8 +20,10 @@ class OverView extends Component {
         markers: { size: 0, style: "hollow" },
         xaxis: {
           type: "datetime",
-          min: new Date("29 Apr 2021").getTime(),
-          tickAmount: 6,
+          forceNiceScale: true,
+        },
+        yaxis: {
+          forceNiceScale: true,
         },
         tooltip: { x: { format: "dd MMM yyyy" } },
         colors: ["#f1b44c"],
@@ -38,31 +40,30 @@ class OverView extends Component {
           text: 'Loading...'
         },
       },
-      activeM: false,
+      activeM: true,
       active6M: false,
-      activeY: true,
+      activeY: false,
       activeA: false,
     }
-    this.updateChartMonthly = this.updateChartMonthly.bind(this)
+    this.updateChartMonthly.bind(this)
     this.updateChartSixMonth.bind(this)
     this.updateChartYearly.bind(this)
     this.updateChartAll.bind(this)
-    this.updateChartApi = this.updateChartApi.bind(this)
+    this.updateChartApi.bind(this)
   }
 
-  updateChartApi() {
-    let ticker = 'mAAPL'
+  updateChartApi(filters) {
     // TODO: should move this into the store...
-    historicalApi.getHistoricalLongAprs(ticker).then(apiData => {
+    historicalApi.getHistoricalLongAprs(filters).then(apiData => {
       let formattedData = apiData
         .filter(obj => obj.apr)
         .map(obj => [
           new Date(obj.date).getTime(),
-          obj.apr
+          obj.apr.toPrecision(4)
         ])
       this.setState(_ => ({
         series: [{
-          name: ticker,
+          name: filters.ticker,
           data: formattedData,
         }],
       }))
@@ -70,19 +71,10 @@ class OverView extends Component {
   }
 
   updateChartMonthly() {
-    var d = new Date()
-    var newxaxis = {
-      min: d.setDate(d.getDate() - 30),
-      max: d.getTime(),
-    }
-    var newyaxis = { forceNiceScale: true }
-    this.setState(prevState => ({
-      options: {
-        ...prevState.options,
-        xaxis: newxaxis,
-        yaxis: newyaxis
-      },
-    }))
+    let fromDate = new Date()
+    fromDate.setDate(fromDate.getDate() - 30)
+    let toDate = new Date()
+    this.updateChartApi({ticker: 'mAAPL', from: fromDate, to: toDate, precision: 'day'})
     this.setState({
       activeM: true,
       active6M: false,
@@ -92,16 +84,10 @@ class OverView extends Component {
   }
 
   updateChartSixMonth() {
-    var newxaxis = {
-      min: new Date("27 Sep 2012").getTime(),
-      max: new Date("27 Feb 2013").getTime(),
-    }
-    this.setState(prevState => ({
-      options: {
-        ...prevState.options,
-        xaxis: newxaxis,
-      },
-    }))
+    let fromDate = new Date()
+    fromDate.setDate(fromDate.getDate() - 180)
+    let toDate = new Date()
+    this.updateChartApi({ticker: 'mAAPL', from: fromDate, to: toDate, precision: 'day'})
     this.setState({
       activeM: false,
       active6M: true,
@@ -111,16 +97,10 @@ class OverView extends Component {
   }
 
   updateChartYearly() {
-    var newxaxis = {
-      min: new Date("27 Feb 2012").getTime(),
-      max: new Date("27 Feb 2013").getTime(),
-    }
-    this.setState(prevState => ({
-      options: {
-        ...prevState.options,
-        xaxis: newxaxis,
-      },
-    }))
+    let fromDate = new Date()
+    fromDate.setDate(fromDate.getDate() - 365)
+    let toDate = new Date()
+    this.updateChartApi({ticker: 'mAAPL', from: fromDate, to: toDate, precision: 'day'})
     this.setState({
       activeM: false,
       active6M: false,
@@ -130,13 +110,10 @@ class OverView extends Component {
   }
 
   updateChartAll() {
-    var newxaxis = { min: void 0, max: void 0 }
-    this.setState(prevState => ({
-      options: {
-        ...prevState.options,
-        xaxis: newxaxis,
-      },
-    }))
+    let fromDate = new Date()
+    fromDate.setDate(fromDate.getDate() - 1999)
+    let toDate = new Date()
+    this.updateChartApi({ticker: 'mAAPL', from: fromDate, to: toDate, precision: 'day'})
     this.setState({
       activeM: false,
       active6M: false,
@@ -146,7 +123,8 @@ class OverView extends Component {
   }
 
   componentDidMount() {
-    this.updateChartApi()
+    // load latest month by default
+    this.updateChartMonthly()
   }
 
   render() {
@@ -207,7 +185,7 @@ class OverView extends Component {
                       series={this.state.series}
                       type="area"
                       height={500}
-                      
+
                     />
                   </div>
                 </div>
