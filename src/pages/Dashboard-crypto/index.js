@@ -14,6 +14,7 @@ import OverView from "./overview"
 import Transactions from "./transactions"
 import Notifications from "./notifications"
 import BuySell from "./buy-sell"
+import SpreadTracker from './spread-tracker'
 
 //Bitcoin Chart
 const series1 = [
@@ -143,7 +144,7 @@ class Dashboard extends Component {
             </Row>
 
             <Row>
-              {/* wallet balance 
+              {/* wallet balance
               <WalletBalance />*/}
 
               {/* overview */}
@@ -151,13 +152,17 @@ class Dashboard extends Component {
             </Row>
 
             <Row>
+            <SpreadTracker />
+            </Row>
+
+            <Row>
               {/* transactions */}
               <Transactions />
 
-              {/* notifications 
+              {/* notifications
               <Notifications />*/}
 
-              {/* buy sell 
+              {/* buy sell
               <BuySell />*/}
             </Row>
           </Container>
