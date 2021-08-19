@@ -77,7 +77,7 @@ class Dashboard extends Component {
 
   componentDidMount() {
     const { onGetChartsData } = this.props
-    setTimeout(() => this.setState({ subscribemodal: true }), 2000);
+    // setTimeout(() => this.setState({ subscribemodal: true }), 2000);
     onGetChartsData("yearly");
   }
 
@@ -393,4 +393,3 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
   mapStateToProps, mapDispatchToProps
 )(withTranslation()(Dashboard))
-
