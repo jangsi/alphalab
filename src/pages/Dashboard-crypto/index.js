@@ -147,8 +147,8 @@ class Dashboard extends Component {
               {/* wallet balance
               <WalletBalance />*/}
 
-              {/* overview */}
-              <OverView />
+              {/* overview
+              <OverView />*/}
             </Row>
 
             <Row>

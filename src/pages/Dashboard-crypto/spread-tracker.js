@@ -4,10 +4,13 @@ import {
   Col,
   FormGroup,
   Label,
+  Card,
+  CardBody
 } from "reactstrap"
 import ReactApexChart from "react-apexcharts"
 import tokenDictApi from '../../api/v1/token-dictionary'
 import mirrorGraphql from '../../api/v1/mirror-graphql'
+
 
 class SpreadTracker extends React.Component {
   constructor(props) {
@@ -23,13 +26,32 @@ class SpreadTracker extends React.Component {
           type: "datetime",
           forceNiceScale: true,
         },
-        yaxis: {
-          forceNiceScale: true,
-        },
-        tooltip: { x: { format: "dd MMM yyyy HH:mm" } },
+        yaxis: [
+          {
+            seriesName: "mPrice",
+            forceNiceScale: true,
+          },
+          {
+            seriesName: "mPrice",
+            forceNiceScale: true,
+            show: false,
+            
+          },
+          {
+            seriesName: "Spread",
+            forceNiceScale: true,
+            opposite:true
+          }
+        ],
+        tooltip: {
+            shared:true,
+            x: { 
+              format: "dd MMM yyyy HH:mm"
+              } 
+            },
         colors: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800'],
         noData: {
-          text: 'Loading...'
+          text: 'Choose Symbol'
         },
       },
       tickerOptions: [],
@@ -71,13 +93,23 @@ class SpreadTracker extends React.Component {
           obj.timestamp,
           obj.price
         ])
+      let formattedSpreadData = data.asset.prices.history.map(function(item, index) {
+          return {'spread': ((Number(item['price']) - Number(data.asset.prices.oracleHistory[index]['price']))/Number(data.asset.prices.oracleHistory[index]['price'])).toFixed(4),
+                  'timestamp':item['timestamp']};
+        }).map(obj => [
+          obj.timestamp,
+          obj.spread
+        ])
       this.setState(_ => ({
         series: [{
-          name: ticker,
+          name: "mPrice",
           data: formattedPriceData,
         }, {
-          name: `${ticker} (oracle)`,
+          name: "Oracle",
           data: formattedOracleData,
+        }, {
+          name: "Spread",
+          data: formattedSpreadData,
         }]
       }))
     })
@@ -95,24 +127,28 @@ class SpreadTracker extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Col md={4}>
-          <FormGroup className="select2-container mb-3">
-            <Label className="control-label">Ticker</Label>
-            <Select
-              classNamePrefix="form-control"
-              placeholder="Choose ..."
-              title="mAsset"
-              options={this.state.tickerOptions}
-              onChange={this.handleChange}
-            />
-          </FormGroup>
+        <Col xl="10">
+        <Card>
+            <CardBody>
+              <FormGroup className="select2-container mb-3">
+                <Label className="control-label">Assets</Label>
+                <Select
+                  classNamePrefix="form-control"
+                  placeholder="Choose ..."
+                  title="mAsset"
+                  options={this.state.tickerOptions}
+                  onChange={this.handleChange}
+                />
+              </FormGroup>
+              <ReactApexChart
+                options={this.state.options}
+                series={this.state.series}
+                type="line"
+                height={500}
+              />
+          </CardBody>
+        </Card>
         </Col>
-        <ReactApexChart
-          options={this.state.options}
-          series={this.state.series}
-          type="line"
-          height={500}
-        />
       </React.Fragment>
     )
   }
