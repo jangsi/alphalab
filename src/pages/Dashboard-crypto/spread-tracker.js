@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect }   from "react"
 import Select from "react-select"
 import {
   Col,
@@ -9,9 +9,14 @@ import {
 } from "reactstrap"
 import tokenDictApi from '../../api/v1/token-dictionary'
 import mirrorGraphql from '../../api/v1/mirror-graphql'
+import historicalApi from '../../api/v1/historical'
 import {AgGridColumn, AgGridReact} from 'ag-grid-react'
 
 import {LineChart, Line, XAxis, YAxis, Tooltip, Legend} from 'recharts'
+
+import 'ag-grid-community/dist/styles/ag-grid.css';
+import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
+
 
 
 
@@ -25,9 +30,11 @@ class SpreadTracker extends React.Component {
       tokenAddresses: {},
     }
     this.fetchSpreadData = this.fetchSpreadData.bind(this)
+    this.fetchSpreadStats = this.fetchSpreadStats.bind(this)
     this.fetchTickers.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
+
 
   fetchTickers() {
     tokenDictApi.getTokenDict().then(apiData => {
@@ -41,6 +48,13 @@ class SpreadTracker extends React.Component {
     })
   }
 
+
+  fetchSpreadStats() {
+    historicalApi.getSpreadHistStats().then(data => {
+        console.log(data)
+        return data
+    })};
+        
   fetchSpreadData(ticker) {
     let currentTime = new Date().getTime()
     let filters = {
@@ -50,6 +64,7 @@ class SpreadTracker extends React.Component {
       token: this.state.tokenAddresses[ticker],
     }
     mirrorGraphql.getSpreadData(filters).then(data => {
+      console.log(data)
       let formattedPriceData = data.asset.prices.history
       .map(obj => {
         return {xaxis1: obj.timestamp, Price: Number(obj.price).toFixed(2)}
@@ -75,7 +90,9 @@ class SpreadTracker extends React.Component {
   componentDidMount() {
     // load latest month by default
     this.fetchTickers()
+    this.fetchSpreadStats()
   }
+
 
   render() {
     return (
@@ -106,6 +123,14 @@ class SpreadTracker extends React.Component {
                 <Line data={this.state.data2} yAxisId={1} xAxisId={2} type="linear" dataKey="oraclePrice" stroke="#82ca9d"/>
                 <Line data={this.state.data3} yAxisId={2} xAxisId={3} type="linear" dataKey="Spread" dot={false} strokeWidth={2}/>
              </LineChart>
+          <div style={{height: 400, width: 600}}>
+           <AgGridReact
+               rowData={this.fetchSpreadStats()}>
+               <AgGridColumn field="Three SD"></AgGridColumn>
+               <AgGridColumn field="max"></AgGridColumn>
+               <AgGridColumn field="min"></AgGridColumn>
+           </AgGridReact>
+            </div>
           </CardBody>
         </Card>
         </Col>

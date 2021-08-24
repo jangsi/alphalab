@@ -4,6 +4,11 @@ const getHistoricalLongAprs = (filters) => {
   return api.get(`/historical/longaprs/${filters.ticker}`, { params: filters })
 }
 
+const getSpreadHistStats = (filters) => {
+  return api.get('/historical/spreadhiststats')
+}
+
 export default {
-  getHistoricalLongAprs: getHistoricalLongAprs
+  getHistoricalLongAprs: getHistoricalLongAprs,
+  getSpreadHistStats: getSpreadHistStats
 }
