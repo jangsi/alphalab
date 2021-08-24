@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Polar } from "react-chartjs-2"
+import  Polar  from "react-chartjs-2"
 
 class PolarChart extends Component {
   render() {

@@ -7,53 +7,20 @@ import {
   Card,
   CardBody
 } from "reactstrap"
-import ReactApexChart from "react-apexcharts"
 import tokenDictApi from '../../api/v1/token-dictionary'
 import mirrorGraphql from '../../api/v1/mirror-graphql'
+import {AgGridColumn, AgGridReact} from 'ag-grid-react'
+
+import {LineChart, Line, XAxis, YAxis, Tooltip, Legend} from 'recharts'
+
 
 
 class SpreadTracker extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      series: [],
-      options: {
-        chart: { toolbar: "false" },
-        dataLabels: { enabled: !1 },
-        stroke: { curve: "smooth", width: 2 },
-        markers: { size: 0, style: "hollow" },
-        xaxis: {
-          type: "datetime",
-          forceNiceScale: true,
-        },
-        yaxis: [
-          {
-            seriesName: "mPrice",
-            forceNiceScale: true,
-          },
-          {
-            seriesName: "mPrice",
-            forceNiceScale: true,
-            show: false,
-            
-          },
-          {
-            seriesName: "Spread",
-            forceNiceScale: true,
-            opposite:true
-          }
-        ],
-        tooltip: {
-            shared:true,
-            x: { 
-              format: "dd MMM yyyy HH:mm"
-              } 
-            },
-        colors: ['#2E93fA', '#66DA26', '#546E7A', '#E91E63', '#FF9800'],
-        noData: {
-          text: 'Choose Symbol'
-        },
-      },
+      data: [],
+      data2: [],
       tickerOptions: [],
       tokenAddresses: {},
     }
@@ -84,34 +51,20 @@ class SpreadTracker extends React.Component {
     }
     mirrorGraphql.getSpreadData(filters).then(data => {
       let formattedPriceData = data.asset.prices.history
-        .map(obj => [
-          obj.timestamp,
-          obj.price
-        ])
+      .map(obj => {
+        return {xaxis1: obj.timestamp, Price: Number(obj.price).toFixed(2)}
+        });
       let formattedOracleData = data.asset.prices.oracleHistory
-        .map(obj => [
-          obj.timestamp,
-          obj.price
-        ])
+      .map(obj => {
+        return {xaxis2: obj.timestamp, oraclePrice: Number(obj.price).toFixed(2)}
+        });
       let formattedSpreadData = data.asset.prices.history.map(function(item, index) {
           return {'spread': ((Number(item['price']) - Number(data.asset.prices.oracleHistory[index]['price']))/Number(data.asset.prices.oracleHistory[index]['price'])).toFixed(4),
                   'timestamp':item['timestamp']};
-        }).map(obj => [
-          obj.timestamp,
-          obj.spread
-        ])
-      this.setState(_ => ({
-        series: [{
-          name: "mPrice",
-          data: formattedPriceData,
-        }, {
-          name: "Oracle",
-          data: formattedOracleData,
-        }, {
-          name: "Spread",
-          data: formattedSpreadData,
-        }]
-      }))
+        }).map(obj => {
+         return {xaxis3: obj.timestamp, Spread: (obj.spread*100).toFixed(2) }
+        });
+        this.setState({ data: formattedPriceData, data2: formattedOracleData, data3:formattedSpreadData})
     })
   }
 
@@ -128,8 +81,8 @@ class SpreadTracker extends React.Component {
     return (
       <React.Fragment>
         <Col xl="10">
-        <Card>
-            <CardBody>
+        <Card >
+            <CardBody className="card-body-test">
               <FormGroup className="select2-container mb-3">
                 <Label className="control-label">Assets</Label>
                 <Select
@@ -140,12 +93,19 @@ class SpreadTracker extends React.Component {
                   onChange={this.handleChange}
                 />
               </FormGroup>
-              <ReactApexChart
-                options={this.state.options}
-                series={this.state.series}
-                type="line"
-                height={500}
-              />
+              <LineChart width={2000} height={600} 
+                      margin={{top: 20, right: 30, left: 0, bottom: 0}}>
+                <XAxis dataKey = 'xaxis1' xAxisId={1} type="number" domain={['dataMin', 'dataMax']} />
+                <XAxis dataKey = 'xaxis2' xAxisId={2} type="number" domain={['dataMin', 'dataMax']} axisLine="false" tickLine="False" hide="true" />
+                <XAxis dataKey = 'xaxis3' xAxisId={3} type="number" domain={['dataMin', 'dataMax']} axisLine="false" tickLine="False" hide="true" />
+                <YAxis yAxisId={1} domain={['auto', 'auto']}/>  
+                <YAxis yAxisId={2} domain={['auto', 'auto']} orientation="right"/>    
+                <Tooltip/>
+                <Legend />
+                <Line data={this.state.data} yAxisId={1} xAxisId={1} type="linear" dataKey="Price" stroke="#8884d8"/>
+                <Line data={this.state.data2} yAxisId={1} xAxisId={2} type="linear" dataKey="oraclePrice" stroke="#82ca9d"/>
+                <Line data={this.state.data3} yAxisId={2} xAxisId={3} type="linear" dataKey="Spread" dot={false} strokeWidth={2}/>
+             </LineChart>
           </CardBody>
         </Card>
         </Col>

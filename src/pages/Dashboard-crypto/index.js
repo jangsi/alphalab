@@ -151,7 +151,7 @@ class Dashboard extends Component {
               <OverView />*/}
             </Row>
 
-            <Row>
+            <Row >
             <SpreadTracker />
             </Row>
 
