@@ -128,7 +128,15 @@ class SidebarContent extends Component {
                     <Link to="/dashboard-crypto">{this.props.t("Spread Tracker")}</Link>
                   </li>
                   <li>
-                    <Link to="/dashboard-blog">{this.props.t("Fee Station")}</Link>
+                    <Link to="/#" className="has-arrow">
+                      {/* <i className="bx bx-store" /> */}
+                      <span>{this.props.t("Fee Station")}</span>
+                    </Link>
+                    <ul className="sub-menu" aria-expanded="false">
+                      <li>
+                        <Link to="/fee-station-long">{this.props.t("Round Trip Buy")}</Link>
+                      </li>
+                    </ul>
                   </li>
                 </ul>
               </li>

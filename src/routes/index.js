@@ -75,6 +75,9 @@ import DashboardSaas from "../pages/Dashboard-saas/index"
 import DashboardCrypto from "../pages/Dashboard-crypto/index"
 import DashboardBlog from "../pages/Dashboard-blog/index"
 
+// FeeStation
+import FeeStationLong from "../pages/FeeStation/fee-station-long"
+
 //Crypto
 import CryptoWallet from "../pages/Crypto/CryptoWallet/crypto-wallet"
 import CryptoBuySell from "../pages/Crypto/crypto-buy-sell"
@@ -354,6 +357,7 @@ const publicRoutes = [
   { path: "/dashboard-saas", component: DashboardSaas },
   { path: "/dashboard-blog", component: DashboardBlog },
   { path: "/dashboard-crypto", component: DashboardCrypto },
+  { path: "/fee-station-long", component: FeeStationLong },
 ]
 
 export { authProtectedRoutes, publicRoutes }
