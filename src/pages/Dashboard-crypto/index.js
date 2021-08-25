@@ -155,16 +155,16 @@ class Dashboard extends Component {
             <SpreadTracker />
             </Row>
 
-            <Row>
-              {/* transactions */}
+            {/*<Row>
+               transactions 
               <Transactions />
 
               {/* notifications
-              <Notifications />*/}
+              <Notifications />
 
-              {/* buy sell
-              <BuySell />*/}
-            </Row>
+               buy sell
+              <BuySell />
+            </Row>*/}
           </Container>
         </div>
       </React.Fragment>

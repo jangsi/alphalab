@@ -1,4 +1,4 @@
-import React, { useState, useEffect }   from "react"
+import React from "react"
 import Select from "react-select"
 import {
   Col,
@@ -9,15 +9,20 @@ import {
 } from "reactstrap"
 import tokenDictApi from '../../api/v1/token-dictionary'
 import mirrorGraphql from '../../api/v1/mirror-graphql'
-import historicalApi from '../../api/v1/historical'
 import {AgGridColumn, AgGridReact} from 'ag-grid-react'
 
-import {LineChart, Line, XAxis, YAxis, Tooltip, Legend} from 'recharts'
+
+import {LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 
 
+const fetchAthletes = () => {
+  return fetch(
+    "https://api.alphadefi.fund/historical/spreadhiststats"
+  );
+};
 
 
 class SpreadTracker extends React.Component {
@@ -28,13 +33,28 @@ class SpreadTracker extends React.Component {
       data2: [],
       tickerOptions: [],
       tokenAddresses: {},
+      rowData: []
     }
     this.fetchSpreadData = this.fetchSpreadData.bind(this)
-    this.fetchSpreadStats = this.fetchSpreadStats.bind(this)
     this.fetchTickers.bind(this)
     this.handleChange = this.handleChange.bind(this)
+
+    this.fetchData = this.fetchData.bind(this);
   }
 
+  async fetchData() {
+    const response = await fetchAthletes();
+    const data = await response.json();
+    this.setState({ rowData: data });
+  }
+
+  onGridReady(params) {
+    this.gridApi = params.api;
+    this.gridColumnApi = params.columnApi;
+
+    console.log(">> onGridReady");
+    this.fetchData();
+  }
 
   fetchTickers() {
     tokenDictApi.getTokenDict().then(apiData => {
@@ -47,14 +67,7 @@ class SpreadTracker extends React.Component {
       }))
     })
   }
-
-
-  fetchSpreadStats() {
-    historicalApi.getSpreadHistStats().then(data => {
-        console.log(data)
-        return data
-    })};
-        
+   
   fetchSpreadData(ticker) {
     let currentTime = new Date().getTime()
     let filters = {
@@ -90,9 +103,7 @@ class SpreadTracker extends React.Component {
   componentDidMount() {
     // load latest month by default
     this.fetchTickers()
-    this.fetchSpreadStats()
   }
-
 
   render() {
     return (
@@ -110,6 +121,8 @@ class SpreadTracker extends React.Component {
                   onChange={this.handleChange}
                 />
               </FormGroup>
+              <div style={{height: 600}}>
+              <ResponsiveContainer width="100%" height="100%">
               <LineChart width={2000} height={600} 
                       margin={{top: 20, right: 30, left: 0, bottom: 0}}>
                 <XAxis dataKey = 'xaxis1' xAxisId={1} type="number" domain={['dataMin', 'dataMax']} />
@@ -123,16 +136,28 @@ class SpreadTracker extends React.Component {
                 <Line data={this.state.data2} yAxisId={1} xAxisId={2} type="linear" dataKey="oraclePrice" stroke="#82ca9d"/>
                 <Line data={this.state.data3} yAxisId={2} xAxisId={3} type="linear" dataKey="Spread" dot={false} strokeWidth={2}/>
              </LineChart>
-          <div style={{height: 400, width: 600}}>
-           <AgGridReact
-               rowData={this.fetchSpreadStats()}>
-               <AgGridColumn field="Three SD"></AgGridColumn>
-               <AgGridColumn field="max"></AgGridColumn>
-               <AgGridColumn field="min"></AgGridColumn>
-           </AgGridReact>
+             </ResponsiveContainer>
+             </div>
+            </CardBody>
+          </Card>
+          <Card>
+          <CardBody>
+            <div className="ag-theme-alpine" style={{height: 400}}>
+            <AgGridReact
+               onGridReady={this.onGridReady.bind(this)} 
+               rowData={this.state.rowData}>
+               <AgGridColumn field="symbol" sortable={true} filter={true}></AgGridColumn>
+               <AgGridColumn field="Historical 5th % Spread" sortable={true} filter={true}></AgGridColumn>
+               <AgGridColumn field="Historical 95th % Spread" sortable={true} filter={true}></AgGridColumn>
+               <AgGridColumn field="Neg Three SD" sortable={true} filter={true}></AgGridColumn>
+               <AgGridColumn field="mean" sortable={true} filter={true}></AgGridColumn>
+               <AgGridColumn field="max" sortable={true} filter={true}></AgGridColumn>
+               <AgGridColumn field="min" sortable={true} filter={true}></AgGridColumn>
+               <AgGridColumn field="std" sortable={true} filter={true}></AgGridColumn>
+            </AgGridReact>
             </div>
           </CardBody>
-        </Card>
+          </Card>
         </Col>
       </React.Fragment>
     )
