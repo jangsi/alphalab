@@ -18,7 +18,7 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 
 
-const fetchAthletes = () => {
+const fetchStats = () => {
   return fetch(
     "https://api.alphadefi.fund/historical/spreadhiststats"
   );
@@ -43,7 +43,7 @@ class SpreadTracker extends React.Component {
   }
 
   async fetchData() {
-    const response = await fetchAthletes();
+    const response = await fetchStats();
     const data = await response.json();
     this.setState({ rowData: data });
   }
@@ -103,6 +103,7 @@ class SpreadTracker extends React.Component {
   componentDidMount() {
     // load latest month by default
     this.fetchTickers()
+    
   }
 
   render() {

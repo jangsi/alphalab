@@ -16,9 +16,32 @@ import Notifications from "./notifications"
 import BuySell from "./buy-sell"
 import SpreadTracker from './spread-tracker'
 
-//Bitcoin Chart
+import mirrorGraphql from '../../api/v1/mirror-graphql'
+
+
+const fetchPrice = () => {
+  let currentTime = new Date().getTime()
+  let filters = {
+    from: currentTime - 87400000,
+    to: currentTime - 300000,
+    interval: 5,
+    token: "terra1vxtwu4ehgzz77mnfwrntyrmgl64qjs75mpwqaz",
+  }
+  mirrorGraphql.getSpreadData(filters).then(data => {
+    console.log(data)
+    let series1 = []
+    data.asset.prices.history.map(obj => {
+      series1.push(Number(Number(obj.price).toFixed(2)))
+      });
+    console.log(series1.slice(0,10))
+    return series1.slice(0,10)
+    })
+  }
+
+console.log(fetchPrice())
+//LUNA Chart
 const series1 = [
-  { name: "BTC", data: [12, 14, 2, 47, 42, 15, 47, 75, 65, 19, 14] },
+  { name: "mAAPL", data: fetchPrice()},
 ]
 const options1 = {
   chart: { sparkline: { enabled: !0 } },
@@ -85,7 +108,7 @@ class Dashboard extends Component {
     this.state = {
       reports: [
         {
-          title: "LUNA",
+          title: "mSPY",
           //icon: "mdi mdi-bitcoin",
           color: "warning",
           value: "$ 57,986.76",
@@ -116,7 +139,25 @@ class Dashboard extends Component {
         },
       ],
     }
+    
   }
+
+  async fetchData() {
+    const response = await fetchPrice();
+    const data = await response.json();
+    this.setState({ reports: [
+      {
+        title: "mSPY",
+        //icon: "mdi mdi-bitcoin",
+        color: "warning",
+        value: "$ 57,986.76",
+        arrow: 'mdi-arrow-up text-success',
+        desc: "+ 0.0012 ( 0.2 % )",
+        series: data,
+        options: options1,
+      }]});
+  }
+
 
   render() {
     return (
