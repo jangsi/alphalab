@@ -15,34 +15,9 @@ import Transactions from "./transactions"
 import Notifications from "./notifications"
 import BuySell from "./buy-sell"
 import SpreadTracker from './spread-tracker'
-
 import mirrorGraphql from '../../api/v1/mirror-graphql'
 
-
-const fetchPrice = () => {
-  let currentTime = new Date().getTime()
-  let filters = {
-    from: currentTime - 87400000,
-    to: currentTime - 300000,
-    interval: 5,
-    token: "terra1vxtwu4ehgzz77mnfwrntyrmgl64qjs75mpwqaz",
-  }
-  mirrorGraphql.getSpreadData(filters).then(data => {
-    console.log(data)
-    let series1 = []
-    data.asset.prices.history.map(obj => {
-      series1.push(Number(Number(obj.price).toFixed(2)))
-      });
-    console.log(series1.slice(0,10))
-    return series1.slice(0,10)
-    })
-  }
-
-console.log(fetchPrice())
 //LUNA Chart
-const series1 = [
-  { name: "mAAPL", data: fetchPrice()},
-]
 const options1 = {
   chart: { sparkline: { enabled: !0 } },
   stroke: { curve: "smooth", width: 2 },
@@ -108,13 +83,13 @@ class Dashboard extends Component {
     this.state = {
       reports: [
         {
-          title: "mSPY",
+          title: "mAAPL",
           //icon: "mdi mdi-bitcoin",
           color: "warning",
           value: "$ 57,986.76",
           arrow: 'mdi-arrow-up text-success',
           desc: "+ 0.0012 ( 0.2 % )",
-          series: series1,
+          series: [{ name: "mAAPL", data: []}],
           options: options1,
         },
         {
@@ -139,25 +114,31 @@ class Dashboard extends Component {
         },
       ],
     }
-    
+    this.fetchData = this.fetchData.bind(this)
   }
 
-  async fetchData() {
-    const response = await fetchPrice();
-    const data = await response.json();
-    this.setState({ reports: [
-      {
-        title: "mSPY",
-        //icon: "mdi mdi-bitcoin",
-        color: "warning",
-        value: "$ 57,986.76",
-        arrow: 'mdi-arrow-up text-success',
-        desc: "+ 0.0012 ( 0.2 % )",
-        series: data,
-        options: options1,
-      }]});
+  fetchData() {
+    let currentTime = new Date().getTime()
+    let filters = {
+      from: currentTime - 87400000,
+      to: currentTime - 300000,
+      interval: 5,
+      token: "terra1vxtwu4ehgzz77mnfwrntyrmgl64qjs75mpwqaz",
+    }
+    mirrorGraphql.getSpreadData(filters).then(data => {
+      let data1 = []
+      data.asset.prices.history.forEach(obj => {
+        data1.push(Number(Number(obj.price).toFixed(2)))
+      })
+      let newState = JSON.parse(JSON.stringify(this.state))
+      newState.reports[0].series[0].data = data1.slice(0, 10)
+      this.setState(newState)
+    })
   }
 
+  componentDidMount() {
+    this.fetchData()
+  }
 
   render() {
     return (
@@ -197,7 +178,7 @@ class Dashboard extends Component {
             </Row>
 
             {/*<Row>
-               transactions 
+               transactions
               <Transactions />
 
               {/* notifications

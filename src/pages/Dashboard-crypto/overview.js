@@ -45,11 +45,11 @@ class OverView extends Component {
       activeY: false,
       activeA: false,
     }
-    this.updateChartMonthly.bind(this)
-    this.updateChartSixMonth.bind(this)
-    this.updateChartYearly.bind(this)
-    this.updateChartAll.bind(this)
-    this.updateChartApi.bind(this)
+    this.updateChartMonthly = this.updateChartMonthly.bind(this)
+    this.updateChartSixMonth = this.updateChartSixMonth.bind(this)
+    this.updateChartYearly = this.updateChartYearly.bind(this)
+    this.updateChartAll = this.updateChartAll.bind(this)
+    this.updateChartApi = this.updateChartApi.bind(this)
   }
 
   updateChartApi(filters) {
