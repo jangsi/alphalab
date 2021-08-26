@@ -83,41 +83,63 @@ class Dashboard extends Component {
     this.state = {
       reports: [
         {
-          title: "mAAPL",
+          title: "mQQQ",
           //icon: "mdi mdi-bitcoin",
           color: "warning",
-          value: "$ 57,986.76",
+          value: "",
           arrow: 'mdi-arrow-up text-success',
-          desc: "+ 0.0012 ( 0.2 % )",
-          series: [{ name: "mAAPL", data: []}],
+          series: [{ name: "mQQQ", data: []}],
           options: options1,
         },
         {
-          title: "ANC",
+          title: "mAAPL",
           //icon: "mdi mdi-ethereum",
           color: "primary",
           arrow: 'mdi-arrow-down text-danger',
-          value: "$ 2,077.53",
-          desc: "- 4.102 ( 0.1 % )",
-          series: series2,
+          value: "",
+          series:  [{ name: "mAAPL", data: []}],
           options: options2,
         },
         {
-          title: "MIR",
+          title: "mCOIN",
           //icon: "mdi mdi-litecoin",
           color: "info",
           arrow: 'mdi-arrow-up text-success',
-          value: "$ 225.01",
-          desc: "+ 1.792 ( 0.1 % )",
-          series: series3,
+          value: "",
+          series:  [{ name: "mCOIN", data: []}],
           options: options3,
         },
       ],
     }
-    this.fetchData = this.fetchData.bind(this)
+    this.fetchData1 = this.fetchData1.bind(this)
   }
 
-  fetchData() {
+  fetchData1() {
+    let currentTime = new Date().getTime()
+    let filters = {
+      from: currentTime - 87400000,
+      to: currentTime - 300000,
+      interval: 5,
+      token: "terra1csk6tc7pdmpr782w527hwhez6gfv632tyf72cp",
+    }
+    mirrorGraphql.getSpreadData(filters).then(data => {
+      let data1 = []
+      data.asset.prices.oracleHistory.forEach(obj => {
+        data1.push(Number(Number(obj.price).toFixed(2)))
+      })
+      let newState = JSON.parse(JSON.stringify(this.state))
+      newState.reports[0].series[0].data = data1.slice(-10, -1)
+      this.setState(newState)
+
+      let newState2 = JSON.parse(JSON.stringify(this.state))
+      newState2.reports[0].value = data1.slice(-2,-1)
+      this.setState(newState2)
+
+      
+    })
+  }
+
+  fetchData2() {
     let currentTime = new Date().getTime()
     let filters = {
       from: currentTime - 87400000,
@@ -127,17 +149,46 @@ class Dashboard extends Component {
     }
     mirrorGraphql.getSpreadData(filters).then(data => {
       let data1 = []
-      data.asset.prices.history.forEach(obj => {
+      data.asset.prices.oracleHistory.forEach(obj => {
         data1.push(Number(Number(obj.price).toFixed(2)))
       })
       let newState = JSON.parse(JSON.stringify(this.state))
-      newState.reports[0].series[0].data = data1.slice(0, 10)
+      newState.reports[1].series[0].data = data1.slice(-10, -1)
       this.setState(newState)
+
+      let newState2 = JSON.parse(JSON.stringify(this.state))
+      newState2.reports[1].value = data1.slice(-2,-1)
+      this.setState(newState2)
+    })
+  }
+
+  fetchData3() {
+    let currentTime = new Date().getTime()
+    let filters = {
+      from: currentTime - 87400000,
+      to: currentTime - 300000,
+      interval: 5,
+      token: "terra18wayjpyq28gd970qzgjfmsjj7dmgdk039duhph",
+    }
+    mirrorGraphql.getSpreadData(filters).then(data => {
+      let data1 = []
+      data.asset.prices.oracleHistory.forEach(obj => {
+        data1.push(Number(Number(obj.price).toFixed(2)))
+      })
+      let newState = JSON.parse(JSON.stringify(this.state))
+      newState.reports[2].series[0].data = data1.slice(-10, -1)
+      this.setState(newState)
+
+      let newState2 = JSON.parse(JSON.stringify(this.state))
+      newState2.reports[2].value = data1.slice(-2,-1)
+      this.setState(newState2)
     })
   }
 
   componentDidMount() {
-    this.fetchData()
+    this.fetchData1()
+    this.fetchData2()
+    this.fetchData3()
   }
 
   render() {

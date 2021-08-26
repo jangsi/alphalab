@@ -17,6 +17,20 @@ import {LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} fro
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 
+function pctFormatter(params) {
+  return '%' + Number(params.value*100).toFixed(2);
+}
+
+function formatXAxis(tickItem) {
+  var date = new Date(tickItem*1000)
+  var hours = date.getHours();
+  var minutes = "0" + date.getMinutes();
+  var seconds = "0" + date.getSeconds();
+
+
+
+  return hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+}
 
 const fetchStats = () => {
   return fetch(
@@ -106,6 +120,10 @@ class SpreadTracker extends React.Component {
     
   }
 
+ pctFormatter(params) {
+    return '%' + params.value*100;
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -126,11 +144,11 @@ class SpreadTracker extends React.Component {
               <ResponsiveContainer width="100%" height="100%">
               <LineChart width={2000} height={600} 
                       margin={{top: 20, right: 30, left: 0, bottom: 0}}>
-                <XAxis dataKey = 'xaxis1' xAxisId={1} type="number" domain={['dataMin', 'dataMax']} />
+                <XAxis dataKey = 'xaxis1' xAxisId={1} type="number" domain={['dataMin', 'dataMax']} tickFormatter={formatXAxis}/>
                 <XAxis dataKey = 'xaxis2' xAxisId={2} type="number" domain={['dataMin', 'dataMax']} axisLine="false" tickLine="False" hide="true" />
                 <XAxis dataKey = 'xaxis3' xAxisId={3} type="number" domain={['dataMin', 'dataMax']} axisLine="false" tickLine="False" hide="true" />
                 <YAxis yAxisId={1} domain={['auto', 'auto']}/>  
-                <YAxis yAxisId={2} domain={['auto', 'auto']} orientation="right"/>    
+                <YAxis yAxisId={2} domain={['auto', 'auto']} orientation="right"  tickFormatter={tick => {return tick.toLocaleString();}}/>    
                 <Tooltip/>
                 <Legend />
                 <Line data={this.state.data} yAxisId={1} xAxisId={1} type="linear" dataKey="Price" stroke="#8884d8"/>
@@ -147,14 +165,15 @@ class SpreadTracker extends React.Component {
             <AgGridReact
                onGridReady={this.onGridReady.bind(this)} 
                rowData={this.state.rowData}>
-               <AgGridColumn field="symbol" sortable={true} filter={true}></AgGridColumn>
-               <AgGridColumn field="Historical 5th % Spread" sortable={true} filter={true}></AgGridColumn>
-               <AgGridColumn field="Historical 95th % Spread" sortable={true} filter={true}></AgGridColumn>
-               <AgGridColumn field="Neg Three SD" sortable={true} filter={true}></AgGridColumn>
-               <AgGridColumn field="mean" sortable={true} filter={true}></AgGridColumn>
-               <AgGridColumn field="max" sortable={true} filter={true}></AgGridColumn>
-               <AgGridColumn field="min" sortable={true} filter={true}></AgGridColumn>
-               <AgGridColumn field="std" sortable={true} filter={true}></AgGridColumn>
+                <AgGridColumn field="symbol" sortable={true} filter={true}></AgGridColumn>
+                <AgGridColumn field="mean" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="Three SD" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="Neg Three SD" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="max" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="min" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="std" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="Historical 5th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="Historical 95th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
             </AgGridReact>
             </div>
           </CardBody>

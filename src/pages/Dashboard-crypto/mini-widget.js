@@ -30,13 +30,10 @@ class MiniWidget extends Component {
                 </p>
 
                 <Row>
-                  <Col xs="6">
+                  <Col xs="4">
                     <div>
                       <h5>{report.value}</h5>
-                      <p className="text-muted text-truncate mb-0">
-                        {report.desc}{" "}
-                        <i className={"ms-1 mdi " + report.arrow} />
-                      </p>
+                     
                     </div>
                   </Col>
                   <Col xs="6">
@@ -46,7 +43,8 @@ class MiniWidget extends Component {
                           options={report.options}
                           series={report.series}
                           type="area"
-                          height={40}
+                          height={100}
+                      
                         />
                       </div>
                     </div>

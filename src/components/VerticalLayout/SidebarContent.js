@@ -112,18 +112,15 @@ class SidebarContent extends Component {
               <li>
                 <Link to="/#">
                   <i className="bx bx-home-circle" />
-                  <span className="badge rounded-pill bg-info float-end">
-                    04
-                  </span>
                   <span>{this.props.t("Dashboards")}</span>
                 </Link>
                 <ul className="sub-menu" aria-expanded="false">
-                  <li>
+                  {/*<li>
                     <Link to="/dashboard">{this.props.t("Commission APRs")}</Link>
                   </li>
                   <li>
                     <Link to="/dashboard-saas">{this.props.t("APR Volatility")}</Link>
-                  </li>
+                  </li>*/}
                   <li>
                     <Link to="/dashboard-crypto">{this.props.t("Spread Tracker")}</Link>
                   </li>

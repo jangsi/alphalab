@@ -136,7 +136,7 @@ class Header extends Component {
                 id="vertical-menu-btn"
               >
                 <i className="fa fa-fw fa-bars"></i>
-              </button>*/}
+              </button>
 
               <form className="app-search d-none d-lg-block">
                 <div >
@@ -148,7 +148,7 @@ class Header extends Component {
                   <span></span>
                   
                 </div>
-              </form>
+              </form>*/}
 
               {/*<Dropdown
                 className="dropdown-mega d-none d-lg-block ms-2"
