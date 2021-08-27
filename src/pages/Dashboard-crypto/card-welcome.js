@@ -13,7 +13,7 @@ class CardWelcome extends Component {
             <Row>
               <Col lg="9" sm="8">
                 <div className="p-4">
-                  <h5 className="text-primary">alphaDefi Spread Tracker</h5>
+                  <h5 className="text-primary">Alpha DeFi Spread Tracker</h5>
                   <p>Alpha Astronaut</p>
 
                   <div className="text-muted">

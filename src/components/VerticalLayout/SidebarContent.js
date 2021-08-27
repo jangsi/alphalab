@@ -117,10 +117,10 @@ class SidebarContent extends Component {
                 <ul className="sub-menu" aria-expanded="false">
                   {/*<li>
                     <Link to="/dashboard">{this.props.t("Commission APRs")}</Link>
-                  </li>
-                  <li>
-                    <Link to="/dashboard-saas">{this.props.t("APR Volatility")}</Link>
                   </li>*/}
+                  <li>
+                    <Link to="/dashboard-saas">{this.props.t("Pool APR Analytics")}</Link>
+                  </li>
                   <li>
                     <Link to="/dashboard-crypto">{this.props.t("Spread Tracker")}</Link>
                   </li>

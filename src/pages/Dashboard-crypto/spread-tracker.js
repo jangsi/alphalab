@@ -22,7 +22,7 @@ function pctFormatter(params) {
 }
 
 function formatXAxis(tickItem) {
-  var date = new Date(tickItem*1000)
+  var date = new Date(tickItem)
   var hours = date.getHours();
   var minutes = "0" + date.getMinutes();
   var seconds = "0" + date.getSeconds();
@@ -149,7 +149,7 @@ class SpreadTracker extends React.Component {
                 <XAxis dataKey = 'xaxis3' xAxisId={3} type="number" domain={['dataMin', 'dataMax']} axisLine="false" tickLine="False" hide="true" />
                 <YAxis yAxisId={1} domain={['auto', 'auto']}/>  
                 <YAxis yAxisId={2} domain={['auto', 'auto']} orientation="right"  tickFormatter={tick => {return tick.toLocaleString();}}/>    
-                <Tooltip/>
+                <Tooltip labelFormatter={tick => {return formatXAxis(tick);}}/>
                 <Legend />
                 <Line data={this.state.data} yAxisId={1} xAxisId={1} type="linear" dataKey="Price" stroke="#8884d8"/>
                 <Line data={this.state.data2} yAxisId={1} xAxisId={2} type="linear" dataKey="oraclePrice" stroke="#82ca9d"/>
