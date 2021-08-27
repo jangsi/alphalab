@@ -110,7 +110,7 @@ class SidebarContent extends Component {
             <ul className="metismenu list-unstyled" id="side-menu">
               <li className="menu-title">{this.props.t("alphaLabs")}</li>
               <li>
-                <Link to="/#">
+                <Link to="/dashboard-crypto">
                   <i className="bx bx-home-circle" />
                   <span>{this.props.t("Dashboards")}</span>
                 </Link>
