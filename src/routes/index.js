@@ -77,6 +77,7 @@ import DashboardBlog from "../pages/Dashboard-blog/index"
 
 // FeeStation
 import FeeStationLong from "../pages/FeeStation/fee-station-long"
+import FeeStationShort from "../pages/FeeStation/fee-station-short"
 
 //Crypto
 import CryptoWallet from "../pages/Crypto/CryptoWallet/crypto-wallet"
@@ -315,7 +316,7 @@ const authProtectedRoutes = [
 
   // this route should be at the end of all other routes
   // eslint-disable-next-line react/display-name
-  { path: "/", exact: true, component: () => <Redirect to="/dashboard-crypto" /> },
+  { path: "/", exact: true, component: () => <Redirect to="/spread-tracker" /> },
 ]
 
 const publicRoutes = [
@@ -356,8 +357,9 @@ const publicRoutes = [
   { path: "/dashboard", component: Dashboard },
   { path: "/dashboard-saas", component: DashboardSaas },
   { path: "/dashboard-blog", component: DashboardBlog },
-  { path: "/dashboard-crypto", component: DashboardCrypto },
+  { path: "/spread-tracker", component: DashboardCrypto },
   { path: "/fee-station-long", component: FeeStationLong },
+  { path: "/fee-station-short", component: FeeStationShort },
 ]
 
 export { authProtectedRoutes, publicRoutes }

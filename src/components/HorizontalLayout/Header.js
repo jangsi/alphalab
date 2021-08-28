@@ -106,7 +106,7 @@ class Header extends Component {
   render() {
     return (
       <React.Fragment>
-        <header id="page-topbar">
+        {/* <header id="page-topbar">
           <div className="navbar-header">
             <div className="d-flex">
               <div className="navbar-brand-box">
@@ -434,7 +434,7 @@ class Header extends Component {
               </div>
             </div>
           </div>
-        </header>
+        </header> */}
         <ReactDrawer
           open={this.state.open}
           position={this.state.position}
