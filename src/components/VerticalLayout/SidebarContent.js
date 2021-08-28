@@ -122,7 +122,7 @@ class SidebarContent extends Component {
                     <Link to="/dashboard-saas">{this.props.t("Pool APR Analytics")}</Link>
                   </li>
                   <li>
-                    <Link to="/dashboard-crypto">{this.props.t("Spread Tracker")}</Link>
+                    <Link to="/spread-tracker">{this.props.t("Spread Tracker")}</Link>
                   </li>
                   <li>
                     <Link to="/#" className="has-arrow">
@@ -132,6 +132,9 @@ class SidebarContent extends Component {
                     <ul className="sub-menu" aria-expanded="false">
                       <li>
                         <Link to="/fee-station-long">{this.props.t("Round Trip Buy")}</Link>
+                      </li>
+                      <li>
+                        <Link to="/fee-station-short">{this.props.t("Round Trip Short Sale")}</Link>
                       </li>
                     </ul>
                   </li>

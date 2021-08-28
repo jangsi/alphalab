@@ -58,8 +58,8 @@ class Header extends Component {
   toggleMenu() {
     this.props.toggleMenuCallback()
   }
-  /** 
-   * Right sidebar drawer 
+  /**
+   * Right sidebar drawer
   * */
 
   toggleRightDrawer() {
@@ -113,6 +113,20 @@ class Header extends Component {
       <React.Fragment>
         <header id="page-topbar">
           <div className="navbar-header">
+            <div className="d-flex">
+              <button
+                type="button"
+                onClick={this.toggleMenu}
+                className="btn btn-sm px-3 font-size-16 header-item"
+                id="vertical-menu-btn"
+              >
+                <i className="fa fa-fw fa-bars"></i>
+              </button>
+            </div>
+          </div>
+        </header>
+        {/* <header id="page-topbar">
+          <div className="navbar-header">
 
             <div className="d-flex">
               <div className="navbar-brand-box d-lg-none d-md-block">
@@ -129,7 +143,7 @@ class Header extends Component {
                 </Link>
               </div>
 
-              {/*<button
+              <button
                 type="button"
                 onClick={this.toggleMenu}
                 className="btn btn-sm px-3 font-size-16 header-item"
@@ -146,11 +160,11 @@ class Header extends Component {
                     placeholder={this.props.t("Search") + "..."}
                   />
                   <span></span>
-                  
-                </div>
-              </form>*/}
 
-              {/*<Dropdown
+                </div>
+              </form>
+
+              <Dropdown
                 className="dropdown-mega d-none d-lg-block ms-2"
                 isOpen={this.state.megaMenuDrp}
                 toggle={() => {
@@ -305,7 +319,7 @@ class Header extends Component {
                     </Col>
                   </Row>
                 </DropdownMenu>
-              </Dropdown>*/}
+              </Dropdown>
             </div>
             <div className="d-flex">
               <div className="dropdown d-inline-block d-lg-none ms-2">
@@ -347,9 +361,9 @@ class Header extends Component {
                 </div>
               </div>
 
-              {/*<LanguageDropdown />*/}
+              <LanguageDropdown />
 
-              {/*<Dropdown
+              <Dropdown
                 className="d-none d-lg-inline-block ms-1"
                 isOpen={this.state.socialDrp}
                 toggle={() => {
@@ -407,7 +421,7 @@ class Header extends Component {
                     </Row>
                   </div>
                 </DropdownMenu>
-              </Dropdown>*/}
+              </Dropdown>
 
               <div className="dropdown d-none d-lg-inline-block ms-1">
                 <button
@@ -420,30 +434,30 @@ class Header extends Component {
                 </button>
               </div>
 
-              {/*<NotificationDropdown />
-              <ProfileMenu />*/}
+              <NotificationDropdown />
+              <ProfileMenu />
 
               <div
                 onClick={this.toggleRightDrawer} disabled={this.state.open}
                 className="dropdown d-inline-block"
               >
-                {/*<button
+                <button
                   type="button"
                   className="btn header-item noti-icon right-bar-toggle"
                 >
                   <i className="bx bx-cog bx-spin"></i>
-                </button>*/}
+                </button>
               </div>
             </div>
           </div>
-        </header>
-        {/*<ReactDrawer
+        </header> */}
+        <ReactDrawer
           open={this.state.open}
           position={this.state.position}
           onClose={this.onDrawerClose}
         >
           <RightSidebar onClose={this.onDrawerClose} />
-        </ReactDrawer>*/}
+        </ReactDrawer>
       </React.Fragment>
     )
   }
