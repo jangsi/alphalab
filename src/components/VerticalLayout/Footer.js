@@ -8,10 +8,10 @@ class Footer extends Component {
         <footer className="footer">
           <div className="container-fluid">
             <Row>
-              <Col sm={6}>{new Date().getFullYear()} © Skote.</Col>
+              <Col sm={6}>{new Date().getFullYear()} Alpha DeFi</Col>
               <Col sm={6}>
                 <div className="text-sm-end d-none d-sm-block">
-                  Design & Develop by Themesbrand
+                Terra Analytics
               </div>
               </Col>
             </Row>
