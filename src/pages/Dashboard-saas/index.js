@@ -53,7 +53,7 @@ class Dashboard extends Component {
       <React.Fragment>
         <div className="page-content">
           <MetaTags>
-            <title>Saas Dashboard | Skote - React Admin & Dashboard Template</title>
+            <title>Alpha DeFi</title>
           </MetaTags>
           <Container fluid>
             {/* Render Breadcrumb */}
