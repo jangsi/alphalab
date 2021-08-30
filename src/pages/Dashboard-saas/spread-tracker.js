@@ -38,7 +38,7 @@ function formatXAxis(tickItem) {
              + date.getFullYear()
 
 
-  return MyDateString
+  return MyDateString + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
 }
 
 const fetchStats = () => {
