@@ -1,35 +1,45 @@
 import React, { Component } from "react"
 import { Row, Col, Card } from "reactstrap"
 
-//Import Images
-import profileImg from "../../assets/images/profile-img.png"
+//Import Image
+import features from "../../assets/images/crypto/features-img/img-1.png"
 
 class CardWelcome extends Component {
   render() {
     return (
       <React.Fragment>
-        <Col xl="4">
-          <Card className="bg-primary bg-soft">
-            <div>
-              <Row>
-                <Col xs="7">
-                  <div className="text-primary p-3">
-                    <h5 className="text-primary">Welcome Back !</h5>
-                    <p>Skote Saas Dashboard</p>
+        <Card>
+          <div>
+            <Row>
+              <Col lg="9" sm="8">
+                <div className="p-4">
+                  <h5 className="text-primary">Mirror Protocol mAsset APRs</h5>
+                  <p>Alpha Astronaut</p>
 
-                    <ul className="ps-3 mb-0">
-                      <li className="py-1">7 + Layouts</li>
-                      <li className="py-1">Multiple apps</li>
-                    </ul>
+                  <div className="text-muted">
+                    <p className="mb-1">
+                      <i className="mdi mdi-circle-medium align-middle text-primary me-1"/>{" "}
+                      View Mirror Protocol Historical APRs
+                    </p>
+                    <p className="mb-1">
+                      <i className="mdi mdi-circle-medium align-middle text-primary me-1"/>{" "}
+                      Track APR Volatility
+                    </p>
+                    <p className="mb-0">
+                      <i className="mdi mdi-circle-medium align-middle text-primary me-1"/>{" "}
+                      Locate Trading Opportunities
+                    </p>
                   </div>
-                </Col>
-                <Col xs="5" className="align-self-end">
-                  <img src={profileImg} alt="" className="img-fluid" />
-                </Col>
-              </Row>
-            </div>
-          </Card>
-        </Col>
+                </div>
+              </Col>
+              <Col lg="3" sm="4" className="align-self-center">
+                <div>
+                  <img src={features} alt="" className="img-fluid d-block" />
+                </div>
+              </Col>
+            </Row>
+          </div>
+        </Card>
       </React.Fragment>
     )
   }

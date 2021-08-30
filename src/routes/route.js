@@ -14,7 +14,7 @@ const AppRoute = ({
       if (isAuthProtected && !localStorage.getItem("authUser")) {
         return (
           <Redirect
-            to={{ pathname: "/dashboard-crypto", state: { from: props.location } }}
+            to={{ pathname: "/spread-tracker", state: { from: props.location } }}
           />
         )
       }

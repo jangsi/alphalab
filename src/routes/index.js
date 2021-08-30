@@ -355,7 +355,7 @@ const publicRoutes = [
 
   // moved from  private
   { path: "/dashboard", component: Dashboard },
-  { path: "/dashboard-saas", component: DashboardSaas },
+  { path: "/dashboard-apr", component: DashboardSaas },
   { path: "/dashboard-blog", component: DashboardBlog },
   { path: "/spread-tracker", component: DashboardCrypto },
   { path: "/fee-station-long", component: FeeStationLong },

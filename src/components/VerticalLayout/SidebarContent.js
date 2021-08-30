@@ -119,7 +119,7 @@ class SidebarContent extends Component {
                     <Link to="/dashboard">{this.props.t("Commission APRs")}</Link>
                   </li>*/}
                   <li>
-                    <Link to="/dashboard-saas">{this.props.t("Pool APR Analytics")}</Link>
+                    <Link to="/dashboard-apr">{this.props.t("Mirror Protocol APRs")}</Link>
                   </li>
                   <li>
                     <Link to="/spread-tracker">{this.props.t("Spread Tracker")}</Link>
