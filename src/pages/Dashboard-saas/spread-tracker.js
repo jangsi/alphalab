@@ -33,12 +33,12 @@ function formatXAxis(tickItem) {
   var minutes = "0" + date.getMinutes();
   var seconds = "0" + date.getSeconds();
 
-  var MyDateString = ('0' + date.getDate()).slice(-2) + '/'
-             + ('0' + (date.getMonth()+1)).slice(-2) + '/'
+  var MyDateString = ('0' + date.getMonth()).slice(-2) + '/'
+             + ('0' + (date.getDate()+1)).slice(-2) + '/'
              + date.getFullYear()
 
 
-  return MyDateString + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+  return MyDateString
 }
 
 const fetchStats = () => {
@@ -145,7 +145,7 @@ class SpreadTracker extends React.Component {
         <Card >
             <CardBody className="card-body-test">
               <FormGroup className="select2-container mb-3">
-                <Label className="control-label">Assets</Label>
+                <Label className="control-label">LONG APRS</Label>
                 <Select
                   classNamePrefix="form-control"
                   placeholder="Choose ..."

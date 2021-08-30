@@ -69,7 +69,7 @@ class Dashboard extends Component {
     this.state = {
       reports: [
         {
-          title: "bLUNA-LUNA APR",
+          title: "mQQQ APR",
           //icon: "mdi mdi-bitcoin",
           color: "warning",
           value: "",
@@ -78,7 +78,7 @@ class Dashboard extends Component {
           options: options1,
         },
         {
-          title: "ANC-UST APR",
+          title: "mAAPL APR",
           //icon: "mdi mdi-ethereum",
           color: "primary",
           arrow: 'mdi-arrow-down text-danger',
@@ -87,7 +87,7 @@ class Dashboard extends Component {
           options: options2,
         },
         {
-          title: "mETH-bETH APR",
+          title: "mCOIN APR",
           //icon: "mdi mdi-litecoin",
           color: "info",
           arrow: 'mdi-arrow-up text-success',
