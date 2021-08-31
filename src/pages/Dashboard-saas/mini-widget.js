@@ -12,7 +12,7 @@ class MiniWidget extends Component {
               <CardBody>
                 <div className="d-flex align-items-center mb-3">
                   <div className="avatar-xs me-3">
-                    <span className="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-18">
+                    <span className="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-20">
                       <i className={report.icon}/>
                     </span>
                   </div>

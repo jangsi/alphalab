@@ -36,7 +36,20 @@ function priceFormat(tickItem) {
   return Number(tickItem).toFixed(2)
 }
 
-class AprTracker extends React.Component {
+const fetchStats = () => {
+    return fetch(
+      "https://api.alphadefi.fund/info/longvolrankings"
+    );
+  };
+  
+  const fetchStats2 = () => {
+    return fetch(
+      "https://api.alphadefi.fund/info/shortvolrankings"
+    );
+  };
+  
+
+class AprTrackerShort extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -108,7 +121,7 @@ class AprTracker extends React.Component {
       to: this.state.longDates[1],
       precision: precision,
     }
-    historical.getHistoricalLongAprs(filters).then(apiData => {
+    historical.getHistoricalShortAprs(filters).then(apiData => {
       let formattedData = apiData
         .filter(obj => obj.apr)
         .map(obj => {
@@ -159,7 +172,7 @@ class AprTracker extends React.Component {
         <Card >
             <CardBody className="card-body-test">
               <FormGroup className="select2-container mb-3">
-                <Label className="control-label">LONG APRS</Label>
+                <Label className="control-label">SHORT APRS</Label>
                 <Select
                   classNamePrefix="form-control"
                   placeholder="Choose ..."
@@ -194,10 +207,29 @@ class AprTracker extends React.Component {
              </div>
             </CardBody>
           </Card>
+          <Card>
+          <CardBody>
+            <div className="ag-theme-alpine" style={{height: 400}}>
+            <AgGridReact
+               onGridReady={this.onGridReady.bind(this)}
+               rowData={this.state.rowData}>
+                <AgGridColumn field="symbol" sortable={true} filter={true}></AgGridColumn>
+                <AgGridColumn field="mean" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="Three SD" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="Neg Three SD" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="max" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="min" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="std" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="Historical 5th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="Historical 95th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+            </AgGridReact>
+            </div>
+          </CardBody>
+          </Card>
         </Col>
       </React.Fragment>
     )
   }
 }
 
-export default AprTracker
+export default AprTrackerShort

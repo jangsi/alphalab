@@ -70,7 +70,7 @@ class Dashboard extends Component {
       reports: [
         {
           title: "mQQQ Oracle",
-          //icon: "mdi mdi-bitcoin",
+          icon: "mdi mdi-email-open",
           color: "warning",
           value: "",
           arrow: 'mdi-arrow-up text-success',
@@ -79,7 +79,7 @@ class Dashboard extends Component {
         },
         {
           title: "mAAPL Oracle",
-          //icon: "mdi mdi-ethereum",
+          icon: "mdi mdi-email-open",
           color: "primary",
           arrow: 'mdi-arrow-down text-danger',
           value: "",
@@ -88,7 +88,7 @@ class Dashboard extends Component {
         },
         {
           title: "mCOIN Oracle",
-          //icon: "mdi mdi-litecoin",
+          icon: "mdi mdi-email-open",
           color: "info",
           arrow: 'mdi-arrow-up text-success',
           value: "",

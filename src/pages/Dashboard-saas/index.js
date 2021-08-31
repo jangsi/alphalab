@@ -9,8 +9,11 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import CardWelcome from "./card-welcome"
 import MiniWidget from "./mini-widget"
 import AprTracker from './apr-tracker'
+import AprTrackerShort from './apr-tracker-short'
 import mirrorGraphql from '../../api/v1/mirror-graphql'
+import historical from '../../api/v1/historical'
 
+import dayjs from 'dayjs'
 
 const options1 = {
   chart: { sparkline: { enabled: !0 } },
@@ -67,10 +70,11 @@ class Dashboard extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      selectedLongTicker: '',
       reports: [
         {
-          title: "mQQQ APR",
-          //icon: "mdi mdi-bitcoin",
+          title: "Current mQQQ Long APR",
+          icon: "mdi mdi-email-open",
           color: "warning",
           value: "",
           arrow: 'mdi-arrow-up text-success',
@@ -78,8 +82,8 @@ class Dashboard extends Component {
           options: options1,
         },
         {
-          title: "mAAPL APR",
-          //icon: "mdi mdi-ethereum",
+          title: "Current mAAPL Long APR",
+          icon: "mdi mdi-email-open",
           color: "primary",
           arrow: 'mdi-arrow-down text-danger',
           value: "",
@@ -87,8 +91,8 @@ class Dashboard extends Component {
           options: options2,
         },
         {
-          title: "mCOIN APR",
-          //icon: "mdi mdi-litecoin",
+          title: "Current mCOIN Long APR",
+          icon: "mdi mdi-email-open",
           color: "info",
           arrow: 'mdi-arrow-up text-success',
           value: "",
@@ -97,84 +101,86 @@ class Dashboard extends Component {
         },
       ],
     }
-    this.fetchData1 = this.fetchData1.bind(this)
+    this.fetchAprData1= this.fetchAprData1.bind(this)
   }
 
-  fetchData1() {
-    let currentTime = new Date().getTime()
-    let filters = {
-      from: currentTime - 87400000,
-      to: currentTime - 300000,
-      interval: 5,
-      token: "terra1csk6tc7pdmpr782w527hwhez6gfv632tyf72cp",
+fetchAprData1() {
+   
+    let precision = 'day'
+    let diff = 605800000
+    // 604800000 = 7 days
+    if (diff < 604800000) {
+      precision = 'hour'
     }
-    mirrorGraphql.getSpreadData(filters).then(data => {
-      let data1 = []
-      data.asset.prices.oracleHistory.forEach(obj => {
-        data1.push(Number(Number(obj.price).toFixed(2)))
-      })
-      let newState = JSON.parse(JSON.stringify(this.state))
-      newState.reports[0].series[0].data = data1.slice(-10, -1)
-      this.setState(newState)
-
-      let newState2 = JSON.parse(JSON.stringify(this.state))
-      newState2.reports[0].value = data1.slice(-2,-1)
-      this.setState(newState2)
-
-
+    let filters = {
+      ticker: 'mCOIN',
+      precision: precision,
+    }
+    historical.getHistoricalLongAprs(filters).then(apiData => {
+      let formattedData = apiData
+        .filter(obj => obj.apr)
+        .map(obj => {
+          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
+        })
+        console.log(formattedData)
+        let newState2 = JSON.parse(JSON.stringify(this.state))
+        newState2.reports[0].value = formattedData[formattedData.length-1].Price
+        this.setState(newState2)
     })
   }
 
-  fetchData2() {
-    let currentTime = new Date().getTime()
-    let filters = {
-      from: currentTime - 87400000,
-      to: currentTime - 300000,
-      interval: 5,
-      token: "terra1vxtwu4ehgzz77mnfwrntyrmgl64qjs75mpwqaz",
+  fetchAprData2() {
+    
+    let precision = 'day'
+    let diff = 605800000
+    // 604800000 = 7 days
+    if (diff < 604800000) {
+      precision = 'hour'
     }
-    mirrorGraphql.getSpreadData(filters).then(data => {
-      let data1 = []
-      data.asset.prices.oracleHistory.forEach(obj => {
-        data1.push(Number(Number(obj.price).toFixed(2)))
-      })
-      let newState = JSON.parse(JSON.stringify(this.state))
-      newState.reports[1].series[0].data = data1.slice(-10, -1)
-      this.setState(newState)
-
-      let newState2 = JSON.parse(JSON.stringify(this.state))
-      newState2.reports[1].value = data1.slice(-2,-1)
-      this.setState(newState2)
+    let filters = {
+      ticker: 'mAAPL',
+      precision: precision,
+    }
+    historical.getHistoricalLongAprs(filters).then(apiData => {
+      let formattedData = apiData
+        .filter(obj => obj.apr)
+        .map(obj => {
+          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
+        })
+        let newState2 = JSON.parse(JSON.stringify(this.state))
+        newState2.reports[1].value = formattedData[formattedData.length-1].Price
+        this.setState(newState2)
     })
   }
 
-  fetchData3() {
-    let currentTime = new Date().getTime()
-    let filters = {
-      from: currentTime - 87400000,
-      to: currentTime - 300000,
-      interval: 5,
-      token: "terra18wayjpyq28gd970qzgjfmsjj7dmgdk039duhph",
+  fetchAprData3() {
+    
+    let precision = 'day'
+    let diff = 605800000
+    // 604800000 = 7 days
+    if (diff < 604800000) {
+      precision = 'hour'
     }
-    mirrorGraphql.getSpreadData(filters).then(data => {
-      let data1 = []
-      data.asset.prices.oracleHistory.forEach(obj => {
-        data1.push(Number(Number(obj.price).toFixed(2)))
-      })
-      let newState = JSON.parse(JSON.stringify(this.state))
-      newState.reports[2].series[0].data = data1.slice(-10, -1)
-      this.setState(newState)
-
-      let newState2 = JSON.parse(JSON.stringify(this.state))
-      newState2.reports[2].value = data1.slice(-2,-1)
-      this.setState(newState2)
+    let filters = {
+      ticker: 'mQQQ',
+      precision: precision,
+    }
+    historical.getHistoricalLongAprs(filters).then(apiData => {
+      let formattedData = apiData
+        .filter(obj => obj.apr)
+        .map(obj => {
+          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
+        })
+        let newState2 = JSON.parse(JSON.stringify(this.state))
+        newState2.reports[2].value = formattedData[formattedData.length-1].Price
+        this.setState(newState2)
     })
   }
 
   componentDidMount() {
-    this.fetchData1()
-    this.fetchData2()
-    this.fetchData3()
+    this.fetchAprData1()
+    this.fetchAprData2()
+    this.fetchAprData3()
   }
 
   render() {
@@ -186,7 +192,7 @@ class Dashboard extends Component {
           </MetaTags>*/}
           <Container fluid>
             {/* Render Breadcrumb */}
-            <Breadcrumbs title="Dashboards" breadcrumbItem="POOL APRS" />
+            <Breadcrumbs title="Dashboards" breadcrumbItem="MIRROR APRS" />
             <Row>
               {/* card user */}
               {/*<CardUser />*/}
@@ -212,6 +218,9 @@ class Dashboard extends Component {
 
             <Row >
             <AprTracker />
+            </Row>
+            <Row >
+            <AprTrackerShort />
             </Row>
 
             {/*<Row>
