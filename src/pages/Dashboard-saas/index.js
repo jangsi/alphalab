@@ -8,7 +8,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 //Import Components
 import CardWelcome from "./card-welcome"
 import MiniWidget from "./mini-widget"
-import SpreadTracker from './spread-tracker'
+import AprTracker from './apr-tracker'
 import mirrorGraphql from '../../api/v1/mirror-graphql'
 
 
@@ -121,7 +121,7 @@ class Dashboard extends Component {
       newState2.reports[0].value = data1.slice(-2,-1)
       this.setState(newState2)
 
-      
+
     })
   }
 
@@ -211,7 +211,7 @@ class Dashboard extends Component {
             </Row>
 
             <Row >
-            <SpreadTracker />
+            <AprTracker />
             </Row>
 
             {/*<Row>

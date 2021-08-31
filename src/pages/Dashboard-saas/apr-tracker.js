@@ -12,6 +12,9 @@ import mirrorGraphql from '../../api/v1/mirror-graphql'
 import historical from '../../api/v1/historical'
 import {AgGridColumn, AgGridReact} from 'ag-grid-react'
 
+//Import Date Picker
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 
 import {LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 
@@ -19,26 +22,14 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import { ConsoleWriter } from "istanbul-lib-report"
 import { date } from "language-tags"
+import dayjs from 'dayjs'
 
 function pctFormatter(params) {
   return '%' + Number(params.value*100).toFixed(2);
 }
 
 function formatXAxis(tickItem) {
-  var date = new Date(tickItem)
-  var day = date.getDay()
-  var month = date.getMonth()
-  var year = date.getFullYear()
-  var hours = date.getHours();
-  var minutes = "0" + date.getMinutes();
-  var seconds = "0" + date.getSeconds();
-
-  var MyDateString = ('0' + date.getMonth()).slice(-2) + '/'
-             + ('0' + (date.getDate()+1)).slice(-2) + '/'
-             + date.getFullYear()
-
-
-  return MyDateString + ' ' + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+  return dayjs(tickItem).format('MM/DD/YYYY HH:mm:ss')
 }
 
 const fetchStats = () => {
@@ -54,7 +45,7 @@ const fetchStats2 = () => {
 };
 
 
-class SpreadTracker extends React.Component {
+class AprTracker extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -63,11 +54,15 @@ class SpreadTracker extends React.Component {
       tickerOptions: [],
       tokenAddresses: {},
       rowData: [],
-      rowData2: []
+      rowData2: [],
+      selectedLongTicker: '',
+      longDates: [dayjs().subtract(6, 'month').toDate(), dayjs().toDate()],
     }
-    this.fetchSpreadData = this.fetchSpreadData.bind(this)
-    this.fetchTickers.bind(this)
+    this.fetchAprData = this.fetchAprData.bind(this)
+    this.fetchTickers = this.fetchTickers.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.handleStartDateChange = this.handleStartDateChange.bind(this)
+    this.handleEndDateChange = this.handleEndDateChange.bind(this)
 
     this.fetchData = this.fetchData.bind(this);
     this.fetchData2 = this.fetchData2.bind(this);
@@ -104,18 +99,29 @@ class SpreadTracker extends React.Component {
       }))
     })
   }
-   
-  fetchSpreadData(ticker) {
+
+  fetchAprData() {
+    if (this.state.selectedLongTicker.length === 0) {
+      return
+    }
+    let precision = 'day'
+    let diff = Math.abs(dayjs(this.state.longDates[0]).diff(dayjs(this.state.longDates[1])))
+    // 604800000 = 7 days
+    if (diff < 604800000) {
+      precision = 'hour'
+    }
     let filters = {
-      token: this.state.tokenAddresses[ticker],
-      ticker: ticker
+      token: this.state.tokenAddresses[this.state.selectedLongTicker],
+      ticker: this.state.selectedLongTicker,
+      from: this.state.longDates[0],
+      to: this.state.longDates[1],
+      precision: precision,
     }
     historical.getHistoricalLongAprs(filters).then(apiData => {
-      console.log(apiData)
       let formattedData = apiData
-        .filter(obj => isNaN(obj.apr)===false)
+        .filter(obj => obj.apr)
         .map(obj => {
-          return {xaxis1: new Date(obj.date).getTime(), Price: obj.apr}
+          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
         })
       this.setState(_ => ({
         data: formattedData,
@@ -125,13 +131,30 @@ class SpreadTracker extends React.Component {
   }
 
   handleChange(selectedOption) {
-    this.fetchSpreadData(selectedOption.value)
+    console.log(selectedOption.value)
+    this.setState({
+      selectedLongTicker: selectedOption.value
+    }, () => this.fetchAprData())
+  }
+
+  handleStartDateChange(date) {
+    let newDates = [date, this.state.longDates[1]]
+    this.setState({
+      longDates: newDates,
+    }, () => this.fetchAprData())
+  }
+
+  handleEndDateChange(date) {
+    let newDates = [this.state.longDates[0], date]
+    this.setState({
+      longDates: newDates,
+    }, () => this.fetchAprData())
   }
 
   componentDidMount() {
     // load latest month by default
     this.fetchTickers()
-    
+
   }
 
  pctFormatter(params) {
@@ -154,12 +177,24 @@ class SpreadTracker extends React.Component {
                   onChange={this.handleChange}
                 />
               </FormGroup>
+              <FormGroup className="mb-3">
+                <DatePicker
+                  className="form-control"
+                  selected={this.state.longDates[0]}
+                  onChange={this.handleStartDateChange}
+                />
+                <DatePicker
+                  className="form-control"
+                  selected={this.state.longDates[1]}
+                  onChange={this.handleEndDateChange}
+                />
+              </FormGroup>
               <div style={{height: 600}}>
               <ResponsiveContainer width="100%" height="100%">
-              <LineChart width={2000} height={600} 
+              <LineChart width={2000} height={600}
                       margin={{top: 20, right: 30, left: 0, bottom: 0}}>
-                <XAxis dataKey = 'xaxis1' type="number" domain={['dataMin', 'dataMax']} tickFormatter={formatXAxis}/>
-                <YAxis  domain={['auto', 'auto']}/>    
+                <XAxis dataKey='xaxis1' type="category" domain={['dataMin', 'dataMax']} tickFormatter={formatXAxis}/>
+                <YAxis  domain={['auto', 'auto']}/>
                 <Tooltip labelFormatter={tick => {return formatXAxis(tick);}}/>
                 <Legend />
                 <Line data={this.state.data} type="linear" dataKey="Price" dot={false} strokeWidth={2} stroke="#8884d8"/>
@@ -172,7 +207,7 @@ class SpreadTracker extends React.Component {
           <CardBody>
             <div className="ag-theme-alpine" style={{height: 400}}>
             <AgGridReact
-               onGridReady={this.onGridReady.bind(this)} 
+               onGridReady={this.onGridReady.bind(this)}
                rowData={this.state.rowData}>
                 <AgGridColumn field="symbol" sortable={true} filter={true}></AgGridColumn>
                 <AgGridColumn field="mean" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
@@ -193,4 +228,4 @@ class SpreadTracker extends React.Component {
   }
 }
 
-export default SpreadTracker
+export default AprTracker
