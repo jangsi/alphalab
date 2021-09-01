@@ -191,7 +191,7 @@ class Dashboard extends Component {
               {/* card user */}
               {/*<CardUser />*/}
 
-              <Col xl="10">
+              <Col xl="12">
                 {/* card welcome */}
                 <CardWelcome />
 
