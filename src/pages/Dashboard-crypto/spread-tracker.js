@@ -69,6 +69,7 @@ class SpreadTracker extends React.Component {
 
     console.log(">> onGridReady");
     this.fetchData();
+    this.gridApi.sizeColumnsToFit();
   }
 
   fetchTickers() {
