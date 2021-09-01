@@ -124,7 +124,7 @@ fetchAprData1() {
         })
         console.log(formattedData)
         let newState2 = JSON.parse(JSON.stringify(this.state))
-        newState2.reports[0].value = formattedData[formattedData.length-1].Price
+        newState2.reports[0].value = String(Number(formattedData[formattedData.length-1].Price *100).toFixed(2)) + '%'
         this.setState(newState2)
     })
   }
@@ -148,7 +148,7 @@ fetchAprData1() {
           return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
         })
         let newState2 = JSON.parse(JSON.stringify(this.state))
-        newState2.reports[1].value = formattedData[formattedData.length-1].Price
+        newState2.reports[1].value = String(Number(formattedData[formattedData.length-1].Price *100).toFixed(2)) + '%'
         this.setState(newState2)
     })
   }
@@ -172,7 +172,7 @@ fetchAprData1() {
           return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
         })
         let newState2 = JSON.parse(JSON.stringify(this.state))
-        newState2.reports[2].value = formattedData[formattedData.length-1].Price
+        newState2.reports[2].value = String(Number(formattedData[formattedData.length-1].Price *100).toFixed(2)) + '%'
         this.setState(newState2)
     })
   }

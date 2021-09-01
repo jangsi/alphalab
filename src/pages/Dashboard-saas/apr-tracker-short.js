@@ -75,7 +75,19 @@ class AprTrackerShort extends React.Component {
   async fetchData() {
     const response = await fetchStats();
     const data = await response.json();
-    this.setState({ rowData: data });
+    
+    const response_short = await fetchStats2();
+    const data_short = await response_short.json();
+
+    const data_final = []
+
+    Object.keys(data[0]).forEach(key => {
+      data_final.push({Ticker: key, 'Long APR 21 Day Rolling Volatility': data[0][key], 'Short APR 21 Day Rolling Volatility': data_short[0][key]})
+    })
+
+    console.log(data_final)
+
+    this.setState({ rowData: data_final });
   }
 
   async fetchData2() {
@@ -90,6 +102,7 @@ class AprTrackerShort extends React.Component {
 
     console.log(">> onGridReady");
     this.fetchData();
+    this.gridApi.sizeColumnsToFit();
   }
 
   fetchTickers() {
@@ -165,6 +178,8 @@ class AprTrackerShort extends React.Component {
     return '%' + params.value*100;
   }
 
+  
+
   render() {
     return (
       <React.Fragment>
@@ -213,15 +228,9 @@ class AprTrackerShort extends React.Component {
             <AgGridReact
                onGridReady={this.onGridReady.bind(this)}
                rowData={this.state.rowData}>
-                <AgGridColumn field="symbol" sortable={true} filter={true}></AgGridColumn>
-                <AgGridColumn field="mean" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
-                <AgGridColumn field="Three SD" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
-                <AgGridColumn field="Neg Three SD" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
-                <AgGridColumn field="max" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
-                <AgGridColumn field="min" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
-                <AgGridColumn field="std" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
-                <AgGridColumn field="Historical 5th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
-                <AgGridColumn field="Historical 95th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="Ticker" sortable={true} filter={true}></AgGridColumn>
+                <AgGridColumn field="Long APR 21 Day Rolling Volatility" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="Short APR 21 Day Rolling Volatility" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
             </AgGridReact>
             </div>
           </CardBody>

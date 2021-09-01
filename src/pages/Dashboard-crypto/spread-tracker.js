@@ -59,6 +59,7 @@ class SpreadTracker extends React.Component {
   async fetchData() {
     const response = await fetchStats();
     const data = await response.json();
+    console.log(data)
     this.setState({ rowData: data });
   }
 
