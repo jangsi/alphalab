@@ -33,7 +33,7 @@ function formatXAxis(tickItem) {
 }
 
 function priceFormat(tickItem) {
-  return Number(tickItem).toFixed(2)
+  return String(Number(tickItem*100).toFixed(2))+'%'
 }
 
 class AprTracker extends React.Component {
@@ -77,6 +77,7 @@ class AprTracker extends React.Component {
 
     console.log(">> onGridReady");
     this.fetchData();
+    this.gridApi.sizeColumnsToFit()
   }
 
   fetchTickers() {
@@ -162,7 +163,7 @@ class AprTracker extends React.Component {
                 <Label className="control-label">LONG APRS</Label>
                 <Select
                   classNamePrefix="form-control"
-                  placeholder="Choose ..."
+                  placeholder="TYPE or CHOOSE ..."
                   title="mAsset"
                   options={this.state.tickerOptions}
                   onChange={this.handleChange}
@@ -185,7 +186,7 @@ class AprTracker extends React.Component {
               <LineChart width={2000} height={600}
                       margin={{top: 20, right: 30, left: 0, bottom: 0}}>
                 <XAxis dataKey='xaxis1' type="category" domain={['dataMin', 'dataMax']} tickFormatter={formatXAxis}/>
-                <YAxis  domain={['auto', 'auto']}/>
+                <YAxis  domain={['auto', 'auto']}  tickFormatter={priceFormat}/>
                 <Tooltip labelFormatter={tick => {return formatXAxis(tick);}} formatter={tick => {return priceFormat(tick);}}/>
                 <Legend />
                 <Line data={this.state.data} type="linear" dataKey="Price" dot={false} strokeWidth={4} stroke="#8884d8"/>

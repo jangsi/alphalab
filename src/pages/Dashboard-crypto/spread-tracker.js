@@ -135,7 +135,7 @@ class SpreadTracker extends React.Component {
                 <Label className="control-label">Assets</Label>
                 <Select
                   classNamePrefix="form-control"
-                  placeholder="Choose ..."
+                  placeholder="TYPE or CHOOSE ..."
                   title="mAsset"
                   options={this.state.tickerOptions}
                   onChange={this.handleChange}

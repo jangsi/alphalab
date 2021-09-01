@@ -33,7 +33,7 @@ function formatXAxis(tickItem) {
 }
 
 function priceFormat(tickItem) {
-  return Number(tickItem).toFixed(2)
+  return String(Number(tickItem*100).toFixed(2))+'%'
 }
 
 const fetchStats = () => {
@@ -102,7 +102,9 @@ class AprTrackerShort extends React.Component {
 
     console.log(">> onGridReady");
     this.fetchData();
+    //this.gridColumnApi.autoSizeColumns();
     this.gridApi.sizeColumnsToFit();
+    
   }
 
   fetchTickers() {
@@ -174,11 +176,6 @@ class AprTrackerShort extends React.Component {
 
   }
 
- pctFormatter(params) {
-    return '%' + params.value*100;
-  }
-
-  
 
   render() {
     return (
@@ -190,7 +187,7 @@ class AprTrackerShort extends React.Component {
                 <Label className="control-label">SHORT APRS</Label>
                 <Select
                   classNamePrefix="form-control"
-                  placeholder="Choose ..."
+                  placeholder="TYPE or CHOOSE ..."
                   title="mAsset"
                   options={this.state.tickerOptions}
                   onChange={this.handleChange}
@@ -213,7 +210,7 @@ class AprTrackerShort extends React.Component {
               <LineChart width={2000} height={600}
                       margin={{top: 20, right: 30, left: 0, bottom: 0}}>
                 <XAxis dataKey='xaxis1' type="category" domain={['dataMin', 'dataMax']} tickFormatter={formatXAxis}/>
-                <YAxis  domain={['auto', 'auto']}/>
+                <YAxis  domain={['auto', 'auto']} tickFormatter={priceFormat}/>
                 <Tooltip labelFormatter={tick => {return formatXAxis(tick);}} formatter={tick => {return priceFormat(tick);}}/>
                 <Legend />
                 <Line data={this.state.data} type="linear" dataKey="Price" dot={false} strokeWidth={4} stroke="#8884d8"/>
@@ -225,7 +222,7 @@ class AprTrackerShort extends React.Component {
           <Card>
           <CardBody>
             <div className="ag-theme-alpine" style={{height: 400}}>
-            <AgGridReact
+            <AgGridReact 
                onGridReady={this.onGridReady.bind(this)}
                rowData={this.state.rowData}>
                 <AgGridColumn field="Ticker" sortable={true} filter={true}></AgGridColumn>
