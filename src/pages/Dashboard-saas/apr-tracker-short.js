@@ -25,7 +25,7 @@ import { date } from "language-tags"
 import dayjs from 'dayjs'
 
 function pctFormatter(params) {
-  return '%' + Number(params.value*100).toFixed(2);
+  return Number(params.value*100).toFixed(2) + '%';
 }
 
 function formatXAxis(tickItem) {

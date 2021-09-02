@@ -19,7 +19,7 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import contactsProfile from "pages/Contacts/ContactsProfile/contacts-profile"
 
 function pctFormatter(params) {
-  return '%' + Number(params.value*100).toFixed(2);
+  return Number(params.value*100).toFixed(2) + '%';
 }
 
 function tooltipIndepth(a){
