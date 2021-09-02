@@ -111,7 +111,7 @@ class SidebarContent extends Component {
               <li className="menu-title">{this.props.t("alphaLabs")}</li>
               <li>
                 <Link to="/spread-tracker">
-                  <i className="bx bx-home-circle" />
+                  <i className="bx bx-line-chart" />
                   <span>{this.props.t("Dashboards")}</span>
                 </Link>
                 <ul className="sub-menu" aria-expanded="false">
