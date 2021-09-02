@@ -181,7 +181,7 @@ class AprTrackerShort extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Col xl="10">
+        <Col xl="12">
         <Card >
             <CardBody className="card-body-test">
               <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
