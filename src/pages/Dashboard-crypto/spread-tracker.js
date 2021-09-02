@@ -174,15 +174,15 @@ class SpreadTracker extends React.Component {
             <AgGridReact
                onGridReady={this.onGridReady.bind(this)}
                rowData={this.state.rowData}>
-                <AgGridColumn field="symbol" sortable={true} filter={true} resizable={true} ></AgGridColumn>
-                <AgGridColumn field="mean" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true} ></AgGridColumn>
-                <AgGridColumn field="Three SD" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true} ></AgGridColumn>
-                <AgGridColumn field="Neg Three SD" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true} ></AgGridColumn>
-                <AgGridColumn field="max" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true} ></AgGridColumn>
-                <AgGridColumn field="min" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  ></AgGridColumn>
-                <AgGridColumn field="std" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true} ></AgGridColumn>
-                <AgGridColumn field="Historical 5th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true} ></AgGridColumn>
-                <AgGridColumn field="Historical 95th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true} ></AgGridColumn>
+                <AgGridColumn field="symbol" sortable={true} filter={true} resizable={true} headerTooltip='Symbol'></AgGridColumn>
+                <AgGridColumn field="mean" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='mean historical spread'></AgGridColumn>
+                <AgGridColumn field="Three SD" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='+ three standard deviations'></AgGridColumn>
+                <AgGridColumn field="Neg Three SD" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='- three standard deviations'></AgGridColumn>
+                <AgGridColumn field="max" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='max spread last 21 days'></AgGridColumn>
+                <AgGridColumn field="min" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}   headerTooltip='min spread last 21 days'></AgGridColumn>
+                <AgGridColumn field="std" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='std of historical spread'></AgGridColumn>
+                <AgGridColumn field="Historical 5th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='Historical 5th % Spread'></AgGridColumn>
+                <AgGridColumn field="Historical 95th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='Historical 95th % Spread'></AgGridColumn>
             </AgGridReact>
             </div>
           </CardBody>

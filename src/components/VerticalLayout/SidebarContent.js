@@ -119,10 +119,10 @@ class SidebarContent extends Component {
                     <Link to="/dashboard">{this.props.t("Commission APRs")}</Link>
                   </li>*/}
                   <li>
-                    <Link to="/dashboard-apr">{this.props.t("Mirror Protocol APRs")}</Link>
+                    <Link to="/spread-tracker">{this.props.t("Spread Tracker")}</Link>
                   </li>
                   <li>
-                    <Link to="/spread-tracker">{this.props.t("Spread Tracker")}</Link>
+                    <Link to="/dashboard-apr">{this.props.t("Mirror Protocol APRs")}</Link>
                   </li>
                   <li>
                     <Link to="/#" className="has-arrow">
@@ -137,6 +137,10 @@ class SidebarContent extends Component {
                         <Link to="/fee-station-short">{this.props.t("Round Trip Short Sale")}</Link>
                       </li>
                     </ul>
+                    <span>&nbsp;&nbsp;</span>
+                    <li>
+                    <Link to="/">{this.props.t("Anchor Protocol - Coming Soon!")}</Link>
+                    </li>   
                   </li>
                 </ul>
               </li>
