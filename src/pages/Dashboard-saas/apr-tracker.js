@@ -46,7 +46,8 @@ class AprTracker extends React.Component {
       tokenAddresses: {},
       rowData: [],
       rowData2: [],
-      selectedLongTicker: '',
+      selectedLongTicker: 'mSPY',
+      defaultOption: { label: 'mSPY', value: 'mSPY' },
       longDates: [dayjs().subtract(6, 'month').toDate(), dayjs().toDate()],
     }
     this.fetchAprData = this.fetchAprData.bind(this)
@@ -83,12 +84,13 @@ class AprTracker extends React.Component {
   fetchTickers() {
     tokenDictApi.getTokenDict().then(apiData => {
       let tokenObj = apiData[0] ? apiData[0].token : {}
-      this.setState(_ => ({
+      this.setState({
         tickerOptions: Object.keys(tokenObj).map(ticker => {
           return { value: ticker, label: ticker }
         }),
         tokenAddresses: tokenObj,
-      }))
+      }, () => this.fetchAprData())
+
     })
   }
 
@@ -146,7 +148,6 @@ class AprTracker extends React.Component {
   componentDidMount() {
     // load latest month by default
     this.fetchTickers()
-
   }
 
  pctFormatter(params) {
@@ -159,22 +160,26 @@ class AprTracker extends React.Component {
         <Col xl="10">
         <Card >
             <CardBody className="card-body-test">
-              <FormGroup className="select2-container mb-3">
+              <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
                 <Label className="control-label">LONG APRS</Label>
                 <Select
                   classNamePrefix="form-control"
                   placeholder="TYPE or CHOOSE ..."
                   title="mAsset"
                   options={this.state.tickerOptions}
+                  defaultValue={this.state.defaultOption}
                   onChange={this.handleChange}
                 />
               </FormGroup>
-              <FormGroup className="mb-3">
+              <FormGroup className="w-25 d-inline-block pb-2 me-2">
                 <DatePicker
                   className="form-control"
                   selected={this.state.longDates[0]}
                   onChange={this.handleStartDateChange}
                 />
+              </FormGroup>
+              <div className="d-inline-block me-2">~</div>
+              <FormGroup className="w-25 d-inline-block pb-2">
                 <DatePicker
                   className="form-control"
                   selected={this.state.longDates[1]}

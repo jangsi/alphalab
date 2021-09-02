@@ -41,13 +41,13 @@ const fetchStats = () => {
       "https://api.alphadefi.fund/info/longvolrankings"
     );
   };
-  
+
   const fetchStats2 = () => {
     return fetch(
       "https://api.alphadefi.fund/info/shortvolrankings"
     );
   };
-  
+
 
 class AprTrackerShort extends React.Component {
   constructor(props) {
@@ -59,7 +59,8 @@ class AprTrackerShort extends React.Component {
       tokenAddresses: {},
       rowData: [],
       rowData2: [],
-      selectedLongTicker: '',
+      selectedShortTicker: 'mSPY',
+      defaultOption: { label: 'mSPY', value: 'mSPY' },
       longDates: [dayjs().subtract(6, 'month').toDate(), dayjs().toDate()],
     }
     this.fetchAprData = this.fetchAprData.bind(this)
@@ -75,7 +76,7 @@ class AprTrackerShort extends React.Component {
   async fetchData() {
     const response = await fetchStats();
     const data = await response.json();
-    
+
     const response_short = await fetchStats2();
     const data_short = await response_short.json();
 
@@ -104,23 +105,23 @@ class AprTrackerShort extends React.Component {
     this.fetchData();
     //this.gridColumnApi.autoSizeColumns();
     this.gridApi.sizeColumnsToFit();
-    
+
   }
 
   fetchTickers() {
     tokenDictApi.getTokenDict().then(apiData => {
       let tokenObj = apiData[0] ? apiData[0].token : {}
-      this.setState(_ => ({
+      this.setState({
         tickerOptions: Object.keys(tokenObj).map(ticker => {
           return { value: ticker, label: ticker }
         }),
         tokenAddresses: tokenObj,
-      }))
+      }, () => this.fetchAprData())
     })
   }
 
   fetchAprData() {
-    if (this.state.selectedLongTicker.length === 0) {
+    if (this.state.selectedShortTicker.length === 0) {
       return
     }
     let precision = 'day'
@@ -130,8 +131,8 @@ class AprTrackerShort extends React.Component {
       precision = 'hour'
     }
     let filters = {
-      token: this.state.tokenAddresses[this.state.selectedLongTicker],
-      ticker: this.state.selectedLongTicker,
+      token: this.state.tokenAddresses[this.state.selectedShortTicker],
+      ticker: this.state.selectedShortTicker,
       from: this.state.longDates[0],
       to: this.state.longDates[1],
       precision: precision,
@@ -152,7 +153,7 @@ class AprTrackerShort extends React.Component {
   handleChange(selectedOption) {
     console.log(selectedOption.value)
     this.setState({
-      selectedLongTicker: selectedOption.value
+      selectedShortTicker: selectedOption.value
     }, () => this.fetchAprData())
   }
 
@@ -183,22 +184,26 @@ class AprTrackerShort extends React.Component {
         <Col xl="10">
         <Card >
             <CardBody className="card-body-test">
-              <FormGroup className="select2-container mb-3">
+              <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
                 <Label className="control-label">SHORT APRS</Label>
                 <Select
                   classNamePrefix="form-control"
                   placeholder="TYPE or CHOOSE ..."
                   title="mAsset"
                   options={this.state.tickerOptions}
+                  defaultValue={this.state.defaultOption}
                   onChange={this.handleChange}
                 />
               </FormGroup>
-              <FormGroup className="mb-3">
+              <FormGroup className="w-25 d-inline-block pb-2 me-2">
                 <DatePicker
                   className="form-control"
                   selected={this.state.longDates[0]}
                   onChange={this.handleStartDateChange}
                 />
+              </FormGroup>
+              <div className="d-inline-block me-2">~</div>
+              <FormGroup className="w-25 d-inline-block pb-2">
                 <DatePicker
                   className="form-control"
                   selected={this.state.longDates[1]}
@@ -222,7 +227,7 @@ class AprTrackerShort extends React.Component {
           <Card>
           <CardBody>
             <div className="ag-theme-alpine" style={{height: 400}}>
-            <AgGridReact 
+            <AgGridReact
                onGridReady={this.onGridReady.bind(this)}
                rowData={this.state.rowData}>
                 <AgGridColumn field="Ticker" sortable={true} filter={true}></AgGridColumn>

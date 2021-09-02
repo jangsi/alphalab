@@ -75,6 +75,7 @@ class Dashboard extends Component {
         {
           title: "Current mQQQ Long APR",
           icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/QQQ.png",
           color: "warning",
           value: "",
           arrow: 'mdi-arrow-up text-success',
@@ -84,6 +85,7 @@ class Dashboard extends Component {
         {
           title: "Current mAAPL Long APR",
           icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/AAPL.png",
           color: "primary",
           arrow: 'mdi-arrow-down text-danger',
           value: "",
@@ -93,6 +95,7 @@ class Dashboard extends Component {
         {
           title: "Current mCOIN Long APR",
           icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/COIN.png",
           color: "info",
           arrow: 'mdi-arrow-up text-success',
           value: "",
@@ -105,7 +108,7 @@ class Dashboard extends Component {
   }
 
 fetchAprData1() {
-   
+
     let precision = 'day'
     let diff = 605800000
     // 604800000 = 7 days
@@ -130,7 +133,7 @@ fetchAprData1() {
   }
 
   fetchAprData2() {
-    
+
     let precision = 'day'
     let diff = 605800000
     // 604800000 = 7 days
@@ -154,7 +157,7 @@ fetchAprData1() {
   }
 
   fetchAprData3() {
-    
+
     let precision = 'day'
     let diff = 605800000
     // 604800000 = 7 days

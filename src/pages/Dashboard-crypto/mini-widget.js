@@ -17,23 +17,19 @@ class MiniWidget extends Component {
           <Col sm="4" key={key}>
             <Card>
               <CardBody>
-                <p className="text-muted mb-4">
-                  <i
-                    className={
-                      report.icon +
-                      " h2 text-" +
-                      report.color +
-                      " align-middle mb-0 me-3"
-                    }
-                  />{" "}
+                <div className="d-flex align-items-center mb-3">
+                  <div className="p-1 avatar-xs me-3">
+                    <span className="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-20">
+                      <img src={report.imageUrl} width="20" height="20" />{" "}
+                    </span>
+                  </div>
                   {report.title}{" "}
-                </p>
-
+                </div>
                 <Row>
                   <Col xs="4">
                     <div>
                       <h5>{report.value}</h5>
-                     
+
                     </div>
                   </Col>
                   <Col xs="6">
@@ -44,7 +40,7 @@ class MiniWidget extends Component {
                           series={report.series}
                           type="area"
                           height={100}
-                      
+
                         />
                       </div>
                     </div>
