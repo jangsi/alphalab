@@ -21,7 +21,7 @@ class MiniWidget extends Component {
                 <div className="text-muted mt-4">
                   <h4>
                     {report.value}{" "}
-                    <i className="mdi mdi-chevron-up ms-1 text-success"/>
+                    <i className="mdi ms-1 text-success"/>
                   </h4>
                   <div className="d-flex">
                     <span

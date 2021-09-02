@@ -73,7 +73,7 @@ class Dashboard extends Component {
       selectedLongTicker: '',
       reports: [
         {
-          title: "mNFLX Long APR",
+          title: "Current mNFLX Long APR",
           icon: "mdi mdi-email-open",
           imageUrl: "//whitelist.mirror.finance/images/NFLX.png",
           color: "warning",
