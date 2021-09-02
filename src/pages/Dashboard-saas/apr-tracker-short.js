@@ -231,8 +231,8 @@ class AprTrackerShort extends React.Component {
                onGridReady={this.onGridReady.bind(this)}
                rowData={this.state.rowData}>
                 <AgGridColumn field="Ticker" sortable={true} filter={true}></AgGridColumn>
-                <AgGridColumn field="Long APR 21 Day Rolling Volatility" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
-                <AgGridColumn field="Short APR 21 Day Rolling Volatility" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>
+                <AgGridColumn field="Long APR 21 Day Rolling Volatility" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true} ></AgGridColumn>
+                <AgGridColumn field="Short APR 21 Day Rolling Volatility" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true} ></AgGridColumn>
             </AgGridReact>
             </div>
           </CardBody>

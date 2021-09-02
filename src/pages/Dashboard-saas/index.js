@@ -73,13 +73,13 @@ class Dashboard extends Component {
       selectedLongTicker: '',
       reports: [
         {
-          title: "Current mQQQ Long APR",
+          title: "mNFLX Long APR",
           icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/QQQ.png",
+          imageUrl: "//whitelist.mirror.finance/images/NFLX.png",
           color: "warning",
           value: "",
           arrow: 'mdi-arrow-up text-success',
-          series: [{ name: "mQQQ", data: []}],
+          series: [{ name: "mNFLX", data: []}],
           options: options1,
         },
         {
@@ -116,7 +116,7 @@ fetchAprData1() {
       precision = 'hour'
     }
     let filters = {
-      ticker: 'mCOIN',
+      ticker: 'mNFLX',
       precision: precision,
     }
     historical.getHistoricalLongAprs(filters).then(apiData => {
@@ -165,7 +165,7 @@ fetchAprData1() {
       precision = 'hour'
     }
     let filters = {
-      ticker: 'mQQQ',
+      ticker: 'mCOIN',
       precision: precision,
     }
     historical.getHistoricalLongAprs(filters).then(apiData => {

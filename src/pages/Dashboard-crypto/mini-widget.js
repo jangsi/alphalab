@@ -20,7 +20,7 @@ class MiniWidget extends Component {
                 <div className="d-flex align-items-center mb-3">
                   <div className="p-1 avatar-xs me-3">
                     <span className="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-20">
-                      <img src={report.imageUrl} width="20" height="20" />{" "}
+                      <img src={report.imageUrl} width="50" height="50" />{" "}
                     </span>
                   </div>
                   {report.title}{" "}

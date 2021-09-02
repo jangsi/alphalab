@@ -69,13 +69,13 @@ class Dashboard extends Component {
     this.state = {
       reports: [
         {
-          title: "mQQQ Oracle",
+          title: "mNFLX Oracle",
           icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/QQQ.png",
+          imageUrl: "//whitelist.mirror.finance/images/NFLX.png",
           color: "warning",
           value: "",
           arrow: 'mdi-arrow-up text-success',
-          series: [{ name: "mQQQ", data: []}],
+          series: [{ name: "mNFLX", data: []}],
           options: options1,
         },
         {
@@ -109,7 +109,7 @@ class Dashboard extends Component {
       from: currentTime - 87400000,
       to: currentTime - 300000,
       interval: 5,
-      token: "terra1csk6tc7pdmpr782w527hwhez6gfv632tyf72cp",
+      token: "terra1jsxngqasf2zynj5kyh0tgq9mj3zksa5gk35j4k",
     }
     mirrorGraphql.getSpreadData(filters).then(data => {
       let data1 = []
