@@ -16,9 +16,14 @@ import {LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} fro
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
+import contactsProfile from "pages/Contacts/ContactsProfile/contacts-profile"
 
 function pctFormatter(params) {
   return '%' + Number(params.value*100).toFixed(2);
+}
+
+function tooltipIndepth(a){
+  console.log(a)
 }
 
 function formatXAxis(tickItem) {
@@ -152,7 +157,7 @@ class SpreadTracker extends React.Component {
                 <XAxis dataKey = 'xaxis2' xAxisId={2} type="number" domain={['dataMin', 'dataMax']} axisLine="false" tickLine="False" hide="true" />
                 <XAxis dataKey = 'xaxis3' xAxisId={3} type="number" domain={['dataMin', 'dataMax']} axisLine="false" tickLine="False" hide="true" />
                 <YAxis yAxisId={1} domain={['auto', 'auto']}/>
-                <YAxis yAxisId={2} domain={['auto', 'auto']} orientation="right"  tickFormatter={tick => {return tick.toLocaleString();}}/>
+                <YAxis yAxisId={2} domain={['auto', 'auto']} orientation="right"  tickFormatter={tick => {return tick.toLocaleString()+'%';}}/>
                 <Tooltip labelFormatter={tick => {return formatXAxis(tick);}}/>
                 <Legend />
                 <Line data={this.state.data} yAxisId={1} xAxisId={1} type="linear" dataKey="Price" stroke="#8884d8"/>

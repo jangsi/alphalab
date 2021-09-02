@@ -51,6 +51,7 @@ class Header extends Component {
     this.toggleFullscreen = this.toggleFullscreen.bind(this);
     this.closeDrawer = this.closeDrawer.bind(this);
     this.onDrawerClose = this.onDrawerClose.bind(this);
+    this.props.toggleMenuCallback()
   }
   /**
    * Toggle sidebar
@@ -72,7 +73,6 @@ class Header extends Component {
   onDrawerClose() {
     this.setState({ open: false });
   }
-
 
   /**
    * Toggles the sidebar
