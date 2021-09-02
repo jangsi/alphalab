@@ -34,7 +34,7 @@ class CardWelcome extends Component {
               </Col>
               <Col lg="3" sm="4" className="align-self-center">
                 <div>
-                  <img src={features} alt="" className="img-fluid d-block" />
+                  <img src="//alphadefi.fund/wp-content/uploads/2021/09/meta_image.png" alt="" className="img-fluid d-block" />
                 </div>
               </Col>
             </Row>
