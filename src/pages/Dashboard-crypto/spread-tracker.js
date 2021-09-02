@@ -46,6 +46,7 @@ class SpreadTracker extends React.Component {
       data: [],
       data2: [],
       tickerOptions: [],
+      defaultOption: { label: 'mSPY', value: 'mSPY' },
       tokenAddresses: {},
       rowData: []
     }
@@ -75,15 +76,15 @@ class SpreadTracker extends React.Component {
   fetchTickers() {
     tokenDictApi.getTokenDict().then(apiData => {
       let tokenObj = apiData[0] ? apiData[0].token : {}
-      this.setState(_ => ({
+      this.setState({
         tickerOptions: Object.keys(tokenObj).map(ticker => {
           return { value: ticker, label: ticker }
         }),
         tokenAddresses: tokenObj,
-      }))
+      }, () => this.fetchSpreadData(this.state.defaultOption.value))
     })
   }
-   
+
   fetchSpreadData(ticker) {
     let currentTime = new Date().getTime()
     let filters = {
@@ -119,7 +120,7 @@ class SpreadTracker extends React.Component {
   componentDidMount() {
     // load latest month by default
     this.fetchTickers()
-    
+
   }
 
  pctFormatter(params) {
@@ -132,25 +133,26 @@ class SpreadTracker extends React.Component {
         <Col xl="12">
         <Card >
             <CardBody className="card-body-test">
-              <FormGroup className="select2-container mb-3">
+              <FormGroup className="w-25 select2-container mb-3">
                 <Label className="control-label">Assets</Label>
                 <Select
                   classNamePrefix="form-control"
                   placeholder="TYPE or CHOOSE ..."
                   title="mAsset"
                   options={this.state.tickerOptions}
+                  defaultValue={this.state.defaultOption}
                   onChange={this.handleChange}
                 />
               </FormGroup>
               <div style={{height: 600}}>
               <ResponsiveContainer width="100%" height="100%">
-              <LineChart width={2000} height={600} 
+              <LineChart width={2000} height={600}
                       margin={{top: 20, right: 30, left: 0, bottom: 0}}>
                 <XAxis dataKey = 'xaxis1' xAxisId={1} type="number" domain={['dataMin', 'dataMax']} tickFormatter={formatXAxis}/>
                 <XAxis dataKey = 'xaxis2' xAxisId={2} type="number" domain={['dataMin', 'dataMax']} axisLine="false" tickLine="False" hide="true" />
                 <XAxis dataKey = 'xaxis3' xAxisId={3} type="number" domain={['dataMin', 'dataMax']} axisLine="false" tickLine="False" hide="true" />
-                <YAxis yAxisId={1} domain={['auto', 'auto']}/>  
-                <YAxis yAxisId={2} domain={['auto', 'auto']} orientation="right"  tickFormatter={tick => {return tick.toLocaleString();}}/>    
+                <YAxis yAxisId={1} domain={['auto', 'auto']}/>
+                <YAxis yAxisId={2} domain={['auto', 'auto']} orientation="right"  tickFormatter={tick => {return tick.toLocaleString();}}/>
                 <Tooltip labelFormatter={tick => {return formatXAxis(tick);}}/>
                 <Legend />
                 <Line data={this.state.data} yAxisId={1} xAxisId={1} type="linear" dataKey="Price" stroke="#8884d8"/>
@@ -165,7 +167,7 @@ class SpreadTracker extends React.Component {
           <CardBody>
             <div className="ag-theme-alpine" style={{height: 400}}>
             <AgGridReact
-               onGridReady={this.onGridReady.bind(this)} 
+               onGridReady={this.onGridReady.bind(this)}
                rowData={this.state.rowData}>
                 <AgGridColumn field="symbol" sortable={true} filter={true}></AgGridColumn>
                 <AgGridColumn field="mean" sortable={true} filter={true} valueFormatter={pctFormatter}></AgGridColumn>

@@ -71,6 +71,7 @@ class Dashboard extends Component {
         {
           title: "mQQQ Oracle",
           icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/QQQ.png",
           color: "warning",
           value: "",
           arrow: 'mdi-arrow-up text-success',
@@ -80,6 +81,7 @@ class Dashboard extends Component {
         {
           title: "mAAPL Oracle",
           icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/AAPL.png",
           color: "primary",
           arrow: 'mdi-arrow-down text-danger',
           value: "",
@@ -89,6 +91,7 @@ class Dashboard extends Component {
         {
           title: "mCOIN Oracle",
           icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/COIN.png",
           color: "info",
           arrow: 'mdi-arrow-up text-success',
           value: "",
@@ -121,7 +124,7 @@ class Dashboard extends Component {
       newState2.reports[0].value = data1.slice(-2,-1)
       this.setState(newState2)
 
-      
+
     })
   }
 
