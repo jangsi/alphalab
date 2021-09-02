@@ -130,9 +130,7 @@ class SidebarContent extends Component {
                       <li>
                       <Link to="/dashboard-apr">{this.props.t("Mirror Protocol APRs")}</Link>
                       </li>
-                    </ul>   
-                  </li>
-                  <li>
+                      <li>
                     <Link to="/#" className="has-arrow">
                       {/* <i className="bx bx-store" /> */}
                       <span>{this.props.t("Fee Station")}</span>
@@ -146,6 +144,8 @@ class SidebarContent extends Component {
                       </li>
                     </ul>   
                   </li>
+                    </ul>   
+                  </li>
                   <li>
                     <Link to="/#" className="has-arrow">
                       {/* <i className="bx bx-store" /> */}
@@ -153,7 +153,7 @@ class SidebarContent extends Component {
                     </Link>
                     <ul className="sub-menu" aria-expanded="false">
                       <li>
-                        <Link to="/#">{this.props.t("Anchor Data")}</Link>
+                        <Link >{this.props.t("Anchor Data")}</Link>
                       </li>
                     </ul>   
                   </li>
