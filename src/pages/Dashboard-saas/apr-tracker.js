@@ -115,7 +115,7 @@ class AprTracker extends React.Component {
       let formattedData = apiData
         .filter(obj => obj.apr)
         .map(obj => {
-          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
+          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), APR: obj.apr}
         })
       this.setState(_ => ({
         data: formattedData,
@@ -194,7 +194,7 @@ class AprTracker extends React.Component {
                 <YAxis  domain={['auto', 'auto']}  tickFormatter={priceFormat}/>
                 <Tooltip labelFormatter={tick => {return formatXAxis(tick);}} formatter={tick => {return priceFormat(tick);}}/>
                 <Legend />
-                <Line data={this.state.data} type="linear" dataKey="Price" dot={false} strokeWidth={4} stroke="#8884d8"/>
+                <Line data={this.state.data} type="linear" dataKey="APR" dot={false} strokeWidth={4} stroke="#8884d8"/>
              </LineChart>
              </ResponsiveContainer>
              </div>
