@@ -185,7 +185,7 @@ class AprTrackerShort extends React.Component {
         <Card >
             <CardBody className="card-body-test">
               <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
-                <Label className="control-label">SHORT APRS</Label>
+                <Label className="control-label">POOL COMMISSIONS APRS</Label>
                 <Select
                   classNamePrefix="form-control"
                   placeholder="TYPE or CHOOSE ..."
