@@ -110,6 +110,20 @@ class SidebarContent extends Component {
             <ul className="metismenu list-unstyled" id="side-menu">
               <li className="menu-title">{this.props.t("alphaLabs")}</li>
               <li>
+                <Link to="/#">
+                  <i className="bx bx-line-chart" />
+                  <span>{this.props.t("Terra Dashboards")}</span>
+                </Link>
+                <ul className="sub-menu" aria-expanded="false">
+                  {/*<li>
+                    <Link to="/dashboard">{this.props.t("Commission APRs")}</Link>
+                  </li>*/}
+                      <li>
+                      <Link to="/dashboard-blog">{this.props.t("Terra Pool APRs")}</Link>
+                      </li>
+                </ul>
+              </li>
+              <li>
                 <Link to="/spread-tracker">
                   <i className="bx bx-line-chart" />
                   <span>{this.props.t("Mirror Dashboards")}</span>

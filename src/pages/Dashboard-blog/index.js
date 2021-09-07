@@ -1,122 +1,242 @@
 import React, { Component } from "react"
+import { Container, Row, Col } from "reactstrap"
 import MetaTags from 'react-meta-tags';
-import { Container, Row } from "reactstrap"
+
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
-import CardUser from "./CardUser"
-import Posts from "./Posts"
-import Settings from "./Settings"
-import Comments from "./Comments"
-import TapVisitors from "./TopVisitors"
-import Activity from "./Activity"
-import PopularPost from "./PopularPost"
 
-const series = [
-  {
-    name: "Current",
-    data: [18, 21, 45, 36, 65, 47, 51, 32, 40, 28, 31, 26],
-  },
-  {
-    name: "Previous",
-    data: [30, 11, 22, 18, 32, 23, 58, 45, 30, 36, 15, 34],
-  },
-]
+//Import Components
+import CardWelcome from "./card-welcome"
+import MiniWidget from "./mini-widget"
+import AprTrackerShort from './apr-tracker-short'
+import mirrorGraphql from '../../api/v1/mirror-graphql'
+import historical from '../../api/v1/historical'
 
-const options = {
-  chart: {
-    height: 350,
-    type: "area",
-    toolbar: {
-      show: false,
-    },
-  },
-  colors: ["#556ee6", "#f1b44c"],
-  dataLabels: {
-    enabled: false,
-  },
-  stroke: {
-    curve: "smooth",
-    width: 2,
-  },
+import dayjs from 'dayjs'
+
+const options1 = {
+  chart: { sparkline: { enabled: !0 } },
+  stroke: { curve: "smooth", width: 2 },
+  colors: ["#f1b44c"],
   fill: {
     type: "gradient",
     gradient: {
       shadeIntensity: 1,
-      inverseColors: false,
+      inverseColors: !1,
       opacityFrom: 0.45,
       opacityTo: 0.05,
-      stops: [20, 100, 100, 100],
+      stops: [25, 100, 100, 100],
     },
   },
-  xaxis: {
-    categories: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-  },
-
-  markers: {
-    size: 3,
-    strokeWidth: 3,
-
-    hover: {
-      size: 4,
-      sizeOffset: 2,
-    },
-  },
-  legend: {
-    position: "top",
-    horizontalAlign: "right",
-  },
+  tooltip: { fixed: { enabled: !1 }, x: { show: !1 }, marker: { show: !1 } },
 }
 
-export default class index extends Component {
+const options2 = {
+  chart: { sparkline: { enabled: !0 } },
+  stroke: { curve: "smooth", width: 2 },
+  colors: ["#3452e1"],
+  fill: {
+    type: "gradient",
+    gradient: {
+      shadeIntensity: 1,
+      inverseColors: !1,
+      opacityFrom: 0.45,
+      opacityTo: 0.05,
+      stops: [25, 100, 100, 100],
+    },
+  },
+  tooltip: { fixed: { enabled: !1 }, x: { show: !1 }, marker: { show: !1 } },
+}
+
+const options3 = {
+  chart: { sparkline: { enabled: !0 } },
+  stroke: { curve: "smooth", width: 2 },
+  colors: ["#50a5f1"],
+  fill: {
+    type: "gradient",
+    gradient: {
+      shadeIntensity: 1,
+      inverseColors: !1,
+      opacityFrom: 0.45,
+      opacityTo: 0.05,
+      stops: [25, 100, 100, 100],
+    },
+  },
+  tooltip: { fixed: { enabled: !1 }, x: { show: !1 }, marker: { show: !1 } },
+}
+
+class Dashboard extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      cardreport: {
-        options: options,
-        series: series,
-      },
+      selectedLongTicker: '',
+      reports: [
+        {
+          title: "mNFLX-UST APR",
+          icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/NFLX.png",
+          color: "warning",
+          value: "",
+          arrow: 'mdi-arrow-up text-success',
+          series: [{ name: "mNFLX", data: []}],
+          options: options1,
+        },
+        {
+          title: "mAAPL-UST APR",
+          icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/AAPL.png",
+          color: "primary",
+          arrow: 'mdi-arrow-down text-danger',
+          value: "",
+          series:  [{ name: "mAAPL", data: []}],
+          options: options2,
+        },
+        {
+          title: "mCOIN-UST APR",
+          icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/COIN.png",
+          color: "info",
+          arrow: 'mdi-arrow-up text-success',
+          value: "",
+          series:  [{ name: "mCOIN", data: []}],
+          options: options3,
+        },
+      ],
     }
+    this.fetchAprData1= this.fetchAprData1.bind(this)
   }
+
+fetchAprData1() {
+
+    let precision = 'day'
+    let diff = 605800000
+    // 604800000 = 7 days
+    if (diff < 604800000) {
+      precision = 'hour'
+    }
+    let filters = {
+      ticker: 'mNFLX-UST',
+      precision: precision,
+    }
+    historical.getHistoricalCommAprs(filters).then(apiData => {
+      let formattedData = apiData
+        .filter(obj => obj.apr)
+        .map(obj => {
+          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
+        })
+        console.log(formattedData)
+        let newState2 = JSON.parse(JSON.stringify(this.state))
+        newState2.reports[0].value = String(Number(formattedData[formattedData.length-1].Price *100).toFixed(2)) + '%'
+        this.setState(newState2)
+    })
+  }
+
+  fetchAprData2() {
+
+    let precision = 'day'
+    let diff = 605800000
+    // 604800000 = 7 days
+    if (diff < 604800000) {
+      precision = 'hour'
+    }
+    let filters = {
+      ticker: 'mAAPL-UST',
+      precision: precision,
+    }
+    historical.getHistoricalCommAprs(filters).then(apiData => {
+      let formattedData = apiData
+        .filter(obj => obj.apr)
+        .map(obj => {
+          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
+        })
+        let newState2 = JSON.parse(JSON.stringify(this.state))
+        newState2.reports[1].value = String(Number(formattedData[formattedData.length-1].Price *100).toFixed(2)) + '%'
+        this.setState(newState2)
+    })
+  }
+
+  fetchAprData3() {
+
+    let precision = 'day'
+    let diff = 605800000
+    // 604800000 = 7 days
+    if (diff < 604800000) {
+      precision = 'hour'
+    }
+    let filters = {
+      ticker: 'mCOIN-UST',
+      precision: precision,
+    }
+    historical.getHistoricalCommAprs(filters).then(apiData => {
+      let formattedData = apiData
+        .filter(obj => obj.apr)
+        .map(obj => {
+          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
+        })
+        let newState2 = JSON.parse(JSON.stringify(this.state))
+        newState2.reports[2].value = String(Number(formattedData[formattedData.length-1].Price *100).toFixed(2)) + '%'
+        this.setState(newState2)
+    })
+  }
+
+  componentDidMount() {
+    this.fetchAprData1()
+    this.fetchAprData2()
+    this.fetchAprData3()
+  }
+
   render() {
     return (
       <React.Fragment>
         <div className="page-content">
-          <MetaTags>
-            <title>Blog Dashboard | Skote - React Admin & Dashboard Template</title>
-          </MetaTags>
+          {/*<MetaTags>
+            <title>Crypto Dashboard | Skote - React Admin & Dashboard Template</title>
+          </MetaTags>*/}
           <Container fluid>
             {/* Render Breadcrumb */}
-            <Breadcrumbs title="Dashboards" breadcrumbItem="Blog" />
+            <Breadcrumbs title="Dashboards" breadcrumbItem="POOL APRS" />
             <Row>
               {/* card user */}
-              <CardUser cardreport={this.state.cardreport} />
-              <Settings />
+              {/*<CardUser />*/}
+
+              <Col xl="12">
+                {/* card welcome */}
+                <CardWelcome />
+
+                <Row>
+                  {/* mini widgets */}
+                  <MiniWidget reports={this.state.reports} />
+                </Row>
+              </Col>
             </Row>
+
             <Row>
-              <Posts />
-              <Comments />
-              <TapVisitors />
+              {/* wallet balance
+              <WalletBalance />*/}
+
+              {/* overview
+              <OverView />*/}
             </Row>
-            <Row>
-              <Activity />
-              <PopularPost />
+
+            <Row >
+            <AprTrackerShort />
             </Row>
+
+            {/*<Row>
+               transactions
+              <Transactions />
+
+              {/* notifications
+              <Notifications />
+
+               buy sell
+              <BuySell />
+            </Row>*/}
           </Container>
         </div>
       </React.Fragment>
     )
   }
 }
+
+export default Dashboard
