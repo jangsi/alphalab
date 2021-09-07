@@ -27,7 +27,7 @@ class Sidebar extends Component {
 
         <div className="vertical-menu">
           <div className="navbar-brand-box">
-            <Link to="/spread-tracker" className="logo logo-dark">
+            <Link to="/dashboard" className="logo logo-dark">
               <span className="logo-sm">
                 <img src={"http://alphadefi.fund/wp-content/uploads/2021/08/noun_alpha_1359359.svg"} alt="" height="22" />
               </span>
@@ -36,7 +36,7 @@ class Sidebar extends Component {
               </span>
             </Link>
 
-            <Link to="/spread-tracker" className="logo logo-light">
+            <Link to="/dashboard" className="logo logo-light">
               <span className="logo-sm">
                 <img src={"http://alphadefi.fund/wp-content/uploads/2021/08/noun_alpha_1359359.svg"} alt="" height="50" />
               </span>

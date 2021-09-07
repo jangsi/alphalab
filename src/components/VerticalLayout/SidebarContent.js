@@ -112,18 +112,12 @@ class SidebarContent extends Component {
               <li>
                 <Link to="/spread-tracker">
                   <i className="bx bx-line-chart" />
-                  <span>{this.props.t("Dashboards")}</span>
+                  <span>{this.props.t("Mirror Dashboards")}</span>
                 </Link>
                 <ul className="sub-menu" aria-expanded="false">
                   {/*<li>
                     <Link to="/dashboard">{this.props.t("Commission APRs")}</Link>
                   </li>*/}
-                  <li>
-                    <Link to="/#" className="has-arrow">
-                      {/* <i className="bx bx-store" /> */}
-                      <span>{this.props.t("Mirror Protocol")}</span>
-                    </Link>
-                    <ul className="sub-menu" aria-expanded="false">
                       <li>
                       <Link to="/spread-tracker">{this.props.t("Spread Tracker")}</Link>
                       </li>
@@ -144,20 +138,13 @@ class SidebarContent extends Component {
                       </li>
                     </ul>   
                   </li>
-                    </ul>   
-                  </li>
-                  <li>
-                    <Link to="/#" className="has-arrow">
-                      {/* <i className="bx bx-store" /> */}
-                      <span>{this.props.t("Anchor Protocol Coming Soon!")}</span>
-                    </Link>
-                    <ul className="sub-menu" aria-expanded="false">
-                      <li>
-                        <Link >{this.props.t("Anchor Data")}</Link>
-                      </li>
-                    </ul>   
-                  </li>
                 </ul>
+              </li>
+              <li>
+                <Link to="/#">
+                  <i className="bx bx-line-chart" />
+                  <span>{this.props.t("Anchor Dashboards")}</span>
+                </Link>
               </li>
 
               {/*<li className="menu-title">{this.props.t("Apps")}</li>
