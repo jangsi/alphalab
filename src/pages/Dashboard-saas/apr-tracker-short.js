@@ -226,6 +226,7 @@ class AprTrackerShort extends React.Component {
           </Card>
           <Card>
           <CardBody>
+          <Label className="control-label">Hover Mouse for Column Descriptions</Label>
             <div className="ag-theme-alpine" style={{height: 400}}>
             <AgGridReact
                onGridReady={this.onGridReady.bind(this)}
