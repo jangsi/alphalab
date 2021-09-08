@@ -14,7 +14,7 @@ class CardWelcome extends Component {
               <Col lg="9" sm="8">
                 <div className="p-4">
                   <h5 className="text-primary">Alpha DeFi Spread Tracker</h5>
-                  <p>Alpha Astronaut</p>
+                  <p>Welcome Alpha Astronaut</p>
 
                   <div className="text-muted">
                     <p className="mb-1">
