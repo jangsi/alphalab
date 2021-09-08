@@ -355,8 +355,8 @@ const publicRoutes = [
 
   // moved from  private
   { path: "/dashboard", component: Dashboard },
-  { path: "/dashboard-apr", component: DashboardSaas },
-  { path: "/dashboard-blog", component: DashboardBlog },
+  { path: "/mirror-aprs", component: DashboardSaas },
+  { path: "/terra-pool-aprs", component: DashboardBlog },
   { path: "/spread-tracker", component: DashboardCrypto },
   { path: "/fee-station-long", component: FeeStationLong },
   { path: "/fee-station-short", component: FeeStationShort },
