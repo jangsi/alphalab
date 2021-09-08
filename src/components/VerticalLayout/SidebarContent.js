@@ -119,7 +119,7 @@ class SidebarContent extends Component {
                     <Link to="/dashboard">{this.props.t("Commission APRs")}</Link>
                   </li>*/}
                       <li>
-                      <Link to="/dashboard-blog">{this.props.t("Terra Pool APRs")}</Link>
+                      <Link to="/terra-pool-aprs">{this.props.t("Terra Pool APRs")}</Link>
                       </li>
                 </ul>
               </li>
@@ -136,7 +136,7 @@ class SidebarContent extends Component {
                       <Link to="/spread-tracker">{this.props.t("Spread Tracker")}</Link>
                       </li>
                       <li>
-                      <Link to="/dashboard-apr">{this.props.t("Mirror Protocol APRs")}</Link>
+                      <Link to="/mirror-aprs">{this.props.t("Mirror Protocol APRs")}</Link>
                       </li>
                       <li>
                     <Link to="/#" className="has-arrow">
@@ -150,7 +150,7 @@ class SidebarContent extends Component {
                       <li>
                         <Link to="/fee-station-short">{this.props.t("Round Trip Short Sale")}</Link>
                       </li>
-                    </ul>   
+                    </ul>
                   </li>
                 </ul>
               </li>
