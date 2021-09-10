@@ -48,15 +48,20 @@ class SpreadTracker extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: [],
-      data2: [],
+      priceData: [],
+      oracleData: [],
+      spreadData: [],
       tickerOptions: [],
       defaultOption: { label: 'mSPY', value: 'mSPY' },
+      selectedTicker: 'mSPY',
       tokenAddresses: {},
       rowData: []
     }
+    this.timer = null
+    this.clearTimer = this.clearTimer.bind(this)
+    this.scheduleFetch = this.scheduleFetch.bind(this)
     this.fetchSpreadData = this.fetchSpreadData.bind(this)
-    this.fetchTickers.bind(this)
+    this.fetchTickers = this.fetchTickers.bind(this)
     this.handleChange = this.handleChange.bind(this)
 
     this.fetchData = this.fetchData.bind(this);
@@ -86,40 +91,69 @@ class SpreadTracker extends React.Component {
           return { value: ticker, label: ticker }
         }),
         tokenAddresses: tokenObj,
-      }, () => this.fetchSpreadData(this.state.defaultOption.value))
+      }, () => this.fetchSpreadData())
     })
   }
 
-  fetchSpreadData(ticker) {
+  fetchSpreadData() {
+    if (this.state.selectedTicker.length === 0) {
+      return
+    }
     let currentTime = new Date().getTime()
     let filters = {
       from: currentTime - 87400000,
       to: currentTime - 300000,
       interval: 5,
-      token: this.state.tokenAddresses[ticker],
+      token: this.state.tokenAddresses[this.state.selectedTicker],
     }
     mirrorGraphql.getSpreadData(filters).then(data => {
-      console.log(data)
       let formattedPriceData = data.asset.prices.history
-      .map(obj => {
-        return {xaxis1: obj.timestamp, Price: Number(obj.price).toFixed(2)}
-        });
+        .map(obj => {
+          return {xaxis1: obj.timestamp, Price: Number(obj.price).toFixed(2)}
+        })
       let formattedOracleData = data.asset.prices.oracleHistory
-      .map(obj => {
-        return {xaxis2: obj.timestamp, oraclePrice: Number(obj.price).toFixed(2)}
-        });
-      let formattedSpreadData = data.asset.prices.history.map(function(item, index) {
-          return {'spread': ((Number(item['price']) - Number(data.asset.prices.oracleHistory[index]['price']))/Number(data.asset.prices.oracleHistory[index]['price'])).toFixed(4),
-                  'timestamp':item['timestamp']};
+        .map(obj => {
+          return {xaxis2: obj.timestamp, oraclePrice: Number(obj.price).toFixed(2)}
+        })
+      let formattedSpreadData = data.asset.prices.history
+        .map((item, index) => {
+          return {
+            'spread': ((Number(item['price']) - Number(data.asset.prices.oracleHistory[index]['price'])) / Number(data.asset.prices.oracleHistory[index]['price'])).toFixed(4),
+            'timestamp': item['timestamp']
+          }
         }).map(obj => {
-         return {xaxis3: obj.timestamp, Spread: (obj.spread*100).toFixed(2) }
-        });
-        this.setState({ data: formattedPriceData, data2: formattedOracleData, data3:formattedSpreadData})
+          return {
+            xaxis3: obj.timestamp,
+            Spread: (obj.spread * 100).toFixed(2)
+          }
+        })
+      this.setState({
+        priceData: formattedPriceData,
+        oracleData: formattedOracleData,
+        spreadData:formattedSpreadData
+      })
+      this.scheduleFetch()
     })
   }
 
   handleChange(selectedOption) {
-    this.fetchSpreadData(selectedOption.value)
+    this.clearTimer()
+    this.setState({
+      selectedTicker: selectedOption.value
+    }, () => this.fetchSpreadData())
+  }
+
+  clearTimer() {
+    if (this.timer) {
+      clearTimeout(this.timer)
+      this.timer = null
+    }
+  }
+
+  scheduleFetch() {
+    this.clearTimer()
+    // set to 5 min, the same as the graphql interval
+    this.timer = setTimeout(this.fetchSpreadData, 300000)
   }
 
   componentDidMount() {
@@ -160,9 +194,9 @@ class SpreadTracker extends React.Component {
                 <YAxis yAxisId={2} domain={['auto', 'auto']} orientation="right"  tickFormatter={tick => {return tick.toLocaleString()+'%';}}/>
                 <Tooltip labelFormatter={tick => {return formatXAxis(tick);}}/>
                 <Legend />
-                <Line data={this.state.data} yAxisId={1} xAxisId={1} type="linear" dataKey="Price" stroke="#8884d8"/>
-                <Line data={this.state.data2} yAxisId={1} xAxisId={2} type="linear" dataKey="oraclePrice" stroke="#82ca9d"/>
-                <Line data={this.state.data3} yAxisId={2} xAxisId={3} type="linear" dataKey="Spread" dot={false} strokeWidth={2}/>
+                <Line data={this.state.priceData} yAxisId={1} xAxisId={1} type="linear" dataKey="Price" stroke="#8884d8"/>
+                <Line data={this.state.oracleData} yAxisId={1} xAxisId={2} type="linear" dataKey="oraclePrice" stroke="#82ca9d"/>
+                <Line data={this.state.spreadData} yAxisId={2} xAxisId={3} type="linear" dataKey="Spread" dot={false} strokeWidth={2}/>
              </LineChart>
              </ResponsiveContainer>
              </div>
