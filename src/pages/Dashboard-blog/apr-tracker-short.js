@@ -37,24 +37,16 @@ function priceFormat(tickItem) {
 }
 
 const fetchStats = () => {
-    return fetch(
-      "https://api.alphadefi.fund/info/longvolrankings"
-    );
-  };
-
-  const fetchStats2 = () => {
-    return fetch(
-      "https://api.alphadefi.fund/info/shortvolrankings"
-    );
-  };
-
+  return fetch(
+    "https://api.alphadefi.fund/historical/poolhiststats"
+  );
+};
 
 class AprTrackerShort extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       data: [],
-      data2: [],
       tickerOptions: [],
       tokenAddresses: {},
       rowData: [],
@@ -70,31 +62,13 @@ class AprTrackerShort extends React.Component {
     this.handleEndDateChange = this.handleEndDateChange.bind(this)
 
     this.fetchData = this.fetchData.bind(this);
-    this.fetchData2 = this.fetchData2.bind(this);
   }
 
   async fetchData() {
     const response = await fetchStats();
     const data = await response.json();
-
-    const response_short = await fetchStats2();
-    const data_short = await response_short.json();
-
-    const data_final = []
-
-    Object.keys(data[0]).forEach(key => {
-      data_final.push({Ticker: key, 'Long APR 21 Day Rolling Volatility': data[0][key], 'Short APR 21 Day Rolling Volatility': data_short[0][key]})
-    })
-
-    console.log(data_final)
-
-    this.setState({ rowData: data_final });
-  }
-
-  async fetchData2() {
-    const response = await fetchStats2();
-    const data = await response.json();
-    this.setState({ rowData2: data });
+    console.log(data)
+    this.setState({ rowData: data });
   }
 
   onGridReady(params) {
@@ -224,19 +198,26 @@ class AprTrackerShort extends React.Component {
              </div>
             </CardBody>
           </Card>
-          {/*<Card>
+          <Card>
           <CardBody>
             <div className="ag-theme-alpine" style={{height: 400}}>
+            <Label className="control-label">Hover Mouse for Column Descriptions</Label>
             <AgGridReact
                onGridReady={this.onGridReady.bind(this)}
                rowData={this.state.rowData}>
-                <AgGridColumn field="Ticker" sortable={true} filter={true} headerTooltip='Ticker'></AgGridColumn>
-                <AgGridColumn field="Long APR 21 Day Rolling Volatility" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true} headerTooltip='Long APR 21 Day Rolling Volatility'></AgGridColumn>
-                <AgGridColumn field="Short APR 21 Day Rolling Volatility" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true} headerTooltip='Short APR 21 Day Rolling Volatility'></AgGridColumn>
+                <AgGridColumn field="symbol" sortable={true} filter={true} resizable={true} headerTooltip='Symbol'></AgGridColumn>
+                <AgGridColumn field="mean" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='mean historical spread, normally the spread this asset trades at'></AgGridColumn>
+                <AgGridColumn field="Three SD" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='+ three standard deviations from mean, anything above this could be a sell'></AgGridColumn>
+                <AgGridColumn field="Neg Three SD" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='- three standard deviations from mean, anything below this could be a buy'></AgGridColumn>
+                <AgGridColumn field="max" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='max spread last 21 days'></AgGridColumn>
+                <AgGridColumn field="min" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}   headerTooltip='min spread last 21 days'></AgGridColumn>
+                <AgGridColumn field="std" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='std of historical spread'></AgGridColumn>
+                <AgGridColumn field="Historical 5th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='Historical 5th % Spread'></AgGridColumn>
+                <AgGridColumn field="Historical 95th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='Historical 95th % Spread'></AgGridColumn>
             </AgGridReact>
             </div>
           </CardBody>
-          </Card>*/}
+          </Card>
         </Col>
       </React.Fragment>
     )
