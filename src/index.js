@@ -9,6 +9,11 @@ import { Provider } from "react-redux"
 
 import store from "./store"
 
+// google analytics
+import ReactGA from 'react-ga'
+ReactGA.initialize(process.env.REACT_APP_GA_TRACKING_ID)
+ReactGA.pageview(window.location.pathname + window.location.search)
+
 const app = (
   <Provider store={store}>
     <BrowserRouter>
