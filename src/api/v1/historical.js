@@ -12,6 +12,10 @@ const getHistoricalCommAprs = (filters) => {
   return api.get(`/historical/comaprs/${filters.ticker}`, { params: filters })
 }
 
+const getHistoricalAnchor = (filters) => {
+  return api.get(`/historical/anchor/${filters.ticker}`, { params: filters })
+}
+
 const getSpreadHistStats = (filters) => {
   return api.get('/historical/spreadhiststats')
 }
@@ -20,5 +24,6 @@ export default {
   getHistoricalLongAprs: getHistoricalLongAprs,
   getHistoricalShortAprs: getHistoricalShortAprs,
   getHistoricalCommAprs: getHistoricalCommAprs,
+  getHistoricalAnchor: getHistoricalAnchor,
   getSpreadHistStats: getSpreadHistStats
 }

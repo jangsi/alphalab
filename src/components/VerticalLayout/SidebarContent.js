@@ -155,9 +155,9 @@ class SidebarContent extends Component {
                 </ul>
               </li>
               <li>
-                <Link to="/#">
+                <Link to="/anchor">
                   <i className="bx bx-line-chart" />
-                  <span>{this.props.t("Anchor Coming Soon")}</span>
+                  <span>{this.props.t("Anchor Dashboard")}</span>
                 </Link>
               </li>
 
