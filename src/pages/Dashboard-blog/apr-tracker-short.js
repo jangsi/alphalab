@@ -28,6 +28,10 @@ function pctFormatter(params) {
   return Number(params.value*100).toFixed(2) + '%';
 }
 
+function scoreFormatter(params) {
+  return Number(params.value).toFixed(2);
+}
+
 function formatXAxis(tickItem) {
   return dayjs(tickItem).format('MM/DD/YYYY HH:mm:ss')
 }
@@ -206,6 +210,7 @@ class AprTrackerShort extends React.Component {
                onGridReady={this.onGridReady.bind(this)}
                rowData={this.state.rowData}>
                 <AgGridColumn field="symbol" sortable={true} filter={true} resizable={true} headerTooltip='Symbol'></AgGridColumn>
+                <AgGridColumn field="AlphaDefi APR Score" sortable={true} filter={true} valueFormatter={scoreFormatter} resizable={true}  headerTooltip='Current Yield / rolling 21 day vol'></AgGridColumn>
                 <AgGridColumn field="current" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='most recently calculated APY'></AgGridColumn>
                 <AgGridColumn field="mean" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='mean historical apr, normally the apr this pool trades at'></AgGridColumn>
                 <AgGridColumn field="Three SD" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='+ three standard deviations from mean'></AgGridColumn>

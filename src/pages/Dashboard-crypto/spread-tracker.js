@@ -101,6 +101,8 @@ class SpreadTracker extends React.Component {
       return
     }
     let currentTime = new Date().getTime()
+    console.log(currentTime - 87400000)
+    console.log(currentTime - 300000)
     let filters = {
       from: currentTime - 87400000,
       to: currentTime - 300000,
@@ -108,6 +110,7 @@ class SpreadTracker extends React.Component {
       token: this.state.tokenAddresses[this.state.selectedTicker],
     }
     mirrorGraphql.getSpreadData(filters).then(data => {
+      console.log(data)
       let formattedPriceData = data.asset.prices.history
         .map(obj => {
           return {xaxis1: obj.timestamp, Price: Number(obj.price).toFixed(2)}
