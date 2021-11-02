@@ -121,6 +121,9 @@ class SidebarContent extends Component {
                       <li>
                       <Link to="/terra-pool-aprs">{this.props.t("Terra Pool APRs")}</Link>
                       </li>
+                      <li>
+                      <Link to="/terra-pool-tlvs">{this.props.t("Terra Pool TLVs")}</Link>
+                      </li>
                 </ul>
               </li>
               <li>
@@ -155,10 +158,10 @@ class SidebarContent extends Component {
                 </ul>
               </li>
               <li>
-                <Link to="/anchor">
+                 {/*<Link to="/anchor">
                   <i className="bx bx-line-chart" />
                   <span>{this.props.t("Anchor Dashboard")}</span>
-                </Link>
+                </Link>*/}
               </li>
 
               {/*<li className="menu-title">{this.props.t("Apps")}</li>

@@ -74,6 +74,7 @@ import Dashboard from "../pages/Dashboard/index"
 import DashboardSaas from "../pages/Dashboard-saas/index"
 import DashboardCrypto from "../pages/Dashboard-crypto/index"
 import DashboardBlog from "../pages/Dashboard-blog/index"
+import DashboardTLVs from "../pages/Dashboard-tlvs/index"
 import DashboardAnchor from "../pages/Dashboard-Anchor/index"
 
 // FeeStation
@@ -358,6 +359,7 @@ const publicRoutes = [
   { path: "/dashboard", component: Dashboard },
   { path: "/mirror-aprs", component: DashboardSaas },
   { path: "/terra-pool-aprs", component: DashboardBlog },
+  { path: "/terra-pool-tlvs", component: DashboardTLVs },
   { path: "/anchor", component: DashboardAnchor },
   { path: "/spread-tracker", component: DashboardCrypto },
   { path: "/fee-station-long", component: FeeStationLong },
