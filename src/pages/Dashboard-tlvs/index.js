@@ -74,7 +74,7 @@ class Dashboard extends Component {
         {
           title: "ANC-UST Liquidity",
           icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/NFLX.png",
+          imageUrl: "//whitelist.mirror.finance/images/UST.png",
           color: "warning",
           value: "",
           arrow: 'mdi-arrow-up text-success',
