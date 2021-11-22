@@ -4,6 +4,11 @@ const getPoolDict = () => {
   return api.get('/info/pooldict')
 }
 
+const getNexusDict = () => {
+  return api.get('/info/nexusdict')
+}
+
 export default {
-  getPoolDict: getPoolDict
+  getPoolDict: getPoolDict,
+  getNexusDict: getNexusDict
 }

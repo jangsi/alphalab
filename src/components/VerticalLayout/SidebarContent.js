@@ -163,6 +163,14 @@ class SidebarContent extends Component {
                   <span>{this.props.t("Anchor Dashboard")}</span>
                 </Link>
               </li>
+              <li>
+                 <Link to="/nexus">
+                  <i className="bx bx-line-chart" />
+                  <span>{this.props.t("Nexus Dashboard")}</span>
+                </Link>
+              </li>
+              
+              
 
               {/*<li className="menu-title">{this.props.t("Apps")}</li>
 

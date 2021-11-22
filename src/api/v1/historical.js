@@ -20,6 +20,10 @@ const getHistoricalAnchor = (filters) => {
   return api.get(`/historical/anchor/${filters.ticker}`, { params: filters })
 }
 
+const getHistoricalNexus = (filters) => {
+  return api.get(`/historical/nexus/${filters.ticker}`, { params: filters })
+}
+
 const getSpreadHistStats = (filters) => {
   return api.get('/historical/spreadhiststats')
 }
@@ -30,5 +34,6 @@ export default {
   getHistoricalCommAprs: getHistoricalCommAprs,
   getHistoricalTlvs: getHistoricalTlvs,
   getHistoricalAnchor: getHistoricalAnchor,
+  getHistoricalNexus: getHistoricalNexus,
   getSpreadHistStats: getSpreadHistStats
 }
