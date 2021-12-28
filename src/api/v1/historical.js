@@ -7,6 +7,9 @@ const getHistoricalLongAprs = (filters) => {
 const getHistoricalShortAprs = (filters) => {
   return api.get(`/historical/shortaprs/${filters.ticker}`, { params: filters })
 }
+const getHistoricalTerraDash = (filters) => {
+  return api.get(`/historical/terradashboard/${filters.ticker}`, { params: filters })
+}
 
 const getHistoricalCommAprs = (filters) => {
   return api.get(`/historical/comaprs/${filters.ticker}`, { params: filters })
@@ -31,6 +34,7 @@ const getSpreadHistStats = (filters) => {
 export default {
   getHistoricalLongAprs: getHistoricalLongAprs,
   getHistoricalShortAprs: getHistoricalShortAprs,
+  getHistoricalTerraDash: getHistoricalTerraDash,
   getHistoricalCommAprs: getHistoricalCommAprs,
   getHistoricalTlvs: getHistoricalTlvs,
   getHistoricalAnchor: getHistoricalAnchor,

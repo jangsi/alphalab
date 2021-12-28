@@ -115,9 +115,9 @@ class SidebarContent extends Component {
                   <span>{this.props.t("Terra Dashboards")}</span>
                 </Link>
                 <ul className="sub-menu" aria-expanded="false">
-                  {/*<li>
-                    <Link to="/dashboard">{this.props.t("Commission APRs")}</Link>
-                  </li>*/}
+                      <li>
+                      <Link to="/terradash">{this.props.t("Terra Core")}</Link>
+                      </li>
                       <li>
                       <Link to="/terra-pool-aprs">{this.props.t("Terra Pool APRs")}</Link>
                       </li>

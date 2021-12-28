@@ -8,7 +8,13 @@ const getNexusDict = () => {
   return api.get('/info/nexusdict')
 }
 
+const getDashboardDict = () => {
+  return api.get('/info/dashboarddict')
+}
+
+
 export default {
   getPoolDict: getPoolDict,
-  getNexusDict: getNexusDict
+  getNexusDict: getNexusDict,
+  getDashboardDict:getDashboardDict,
 }
