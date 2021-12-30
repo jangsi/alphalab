@@ -106,7 +106,7 @@ class Dashboard extends Component {
         {
           title: "LUNA UST Market Cap Ratio",
           icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/UST.png",
+          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
           color: "warning",
           value: "",
           arrow: 'mdi-arrow-up text-success',
@@ -116,7 +116,7 @@ class Dashboard extends Component {
         {
           title: "LUNA UST Market Cap Ratio Percentile Rank",
           icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/UST.png",
+          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
           color: "primary",
           arrow: 'mdi-arrow-down text-danger',
           value: "",
@@ -126,7 +126,7 @@ class Dashboard extends Component {
         {
           title: "LUNA Staking Return Annualized",
           icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/UST.png",
+          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
           color: "info",
           arrow: 'mdi-arrow-up text-success',
           value: "",
@@ -148,7 +148,7 @@ class Dashboard extends Component {
         {
           title: "LUNA 1 Week Return Percentile Rank",
           icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/UST.png",
+          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
           color: "primary",
           arrow: 'mdi-arrow-down text-danger',
           value: "",
@@ -158,7 +158,7 @@ class Dashboard extends Component {
         {
           title: "LUNA 1 Month Return Percentile Rank",
           icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/UST.png",
+          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
           color: "info",
           arrow: 'mdi-arrow-up text-success',
           value: "",
@@ -170,7 +170,7 @@ class Dashboard extends Component {
         {
           title: "LUNA Staking Return Annualized Percentile Rank",
           icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/UST.png",
+          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
           color: "warning",
           value: "",
           arrow: 'mdi-arrow-up text-success',

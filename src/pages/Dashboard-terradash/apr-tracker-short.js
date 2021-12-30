@@ -40,14 +40,10 @@ function priceFormat(tickItem) {
   if (Number(tickItem)>10000000) {
     return Number(tickItem/1000000).toLocaleString('en-US', {maximumFractionDigits:2})+' M'
   }
-  else if ((Number(tickItem) <= 1000) & (Number(tickItem) >= .000001)){
-    return Number(tickItem*100).toFixed(2) + '%';
+  else {
+    return Number(tickItem);
   }
-  else{
-
-    return Number(tickItem*1000000000).toLocaleString('en-US', {maximumFractionDigits:4})+' e-9'
-
-  }
+  
 }
 
 
