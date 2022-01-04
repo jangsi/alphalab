@@ -198,6 +198,38 @@ class Dashboard extends Component {
           options: options3,
         },
       ],
+      reports5: [
+        {
+          title: "LUNA - BTC Market Cap Ratio",
+          icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
+          color: "warning",
+          value: "",
+          arrow: 'mdi-arrow-up text-success',
+          series: [{ name: "LUNA - BTC Market Cap Ratio", data: []}],
+          options: options1,
+        },
+        {
+          title: "LUNA - ETH Market Cap Ratio",
+          icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
+          color: "primary",
+          arrow: 'mdi-arrow-down text-danger',
+          value: "",
+          series:  [{ name: "LUNA - ETH Market Cap Ratio", data: []}],
+          options: options2,
+        },
+        {
+          title: "LUNA - SOL Market Cap Ratio",
+          icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
+          color: "info",
+          arrow: 'mdi-arrow-up text-success',
+          value: "",
+          series:  [{ name: "LUNA - SOL Market Cap Ratio", data: []}],
+          options: options3,
+        },
+      ],
     }
     this.fetchAprData1= this.fetchAprData1.bind(this)
   }
@@ -304,6 +336,32 @@ fetchAprData1() {
     })
   }
 
+  fetchAprData15() {
+
+    let precision = 'day'
+    let diff = 605800000
+    // 604800000 = 7 days
+    if (diff < 604800000) {
+      precision = 'hour'
+    }
+    let filters = {
+      ticker: 'LUNA - BTC Market Cap Ratio',
+      precision: precision,
+    }
+    historical.getHistoricalTerraDash(filters).then(apiData => {
+      console.log(apiData)
+      let formattedData = apiData
+        .filter(obj => obj.value)
+        .map(obj => {
+          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.value}
+        })
+        console.log(formattedData)
+        let newState2 = JSON.parse(JSON.stringify(this.state))
+        newState2.reports5[0].value = Number(formattedData[formattedData.length-1].Price*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%'
+        this.setState(newState2)
+    })
+  }
+
   fetchAprData2() {
 
     let precision = 'day'
@@ -396,6 +454,30 @@ fetchAprData1() {
         })
         let newState2 = JSON.parse(JSON.stringify(this.state))
         newState2.reports4[1].value = Number(formattedData[formattedData.length-1].Price*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%'
+        this.setState(newState2)
+    })
+  }
+
+  fetchAprData25() {
+
+    let precision = 'day'
+    let diff = 605800000
+    // 604800000 = 7 days
+    if (diff < 604800000) {
+      precision = 'hour'
+    }
+    let filters = {
+      ticker: 'LUNA - ETH Market Cap Ratio',
+      precision: precision,
+    }
+    historical.getHistoricalTerraDash(filters).then(apiData => {
+      let formattedData = apiData
+        .filter(obj => obj.value)
+        .map(obj => {
+          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.value}
+        })
+        let newState2 = JSON.parse(JSON.stringify(this.state))
+        newState2.reports5[1].value = Number(formattedData[formattedData.length-1].Price*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%'
         this.setState(newState2)
     })
   }
@@ -496,20 +578,47 @@ fetchAprData1() {
     })
   }
 
+  fetchAprData35() {
+
+    let precision = 'day'
+    let diff = 605800000
+    // 604800000 = 7 days
+    if (diff < 604800000) {
+      precision = 'hour'
+    }
+    let filters = {
+      ticker: 'LUNA - SOL Market Cap Ratio',
+      precision: precision,
+    }
+    historical.getHistoricalTerraDash(filters).then(apiData => {
+      let formattedData = apiData
+        .filter(obj => obj.value)
+        .map(obj => {
+          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.value}
+        })
+        let newState2 = JSON.parse(JSON.stringify(this.state))
+        newState2.reports5[2].value = Number(formattedData[formattedData.length-1].Price*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%'
+        this.setState(newState2)
+    })
+  }
+
 
   componentDidMount() {
     this.fetchAprData1()
     this.fetchAprData12()
     this.fetchAprData13()
     this.fetchAprData14()
+    this.fetchAprData15()
     this.fetchAprData2()
     this.fetchAprData22()
     this.fetchAprData23()
     this.fetchAprData24()
+    this.fetchAprData25()
     this.fetchAprData3()
     this.fetchAprData32()
     this.fetchAprData33()
     this.fetchAprData34()
+    this.fetchAprData35()
   }
 
   render() {
@@ -532,6 +641,10 @@ fetchAprData1() {
                 <Row>
                   {/* mini widgets */}
                   <MiniWidget reports={this.state.reports4} />
+                </Row>
+                <Row>
+                  {/* mini widgets */}
+                  <MiniWidget reports={this.state.reports5} />
                 </Row>
                 <Row>
                   {/* mini widgets */}
