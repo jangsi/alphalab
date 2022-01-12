@@ -119,10 +119,10 @@ class SidebarContent extends Component {
                       <Link to="/terradash">{this.props.t("Terra Core")}</Link>
                       </li>
                       <li>
-                      <Link to="/terra-pool-aprs">{this.props.t("Terra Pool APRs")}</Link>
+                      <Link to="/terra-pool-aprs">{this.props.t("TerraSwap Trading APRs")}</Link>
                       </li>
                       <li>
-                      <Link to="/terra-pool-tlvs">{this.props.t("Terra Pool TLVs")}</Link>
+                      <Link to="/terra-pool-tlvs">{this.props.t("TerraSwap Pool TLVs")}</Link>
                       </li>
                 </ul>
               </li>
