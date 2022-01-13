@@ -7,7 +7,7 @@ import {
   Card,
   CardBody
 } from "reactstrap"
-import poolDictApi from '../../api/v1/pool-dictionary'
+import tokenDictApi from '../../api/v1/token-dictionary'
 import mirrorGraphql from '../../api/v1/mirror-graphql'
 import historical from '../../api/v1/historical'
 import {AgGridColumn, AgGridReact} from 'ag-grid-react'
@@ -25,11 +25,7 @@ import { date } from "language-tags"
 import dayjs from 'dayjs'
 
 function pctFormatter(params) {
-  return Number(params.value*100).toFixed(2) + '%';
-}
-
-function scoreFormatter(params) {
-  return Number(params.value).toFixed(2);
+  return '%' + Number(params.value*100).toFixed(2);
 }
 
 function formatXAxis(tickItem) {
@@ -40,23 +36,18 @@ function priceFormat(tickItem) {
   return String(Number(tickItem*100).toFixed(2))+'%'
 }
 
-const fetchStats = () => {
-  return fetch(
-    "https://api.alphadefi.fund/historical/poolhiststats"
-  );
-};
-
-class AprTrackerShort extends React.Component {
+class AprTracker extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       data: [],
+      data2: [],
       tickerOptions: [],
       tokenAddresses: {},
       rowData: [],
       rowData2: [],
-      selectedShortTicker: 'mAAPL-UST',
-      defaultOption: { label: 'mAAPL-UST', value: 'mAAPL-UST' },
+      selectedLongTicker: 'mSPY',
+      defaultOption: { label: 'mSPY', value: 'mSPY' },
       longDates: [dayjs().subtract(6, 'month').toDate(), dayjs().toDate()],
     }
     this.fetchAprData = this.fetchAprData.bind(this)
@@ -66,13 +57,19 @@ class AprTrackerShort extends React.Component {
     this.handleEndDateChange = this.handleEndDateChange.bind(this)
 
     this.fetchData = this.fetchData.bind(this);
+    this.fetchData2 = this.fetchData2.bind(this);
   }
 
   async fetchData() {
     const response = await fetchStats();
     const data = await response.json();
-    console.log(data)
     this.setState({ rowData: data });
+  }
+
+  async fetchData2() {
+    const response = await fetchStats2();
+    const data = await response.json();
+    this.setState({ rowData2: data });
   }
 
   onGridReady(params) {
@@ -81,13 +78,11 @@ class AprTrackerShort extends React.Component {
 
     console.log(">> onGridReady");
     this.fetchData();
-    //this.gridColumnApi.autoSizeColumns();
-    this.gridApi.sizeColumnsToFit();
-
+    this.gridApi.sizeColumnsToFit()
   }
 
   fetchTickers() {
-    poolDictApi.getPoolDict().then(apiData => {
+    tokenDictApi.getTokenDict().then(apiData => {
       let tokenObj = apiData[0] ? apiData[0].token : {}
       this.setState({
         tickerOptions: Object.keys(tokenObj).map(ticker => {
@@ -95,11 +90,12 @@ class AprTrackerShort extends React.Component {
         }),
         tokenAddresses: tokenObj,
       }, () => this.fetchAprData())
+
     })
   }
 
   fetchAprData() {
-    if (this.state.selectedShortTicker.length === 0) {
+    if (this.state.selectedLongTicker.length === 0) {
       return
     }
     let precision = 'day'
@@ -109,13 +105,13 @@ class AprTrackerShort extends React.Component {
       precision = 'hour'
     }
     let filters = {
-      token: this.state.tokenAddresses[this.state.selectedShortTicker],
-      ticker: this.state.selectedShortTicker,
+      token: this.state.tokenAddresses[this.state.selectedLongTicker],
+      ticker: this.state.selectedLongTicker,
       from: this.state.longDates[0],
       to: this.state.longDates[1],
       precision: precision,
     }
-    historical.getHistoricalCommAprs(filters).then(apiData => {
+    historical.getHistoricalLongAprs(filters).then(apiData => {
       let formattedData = apiData
         .filter(obj => obj.apr)
         .map(obj => {
@@ -131,7 +127,7 @@ class AprTrackerShort extends React.Component {
   handleChange(selectedOption) {
     console.log(selectedOption.value)
     this.setState({
-      selectedShortTicker: selectedOption.value
+      selectedLongTicker: selectedOption.value
     }, () => this.fetchAprData())
   }
 
@@ -152,9 +148,11 @@ class AprTrackerShort extends React.Component {
   componentDidMount() {
     // load latest month by default
     this.fetchTickers()
-
   }
 
+ pctFormatter(params) {
+    return '%' + params.value*100;
+  }
 
   render() {
     return (
@@ -163,7 +161,7 @@ class AprTrackerShort extends React.Component {
         <Card >
             <CardBody className="card-body-test">
               <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
-                <Label className="control-label">TERRASWAP TRADING APRS</Label>
+                <Label className="control-label">LONG APRS</Label>
                 <Select
                   classNamePrefix="form-control"
                   placeholder="TYPE or CHOOSE ..."
@@ -193,7 +191,7 @@ class AprTrackerShort extends React.Component {
               <LineChart width={2000} height={600}
                       margin={{top: 20, right: 30, left: 0, bottom: 0}}>
                 <XAxis dataKey='xaxis1' type="category" domain={['dataMin', 'dataMax']} tickFormatter={formatXAxis}/>
-                <YAxis  domain={['auto', 'auto']} tickFormatter={priceFormat}/>
+                <YAxis  domain={['auto', 'auto']}  tickFormatter={priceFormat}/>
                 <Tooltip labelFormatter={tick => {return formatXAxis(tick);}} formatter={tick => {return priceFormat(tick);}}/>
                 <Legend />
                 <Line data={this.state.data} type="linear" dataKey="APR" dot={false} strokeWidth={4} stroke="#8884d8"/>
@@ -202,32 +200,10 @@ class AprTrackerShort extends React.Component {
              </div>
             </CardBody>
           </Card>
-          <Card>
-          <CardBody>
-            <div className="ag-theme-alpine" style={{height: 400}}>
-            <Label className="control-label">Hover Mouse for Column Descriptions</Label>
-            <AgGridReact
-               onGridReady={this.onGridReady.bind(this)}
-               rowData={this.state.rowData}>
-                <AgGridColumn field="symbol" sortable={true} filter={true} resizable={true} headerTooltip='Symbol'></AgGridColumn>
-                <AgGridColumn field="AlphaDefi APR Score" sortable={true} filter={true} valueFormatter={scoreFormatter} resizable={true}  headerTooltip='Current Yield / rolling 21 day vol'></AgGridColumn>
-                <AgGridColumn field="current" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='most recently calculated APY'></AgGridColumn>
-                <AgGridColumn field="mean" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='mean historical apr, normally the apr this pool trades at'></AgGridColumn>
-                <AgGridColumn field="Three SD" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='+ three standard deviations from mean'></AgGridColumn>
-                <AgGridColumn field="Neg Three SD" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='- three standard deviations from mean'></AgGridColumn>
-                <AgGridColumn field="max" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='max apr last 21 days'></AgGridColumn>
-                <AgGridColumn field="min" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}   headerTooltip='min apr last 21 days'></AgGridColumn>
-                <AgGridColumn field="std" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='std of historical apr'></AgGridColumn>
-                <AgGridColumn field="Historical 5th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='Historical 5th % APR'></AgGridColumn>
-                <AgGridColumn field="Historical 95th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='Historical 95th % APR'></AgGridColumn>
-            </AgGridReact>
-            </div>
-          </CardBody>
-          </Card>
         </Col>
       </React.Fragment>
     )
   }
 }
 
-export default AprTrackerShort
+export default AprTracker

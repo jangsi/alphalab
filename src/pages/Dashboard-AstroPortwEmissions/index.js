@@ -72,33 +72,33 @@ class Dashboard extends Component {
       selectedLongTicker: '',
       reports: [
         {
-          title: "mNFLX-UST APR",
+          title: "LUNA-UST w Astro Emissions",
           icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/NFLX.png",
+          imageUrl: "//assets.terra.money/icon/60/Luna.png",
           color: "warning",
           value: "",
           arrow: 'mdi-arrow-up text-success',
-          series: [{ name: "mNFLX", data: []}],
+          series: [{ name: "LUNA-UST APR", data: []}],
           options: options1,
         },
         {
-          title: "mAAPL-UST APR",
+          title: "LUNA-bLUNA w Astro Emissions",
           icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/AAPL.png",
+          imageUrl: "//whitelist.anchorprotocol.com/logo/bLUNA.png",
           color: "primary",
           arrow: 'mdi-arrow-down text-danger',
           value: "",
-          series:  [{ name: "mAAPL", data: []}],
+          series:  [{ name: "LUNA-bLUNA", data: []}],
           options: options2,
         },
         {
-          title: "mCOIN-UST APR",
+          title: "ANC-UST w Astro Emissions",
           icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/COIN.png",
+          imageUrl: "//alphadefi.fund/wp-content/uploads/2022/01/anch-logo.png",
           color: "info",
           arrow: 'mdi-arrow-up text-success',
           value: "",
-          series:  [{ name: "mCOIN", data: []}],
+          series:  [{ name: "ANC-UST", data: []}],
           options: options3,
         },
       ],
@@ -115,18 +115,19 @@ fetchAprData1() {
       precision = 'hour'
     }
     let filters = {
-      ticker: 'mNFLX-UST',
+      ticker: 'LUNA-UST',
       precision: precision,
     }
-    historical.getHistoricalCommAprs(filters).then(apiData => {
+    historical.getHistoricalAstroAllinAprs(filters).then(apiData => {
       let formattedData = apiData
         .filter(obj => obj.apr)
         .map(obj => {
           return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
         })
         console.log(formattedData)
+        //1
         let newState2 = JSON.parse(JSON.stringify(this.state))
-        newState2.reports[0].value = String(Number(formattedData[formattedData.length-1].Price *100).toFixed(2)) + '%'
+        newState2.reports[0].value = Number(formattedData[formattedData.length-1].Price*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%'
         this.setState(newState2)
     })
   }
@@ -140,17 +141,18 @@ fetchAprData1() {
       precision = 'hour'
     }
     let filters = {
-      ticker: 'mAAPL-UST',
+      ticker: 'LUNA-bLUNA',
       precision: precision,
     }
-    historical.getHistoricalCommAprs(filters).then(apiData => {
+    historical.getHistoricalAstroAllinAprs(filters).then(apiData => {
       let formattedData = apiData
         .filter(obj => obj.apr)
         .map(obj => {
           return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
         })
+        //2
         let newState2 = JSON.parse(JSON.stringify(this.state))
-        newState2.reports[1].value = String(Number(formattedData[formattedData.length-1].Price *100).toFixed(2)) + '%'
+        newState2.reports[1].value = Number(formattedData[formattedData.length-1].Price*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%'
         this.setState(newState2)
     })
   }
@@ -164,17 +166,19 @@ fetchAprData1() {
       precision = 'hour'
     }
     let filters = {
-      ticker: 'mCOIN-UST',
+      ticker: 'ANC-UST',
       precision: precision,
     }
-    historical.getHistoricalCommAprs(filters).then(apiData => {
+    historical.getHistoricalAstroAllinAprs(filters).then(apiData => {
       let formattedData = apiData
         .filter(obj => obj.apr)
         .map(obj => {
           return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
         })
+        //3
+        console.log(formattedData)
         let newState2 = JSON.parse(JSON.stringify(this.state))
-        newState2.reports[2].value = String(Number(formattedData[formattedData.length-1].Price *100).toFixed(2)) + '%'
+        newState2.reports[2].value = Number(formattedData[formattedData.length-1].Price*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%'
         this.setState(newState2)
     })
   }
@@ -194,7 +198,7 @@ fetchAprData1() {
           </MetaTags>*/}
           <Container fluid>
             {/* Render Breadcrumb */}
-            <Breadcrumbs title="Dashboards" breadcrumbItem="TERRASWAP" />
+            <Breadcrumbs title="Dashboards" breadcrumbItem="AstroPort APRs With Emissions" />
             <Row>
               {/* card user */}
               {/*<CardUser />*/}

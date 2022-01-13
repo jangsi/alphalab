@@ -25,7 +25,7 @@ import { date } from "language-tags"
 import dayjs from 'dayjs'
 
 function pctFormatter(params) {
-  return Number(params.value*100).toFixed(2) + '%';
+  return Number(params.value) + '%';
 }
 
 function scoreFormatter(params) {
@@ -37,7 +37,7 @@ function formatXAxis(tickItem) {
 }
 
 function priceFormat(tickItem) {
-  return String(Number(tickItem*100).toFixed(2))+'%'
+  return (Number(tickItem)*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%'
 }
 
 const fetchStats = () => {
@@ -55,8 +55,8 @@ class AprTrackerShort extends React.Component {
       tokenAddresses: {},
       rowData: [],
       rowData2: [],
-      selectedShortTicker: 'mAAPL-UST',
-      defaultOption: { label: 'mAAPL-UST', value: 'mAAPL-UST' },
+      selectedShortTicker: 'LUNA-UST',
+      defaultOption: { label: 'LUNA-UST', value: 'LUNA-UST' },
       longDates: [dayjs().subtract(6, 'month').toDate(), dayjs().toDate()],
     }
     this.fetchAprData = this.fetchAprData.bind(this)
@@ -87,7 +87,7 @@ class AprTrackerShort extends React.Component {
   }
 
   fetchTickers() {
-    poolDictApi.getPoolDict().then(apiData => {
+    poolDictApi.getAstroDict().then(apiData => {
       let tokenObj = apiData[0] ? apiData[0].token : {}
       this.setState({
         tickerOptions: Object.keys(tokenObj).map(ticker => {
@@ -115,7 +115,7 @@ class AprTrackerShort extends React.Component {
       to: this.state.longDates[1],
       precision: precision,
     }
-    historical.getHistoricalCommAprs(filters).then(apiData => {
+    historical.getHistoricalAstroAllinAprs(filters).then(apiData => {
       let formattedData = apiData
         .filter(obj => obj.apr)
         .map(obj => {
@@ -163,7 +163,7 @@ class AprTrackerShort extends React.Component {
         <Card >
             <CardBody className="card-body-test">
               <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
-                <Label className="control-label">TERRASWAP TRADING APRS</Label>
+                <Label className="control-label">TRADING APRs w EMISSIONS</Label>
                 <Select
                   classNamePrefix="form-control"
                   placeholder="TYPE or CHOOSE ..."
@@ -202,7 +202,7 @@ class AprTrackerShort extends React.Component {
              </div>
             </CardBody>
           </Card>
-          <Card>
+          {/*<Card>
           <CardBody>
             <div className="ag-theme-alpine" style={{height: 400}}>
             <Label className="control-label">Hover Mouse for Column Descriptions</Label>
@@ -223,7 +223,7 @@ class AprTrackerShort extends React.Component {
             </AgGridReact>
             </div>
           </CardBody>
-          </Card>
+          </Card>*/}
         </Col>
       </React.Fragment>
     )

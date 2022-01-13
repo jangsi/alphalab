@@ -133,18 +133,32 @@ class SidebarContent extends Component {
               <li>
                 <Link to="/#">
                   <i className="bx bx-line-chart" />
-                  <span>{this.props.t("Terra Dashboards")}</span>
+                  <span>{this.props.t("TerraSwap Dashboards")}</span>
                 </Link>
                 <ul className="sub-menu" aria-expanded="false">
-                      <li>
-                      <Link to="/astro-pool-aprs">{this.props.t("AstroPort Trading APRs")}</Link>
-                      </li>
                       <li>
                       <Link to="/terra-pool-aprs">{this.props.t("TerraSwap Trading APRs")}</Link>
                       </li>
                       <li>
                       <Link to="/terra-pool-tlvs">{this.props.t("TerraSwap Pool TLVs")}</Link>
                       </li>
+                </ul>
+              </li>
+
+              <li>
+                <Link to="/#">
+                  <i className="bx bx-line-chart" />
+                  <span>{this.props.t("AstroPort Dashboards")}</span>
+                </Link>
+                <ul className="sub-menu" aria-expanded="false">
+                      <li>
+                      <Link to="/astro-pool-aprs">{this.props.t("AstroPort Trading APRs")}</Link>
+                      </li>
+
+                      <li>
+                      <Link to="/astro-pool-aprs-emissions">{this.props.t("AstroPort APRs with Astro Emissions")}</Link>
+                      </li>
+                      
                 </ul>
               </li>
 
