@@ -137,6 +137,9 @@ class SidebarContent extends Component {
                 </Link>
                 <ul className="sub-menu" aria-expanded="false">
                       <li>
+                      <Link to="/astro-pool-aprs">{this.props.t("AstroPort Trading APRs")}</Link>
+                      </li>
+                      <li>
                       <Link to="/terra-pool-aprs">{this.props.t("TerraSwap Trading APRs")}</Link>
                       </li>
                       <li>

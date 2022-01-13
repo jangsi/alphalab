@@ -15,6 +15,14 @@ const getHistoricalCommAprs = (filters) => {
   return api.get(`/historical/comaprs/${filters.ticker}`, { params: filters })
 }
 
+const getHistoricalAstroCommAprs = (filters) => {
+  return api.get(`/historical/astrocomaprs/${filters.ticker}`, { params: filters })
+}
+
+const getHistoricalAstroAllinAprs = (filters) => {
+  return api.get(`/historical/astroallinaprs/${filters.ticker}`, { params: filters })
+}
+
 const getHistoricalTlvs = (filters) => {
   return api.get(`/historical/ltvs/${filters.ticker}`, { params: filters })
 }
@@ -36,6 +44,8 @@ export default {
   getHistoricalShortAprs: getHistoricalShortAprs,
   getHistoricalTerraDash: getHistoricalTerraDash,
   getHistoricalCommAprs: getHistoricalCommAprs,
+  getHistoricalAstroCommAprs:getHistoricalAstroCommAprs,
+  getHistoricalAstroAllinAprs:getHistoricalAstroAllinAprs,
   getHistoricalTlvs: getHistoricalTlvs,
   getHistoricalAnchor: getHistoricalAnchor,
   getHistoricalNexus: getHistoricalNexus,
