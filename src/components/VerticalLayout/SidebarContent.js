@@ -109,15 +109,33 @@ class SidebarContent extends Component {
           <div id="sidebar-menu">
             <ul className="metismenu list-unstyled" id="side-menu">
               <li className="menu-title">{this.props.t("alphaLabs")}</li>
+              
+              <li>
+                <Link to="/terradash">
+                  <i className="bx bx-home-circle me-2" />
+                  <span>{this.props.t("Terra Core")}</span>
+                </Link>
+              </li>
+
+              <li>
+                <Link to="">
+                  <span>{this.props.t("")}</span>
+                </Link>
+              </li>
+
+              <li>
+                <Link to="">
+                  <span>{this.props.t("")}</span>
+                </Link>
+              </li>
+
+
               <li>
                 <Link to="/#">
                   <i className="bx bx-line-chart" />
                   <span>{this.props.t("Terra Dashboards")}</span>
                 </Link>
                 <ul className="sub-menu" aria-expanded="false">
-                      <li>
-                      <Link to="/terradash">{this.props.t("Terra Core")}</Link>
-                      </li>
                       <li>
                       <Link to="/terra-pool-aprs">{this.props.t("TerraSwap Trading APRs")}</Link>
                       </li>
@@ -126,6 +144,7 @@ class SidebarContent extends Component {
                       </li>
                 </ul>
               </li>
+
               <li>
                 <Link to="/spread-tracker">
                   <i className="bx bx-line-chart" />
@@ -157,6 +176,7 @@ class SidebarContent extends Component {
                   </li>
                 </ul>
               </li>
+
               <li>
                  <Link to="/anchor">
                   <i className="bx bx-line-chart" />
