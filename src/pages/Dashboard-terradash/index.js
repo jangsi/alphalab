@@ -630,7 +630,7 @@ fetchAprData1() {
           </MetaTags>*/}
           <Container fluid>
             {/* Render Breadcrumb */}
-            <Breadcrumbs title="Dashboards" breadcrumbItem="TERRA CORE" />
+            <Breadcrumbs title="ALPHALABS" breadcrumbItem="TERRA CORE" />
             <Row>
               {/* card user */}
               {/*<CardUser />*/}

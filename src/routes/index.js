@@ -80,6 +80,7 @@ import DashboardNexus from "../pages/Dashboard-Nexus/index"
 import DashboardAstroPort from "../pages/Dashboard-AstroPort/index"
 import DashboardAstroPortEmissions from "../pages/Dashboard-AstroPortwEmissions/index"
 import DashboardTerra from "../pages/Dashboard-terradash/index"
+import DashboardFarmers from "../pages/Dashboard-FarmersMarket/index"
 
 // FeeStation
 import FeeStationLong from "../pages/FeeStation/fee-station-long"
@@ -371,7 +372,8 @@ const publicRoutes = [
   { path: "/astro-pool-aprs-emissions", component: DashboardAstroPortEmissions },
   { path: "/spread-tracker", component: DashboardCrypto },
   { path: "/fee-station-long", component: FeeStationLong },
-  { path: "/fee-station-short", component: FeeStationShort }
+  { path: "/fee-station-short", component: FeeStationShort },
+  { path: "/farmers-market", component: DashboardFarmers }
   
   ,
 ]

@@ -118,6 +118,13 @@ class SidebarContent extends Component {
               </li>
 
               <li>
+                <Link to="/farmers-market">
+                  <i className="bx bx-home-circle me-2" />
+                  <span>{this.props.t("Farmers Market")}</span>
+                </Link>
+              </li>
+
+              <li>
                 <Link to="">
                   <span>{this.props.t("")}</span>
                 </Link>
@@ -129,11 +136,11 @@ class SidebarContent extends Component {
                 </Link>
               </li>
 
-
+              <li className="menu-title">{this.props.t("Dashboards")}</li>
               <li>
                 <Link to="/#">
                   <i className="bx bx-line-chart" />
-                  <span>{this.props.t("TerraSwap Dashboards")}</span>
+                  <span>{this.props.t("TerraSwap")}</span>
                 </Link>
                 <ul className="sub-menu" aria-expanded="false">
                       <li>
@@ -148,7 +155,7 @@ class SidebarContent extends Component {
               <li>
                 <Link to="/#">
                   <i className="bx bx-line-chart" />
-                  <span>{this.props.t("AstroPort Dashboards")}</span>
+                  <span>{this.props.t("AstroPort")}</span>
                 </Link>
                 <ul className="sub-menu" aria-expanded="false">
                       <li>
@@ -165,7 +172,7 @@ class SidebarContent extends Component {
               <li>
                 <Link to="/spread-tracker">
                   <i className="bx bx-line-chart" />
-                  <span>{this.props.t("Mirror Dashboards")}</span>
+                  <span>{this.props.t("Mirror")}</span>
                 </Link>
                 <ul className="sub-menu" aria-expanded="false">
                   {/*<li>
@@ -197,13 +204,13 @@ class SidebarContent extends Component {
               <li>
                  <Link to="/anchor">
                   <i className="bx bx-line-chart" />
-                  <span>{this.props.t("Anchor Dashboard")}</span>
+                  <span>{this.props.t("Anchor")}</span>
                 </Link>
               </li>
               <li>
                  <Link to="/nexus">
                   <i className="bx bx-line-chart" />
-                  <span>{this.props.t("Nexus Dashboard")}</span>
+                  <span>{this.props.t("Nexus")}</span>
                 </Link>
               </li>
               
