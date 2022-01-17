@@ -23,6 +23,10 @@ const getHistoricalAstroAllinAprs = (filters) => {
   return api.get(`/historical/astroallinaprs/${filters.ticker}`, { params: filters })
 }
 
+const getHistoricalAPRCompare = (filters) => {
+  return api.get(`/historical/aprcompare/${filters.ticker}`, { params: filters })
+}
+
 const getHistoricalTlvs = (filters) => {
   return api.get(`/historical/ltvs/${filters.ticker}`, { params: filters })
 }
@@ -49,5 +53,6 @@ export default {
   getHistoricalTlvs: getHistoricalTlvs,
   getHistoricalAnchor: getHistoricalAnchor,
   getHistoricalNexus: getHistoricalNexus,
-  getSpreadHistStats: getSpreadHistStats
+  getSpreadHistStats: getSpreadHistStats,
+  getHistoricalAPRCompare:getHistoricalAPRCompare,
 }

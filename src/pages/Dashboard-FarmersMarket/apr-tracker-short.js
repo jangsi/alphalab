@@ -52,11 +52,12 @@ class AprTrackerShort extends React.Component {
     this.state = {
       data: [],
       tickerOptions: [],
+      tickerOptions2: [],
       tokenAddresses: {},
       rowData: [],
       rowData2: [],
-      selectedShortTicker: 'LUNA-UST',
-      defaultOption: { label: 'LUNA-UST', value: 'LUNA-UST' },
+      selectedShortTicker: 'LUNA-UST Astroport',
+      defaultOption: { label: 'LUNA-UST Astroport', value: 'LUNA-UST Astroport' },
       longDates: [dayjs().subtract(6, 'month').toDate(), dayjs().toDate()],
     }
     this.fetchAprData = this.fetchAprData.bind(this)
@@ -91,9 +92,23 @@ class AprTrackerShort extends React.Component {
       let tokenObj = apiData[0] ? apiData[0].token : {}
       this.setState({
         tickerOptions: Object.keys(tokenObj).map(ticker => {
-          return { value: ticker, label: ticker }
+          return { value: ticker + ' Astroport', label: ticker + ' Astroport' }
         }),
         tokenAddresses: tokenObj,
+        
+      }, () => this.fetchAprData())
+    })
+  }
+
+  fetchTickers2() {
+    poolDictApi.getAstroDict().then(apiData => {
+      let tokenObj = apiData[0] ? apiData[0].token : {}
+      this.setState({
+        tickerOptions2: Object.keys(tokenObj).map(ticker => {
+          return { value: ticker + ' TerraSwap', label: ticker + ' Terraswap' }
+        }),
+        tokenAddresses: tokenObj,
+        
       }, () => this.fetchAprData())
     })
   }
@@ -115,11 +130,11 @@ class AprTrackerShort extends React.Component {
       to: this.state.longDates[1],
       precision: precision,
     }
-    historical.getHistoricalAstroAllinAprs(filters).then(apiData => {
+    historical.getHistoricalAPRCompare(filters).then(apiData => {
       let formattedData = apiData
         .filter(obj => obj.apr)
         .map(obj => {
-          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), APR: obj.apr}
+          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), PCT_TOTAL_VOLUME: obj.apr}
         })
       this.setState(_ => ({
         data: formattedData,
@@ -152,6 +167,7 @@ class AprTrackerShort extends React.Component {
   componentDidMount() {
     // load latest month by default
     this.fetchTickers()
+    this.fetchTickers2()
 
   }
 
@@ -160,16 +176,32 @@ class AprTrackerShort extends React.Component {
     return (
       <React.Fragment>
         <Col xl="12">
-        {/*<Card >
+          <Card>
+          <CardBody>
+            <div className="ag-theme-alpine" style={{height: 450}}>
+            <Label className="control-label">Hover Mouse for Column Descriptions</Label>
+            <AgGridReact
+               onGridReady={this.onGridReady.bind(this)}
+               rowData={this.state.rowData}>
+                <AgGridColumn field="ticker" sortable={true} filter={true} resizable={true} headerTooltip='Pool Name'></AgGridColumn>
+                <AgGridColumn field="TerraSwap Trading APR" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='TerraSwap Trading APR'></AgGridColumn>
+                <AgGridColumn field="AstroPort Trading APR" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='AstroPort Trading APR'></AgGridColumn>
+                <AgGridColumn field="Percent Volume From TerraSwap" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='% Total Volume from TerraSwap'></AgGridColumn>
+                <AgGridColumn field="Percent Volume From Astroport" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='% Total Volume from Astroport'></AgGridColumn>
+            </AgGridReact>
+            </div>
+          </CardBody>
+          </Card>
+          <Card >
 
             <CardBody className="card-body-test">
               <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
-                <Label className="control-label">TRADING APRs w EMISSIONS</Label>
+                <Label className="control-label">Percent of Total Trading Volume from DEX</Label>
                 <Select
                   classNamePrefix="form-control"
                   placeholder="TYPE or CHOOSE ..."
                   title="mAsset"
-                  options={this.state.tickerOptions}
+                  options={this.state.tickerOptions.concat(this.state.tickerOptions2)}
                   defaultValue={this.state.defaultOption}
                   onChange={this.handleChange}
                 />
@@ -197,28 +229,12 @@ class AprTrackerShort extends React.Component {
                 <YAxis  domain={['auto', 'auto']} tickFormatter={priceFormat}/>
                 <Tooltip labelFormatter={tick => {return formatXAxis(tick);}} formatter={tick => {return priceFormat(tick);}}/>
                 <Legend />
-                <Line data={this.state.data} type="linear" dataKey="APR" dot={false} strokeWidth={4} stroke="#8884d8"/>
+                <Line data={this.state.data} type="linear" dataKey="PCT_TOTAL_VOLUME" dot={false} strokeWidth={4} stroke="#8884d8"/>
              </LineChart>
              </ResponsiveContainer>
              </div>
             </CardBody>
-          </Card>*/}
-          <Card>
-          <CardBody>
-            <div className="ag-theme-alpine" style={{height: 450}}>
-            <Label className="control-label">Hover Mouse for Column Descriptions</Label>
-            <AgGridReact
-               onGridReady={this.onGridReady.bind(this)}
-               rowData={this.state.rowData}>
-                <AgGridColumn field="ticker" sortable={true} filter={true} resizable={true} headerTooltip='Pool Name'></AgGridColumn>
-                <AgGridColumn field="TerraSwap Trading APR" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='TerraSwap Trading APR'></AgGridColumn>
-                <AgGridColumn field="AstroPort Trading APR" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='AstroPort Trading APR'></AgGridColumn>
-                <AgGridColumn field="Percent Volume From TerraSwap" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='% Total Volume from TerraSwap'></AgGridColumn>
-                <AgGridColumn field="Percent Volume From Astroport" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='% Total Volume from Astroport'></AgGridColumn>
-            </AgGridReact>
-            </div>
-          </CardBody>
-          </Card>
+          </Card>*
         </Col>
       </React.Fragment>
     )
