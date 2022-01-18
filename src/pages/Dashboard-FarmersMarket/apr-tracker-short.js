@@ -92,7 +92,7 @@ class AprTrackerShort extends React.Component {
       let tokenObj = apiData[0] ? apiData[0].token : {}
       this.setState({
         tickerOptions: Object.keys(tokenObj).map(ticker => {
-          return { value: ticker + ' Astroport', label: ticker + ' Astroport' }
+          return { value: ticker , label: ticker }
         }),
         tokenAddresses: tokenObj,
         
@@ -105,7 +105,7 @@ class AprTrackerShort extends React.Component {
       let tokenObj = apiData[0] ? apiData[0].token : {}
       this.setState({
         tickerOptions2: Object.keys(tokenObj).map(ticker => {
-          return { value: ticker + ' TerraSwap', label: ticker + ' Terraswap' }
+          return { value: ticker , label: ticker}
         }),
         tokenAddresses: tokenObj,
         
