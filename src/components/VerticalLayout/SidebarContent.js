@@ -124,12 +124,12 @@ class SidebarContent extends Component {
                 </Link>
               </li>
 
-              <li>
+              {/*<li>
                 <Link to="/liq-profile">
                   <i className="bx bx-home-circle me-2" />
                   <span>{this.props.t("Liquidation Nodes")}</span>
                 </Link>
-              </li>
+              </li>*/}
 
               <li>
                 <Link to="">
