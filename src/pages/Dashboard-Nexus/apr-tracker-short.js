@@ -24,14 +24,6 @@ import { ConsoleWriter } from "istanbul-lib-report"
 import { date } from "language-tags"
 import dayjs from 'dayjs'
 
-function pctFormatter(params) {
-  return Number(params.value) + '%';
-}
-
-function scoreFormatter(params) {
-  return Number(params.value).toFixed(2);
-}
-
 function formatXAxis(tickItem) {
   return dayjs(tickItem).format('MM/DD/YYYY HH:mm:ss')
 }
@@ -40,39 +32,53 @@ function priceFormat(tickItem) {
   return Number(tickItem).toLocaleString('en-US', {maximumFractionDigits:2})+'%'
 }
 
-const fetchStats = () => {
-  return fetch(
-    "https://api.alphadefi.fund/historical/poolhiststats"
-  );
-};
+function simpleMovingAverage(prices, window = 5) {
+  if (!prices || prices.length < window) {
+    return [];
+  }
+
+  let index = window - 1;
+  const length = prices.length + 1;
+
+  const simpleMovingAverages = [];
+
+  while (++index < length) {
+    const windowSlice = prices.slice(index - window, index);
+    const sum = windowSlice.reduce((prev, curr) => prev + curr, 0);
+    simpleMovingAverages.push(sum / window);
+  }
+
+  return simpleMovingAverages;
+}
 
 class AprTrackerShort extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       data: [],
+      averageData: [],
+      averageValues:[],
+      averageDates:[],
       tickerOptions: [],
+      averageOptions: [{ label:'10 Period Moving Average', value:10},
+      { label:'50 Period Moving Average', value:50},
+      { label:'100 Period Moving Average', value:100}],
       tokenAddresses: {},
       rowData: [],
       rowData2: [],
       selectedShortTicker: 'bLunaVaultApr',
+      selectedAverage: 10,
       defaultOption: { label: 'bLunaVaultApr', value: 'bLunaVaultApr' },
       longDates: [dayjs().subtract(6, 'month').toDate(), dayjs().toDate()],
     }
     this.fetchAprData = this.fetchAprData.bind(this)
+    this.fetchAverages = this.fetchAverages.bind(this)
     this.fetchTickers = this.fetchTickers.bind(this)
+
     this.handleChange = this.handleChange.bind(this)
+    this.handleAverageChange = this.handleAverageChange.bind(this)
     this.handleStartDateChange = this.handleStartDateChange.bind(this)
     this.handleEndDateChange = this.handleEndDateChange.bind(this)
-
-    this.fetchData = this.fetchData.bind(this);
-  }
-
-  async fetchData() {
-    const response = await fetchStats();
-    const data = await response.json();
-    console.log(data)
-    this.setState({ rowData: data });
   }
 
   onGridReady(params) {
@@ -80,7 +86,6 @@ class AprTrackerShort extends React.Component {
     this.gridColumnApi = params.columnApi;
 
     console.log(">> onGridReady");
-    this.fetchData();
     //this.gridColumnApi.autoSizeColumns();
     this.gridApi.sizeColumnsToFit();
 
@@ -117,9 +122,9 @@ class AprTrackerShort extends React.Component {
     }
     historical.getHistoricalNexus(filters).then(apiData => {
       let formattedData = apiData
-        .filter(obj => obj.value)
+        //.filter(obj => obj.value)
         .map(obj => {
-          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), LIQUIDITY: obj.value}
+          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), APR: obj.value}
         })
       this.setState(_ => ({
         data: formattedData,
@@ -128,11 +133,62 @@ class AprTrackerShort extends React.Component {
     })
   }
 
+  fetchAverages() {
+    if (this.state.selectedAverage.length === 0) {
+      return
+    }
+    let precision = 'day'
+    let diff = Math.abs(dayjs(this.state.longDates[0]).diff(dayjs(this.state.longDates[1])))
+    // 604800000 = 7 days
+    if (diff < 604800000) {
+      precision = 'hour'
+    }
+    let filters = {
+      token: this.state.tokenAddresses[this.state.selectedShortTicker],
+      ticker: this.state.selectedShortTicker,
+      from: this.state.longDates[0],
+      to: this.state.longDates[1],
+      precision: precision,
+    }
+    historical.getHistoricalNexus(filters).then(apiData => {
+      console.log('i am here')
+      const values = []
+      const dates = []
+      apiData.filter(obj => values.push(obj.value)) 
+      apiData.filter(obj => dates.push(obj.date)) 
+      const maData = simpleMovingAverage(values, this.state.selectedAverage)
+      this.setState(_ => ({
+        averageValues: maData,
+        averageDates: dates.slice(this.state.selectedAverage-1)
+      }))
+      console.log(values.length)
+      console.log(this.state.averageValues)
+      console.log(this.state.averageDates)
+    })
+
+    let finalData = []
+    for (let i = 0; i < this.state.averageDates.length; i++) {
+      finalData.push({xaxis1: dayjs(this.state.averageDates[i]), APR_Average: this.state.averageValues[i]})
+      console.log(finalData)
+    }
+    this.setState(_ => ({
+      averageData: finalData
+    }))
+
+  }
+
   handleChange(selectedOption) {
     console.log(selectedOption.value)
     this.setState({
       selectedShortTicker: selectedOption.value
     }, () => this.fetchAprData())
+  }
+
+  handleAverageChange(selectedAverage) {
+    console.log(selectedAverage.value)
+    this.setState({
+      selectedAverage: selectedAverage.value
+    }, () => this.fetchAverages())
   }
 
   handleStartDateChange(date) {
@@ -188,42 +244,35 @@ class AprTrackerShort extends React.Component {
                   onChange={this.handleEndDateChange}
                 />
               </FormGroup>
+             {/* <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
+                <Label className="control-label">Apply Moving Average</Label>
+                <Select
+                  classNamePrefix="form-control2"
+                  placeholder="TYPE or CHOOSE ..."
+                  title="mAsset"
+                  options={this.state.averageOptions}
+                  onChange={this.handleAverageChange}
+              />
+              </FormGroup>*/}
               <div style={{height: 600}}>
               <ResponsiveContainer width="100%" height="100%">
               <LineChart width={2000} height={600}
                       margin={{top: 20, right: 30, left: 0, bottom: 0}}>
-                <XAxis dataKey='xaxis1' type="category" domain={['dataMin', 'dataMax']} tickFormatter={formatXAxis}/>
+                <XAxis xAxisId="one" dataKey='xaxis1' type="category" domain={['dataMin', 'dataMax']} tickFormatter={formatXAxis}/>
                 <YAxis  domain={['auto', 'auto']} tickFormatter={priceFormat}/>
+
+
                 <Tooltip labelFormatter={tick => {return formatXAxis(tick);}} formatter={tick => {return priceFormat(tick);}}/>
                 <Legend />
-                <Line data={this.state.data} type="linear" dataKey="LIQUIDITY" dot={false} strokeWidth={4} stroke="#8884d8"/>
+
+
+                <Line data={this.state.data} xAxisId="one" type="linear" dataKey="APR" dot={false} strokeWidth={4} stroke="#8884d8"/>
+                {/*<Line data={this.state.averageData} xAxisId="one" type="linear" dataKey="APR_Average" dot={false} strokeWidth={1} stroke="#8884d8"/>*/}
              </LineChart>
              </ResponsiveContainer>
              </div>
             </CardBody>
           </Card>
-          {/*<Card>
-          <CardBody>
-            <div className="ag-theme-alpine" style={{height: 400}}>
-            <Label className="control-label">Hover Mouse for Column Descriptions</Label>
-            <AgGridReact
-               onGridReady={this.onGridReady.bind(this)}
-               rowData={this.state.rowData}>
-                <AgGridColumn field="symbol" sortable={true} filter={true} resizable={true} headerTooltip='Symbol'></AgGridColumn>
-                <AgGridColumn field="AlphaDefi APR Score" sortable={true} filter={true} valueFormatter={scoreFormatter} resizable={true}  headerTooltip='Current Yield / rolling 21 day vol'></AgGridColumn>
-                <AgGridColumn field="current" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='most recently calculated APY'></AgGridColumn>
-                <AgGridColumn field="mean" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='mean historical apr, normally the apr this pool trades at'></AgGridColumn>
-                <AgGridColumn field="Three SD" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='+ three standard deviations from mean'></AgGridColumn>
-                <AgGridColumn field="Neg Three SD" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='- three standard deviations from mean'></AgGridColumn>
-                <AgGridColumn field="max" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='max apr last 21 days'></AgGridColumn>
-                <AgGridColumn field="min" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}   headerTooltip='min apr last 21 days'></AgGridColumn>
-                <AgGridColumn field="std" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='std of historical apr'></AgGridColumn>
-                <AgGridColumn field="Historical 5th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='Historical 5th % APR'></AgGridColumn>
-                <AgGridColumn field="Historical 95th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='Historical 95th % APR'></AgGridColumn>
-            </AgGridReact>
-            </div>
-          </CardBody>
-          </Card>*/}
         </Col>
       </React.Fragment>
     )

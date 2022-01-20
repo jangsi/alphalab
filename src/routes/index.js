@@ -81,6 +81,7 @@ import DashboardAstroPort from "../pages/Dashboard-AstroPort/index"
 import DashboardAstroPortEmissions from "../pages/Dashboard-AstroPortwEmissions/index"
 import DashboardTerra from "../pages/Dashboard-terradash/index"
 import DashboardFarmers from "../pages/Dashboard-FarmersMarket/index"
+import DashboardLiqProfile from "../pages/Dashboard-LiqProfile/index"
 
 // FeeStation
 import FeeStationLong from "../pages/FeeStation/fee-station-long"
@@ -373,7 +374,8 @@ const publicRoutes = [
   { path: "/spread-tracker", component: DashboardCrypto },
   { path: "/fee-station-long", component: FeeStationLong },
   { path: "/fee-station-short", component: FeeStationShort },
-  { path: "/farmers-market", component: DashboardFarmers }
+  { path: "/farmers-market", component: DashboardFarmers },
+  { path: "/liq-profile", component: DashboardLiqProfile }
   
   ,
 ]
