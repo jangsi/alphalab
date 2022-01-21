@@ -23,7 +23,6 @@ class Dashboard extends Component {
     //this.fetchAprData1= this.fetchAprData1.bind(this)
   }
 
-
   fetchAprData1() {
 
     let precision = 'day'
