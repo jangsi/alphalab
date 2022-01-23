@@ -74,7 +74,7 @@ const fetchStats = () => {
 
 const fetchLuna = () => {
   return fetch(
-    "https://api.coinhall.org/api/charts/terra/prices/latest"
+    "https://api.alphadefi.fund/info/liqprofile"
   );
 };
 
@@ -93,7 +93,7 @@ class AprTrackerShort extends React.Component {
       longDates: [dayjs().subtract(6, 'month').toDate(), dayjs().toDate()],
       reports: [
         {
-          title: "Live Luna Price",
+          title: "Live",
           icon: "mdi mdi-email-open",
           imageUrl: "//whitelist.mirror.finance/images/Luna.png",
           color: "warning",
@@ -103,7 +103,7 @@ class AprTrackerShort extends React.Component {
           options: options,
         },
         {
-          title: "Biggest Loan Risk Level",
+          title: "Biggest Loan Risk Node",
           icon: "mdi mdi-email-open",
           imageUrl: "//whitelist.mirror.finance/images/Luna.png",
           color: "primary",
@@ -148,7 +148,9 @@ class AprTrackerShort extends React.Component {
     const data = await response.json();
     console.log(data)
     let newState = JSON.parse(JSON.stringify(this.state))
-    newState.reports[0].value = '$'+Number(data['terra1m6ywlgn6wrjuagcmmezzz2a029gtldhey5k552']).toLocaleString('en-US', {maximumFractionDigits:2})
+    newState.reports[0].value = 'Luna - $'+Number(data[0]['luna_price']).toLocaleString('en-US', {maximumFractionDigits:2})
+    newState.reports[1].value = 'Luna - $'+Number(data[0]['bigrisk']).toLocaleString('en-US', {maximumFractionDigits:2})
+    newState.reports[2].value = 'Luna - $'+Number(data[0]['areatowatch']).toLocaleString('en-US', {maximumFractionDigits:2})
     this.setState(newState)
   }
 
