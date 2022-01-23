@@ -67,9 +67,12 @@ class AprTrackerShort extends React.Component {
       longDates: [dayjs().subtract(6, 'month').toDate(), dayjs().toDate()],
     }
     this.fetchAprData = this.fetchAprData.bind(this)
-
-
     this.fetchData = this.fetchData.bind(this);
+
+    this.timer = null
+    this.timer2 = null
+    this.clearTimer = this.clearTimer.bind(this)
+    this.scheduleFetch = this.scheduleFetch.bind(this)
   }
 
   async fetchData() {
@@ -101,10 +104,24 @@ class AprTrackerShort extends React.Component {
         data: formattedData,
       }))
       console.log(this.state.data)
+      this.scheduleFetch()
     })
   }
 
+  clearTimer() {
+    if (this.timer) {
+      clearTimeout(this.timer)
+      this.timer = null
+      this.timer2 = null
+    }
+  }
 
+  scheduleFetch() {
+    this.clearTimer()
+    // set to 5 min, the same as the graphql interval
+    this.timer = setTimeout(this.fetchAprData, 60000)
+    this.timer2 = setTimeout(this.fetchData, 60000)
+  }
 
 
 
