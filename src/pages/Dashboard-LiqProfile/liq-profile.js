@@ -1,6 +1,7 @@
 import React from "react"
 import Select from "react-select"
 import {
+  Row,
   Col,
   FormGroup,
   Label,
@@ -23,6 +24,25 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import { ConsoleWriter } from "istanbul-lib-report"
 import { date } from "language-tags"
 import dayjs from 'dayjs'
+import MiniWidget from "./mini-widget"
+import AttachedFiles from "pages/Projects/ProjectOverview/attachedFiles"
+
+const options = {
+  chart: { sparkline: { enabled: !0 } },
+  stroke: { curve: "smooth", width: 2 },
+  colors: ["#f1b44c"],
+  fill: {
+    type: "gradient",
+    gradient: {
+      shadeIntensity: 1,
+      inverseColors: !1,
+      opacityFrom: 0.45,
+      opacityTo: 0.05,
+      stops: [25, 100, 100, 100],
+    },
+  },
+  tooltip: { fixed: { enabled: !1 }, x: { show: !1 }, marker: { show: !1 } },
+}
 
 function pctFormatter(params) {
   return Number(params.value*100).toFixed(2) + '%';
@@ -52,6 +72,12 @@ const fetchStats = () => {
   );
 };
 
+const fetchLuna = () => {
+  return fetch(
+    "https://api.coinhall.org/api/charts/terra/prices/latest"
+  );
+};
+
 class AprTrackerShort extends React.Component {
   constructor(props) {
     super(props)
@@ -65,12 +91,47 @@ class AprTrackerShort extends React.Component {
       selectedShortTicker: 'LUNA-UST Astroport',
       defaultOption: { label: 'LUNA-UST Astroport', value: 'LUNA-UST Astroport' },
       longDates: [dayjs().subtract(6, 'month').toDate(), dayjs().toDate()],
+      reports: [
+        {
+          title: "Live Luna Price",
+          icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
+          color: "warning",
+          value: "",
+          arrow: 'mdi-arrow-up text-success',
+          series: [{ name: "LUNA", data: []}],
+          options: options,
+        },
+        {
+          title: "Biggest Loan Risk Level",
+          icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
+          color: "primary",
+          arrow: 'mdi-arrow-down text-danger',
+          value: "",
+          series:  [{ name: "Loan Risk", data: []}],
+          options: options,
+        },
+        {
+          title: "Price To Watch",
+          icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
+          color: "info",
+          arrow: 'mdi-arrow-up text-success',
+          value: "",
+          series:  [{ name: "Price to Watch", data: []}],
+          options: options,
+        },
+      ],
+
     }
     this.fetchAprData = this.fetchAprData.bind(this)
     this.fetchData = this.fetchData.bind(this);
+    this.fetchLuna = this.fetchLuna.bind(this);
 
     this.timer = null
     this.timer2 = null
+    this.timer3= null
     this.clearTimer = this.clearTimer.bind(this)
     this.scheduleFetch = this.scheduleFetch.bind(this)
   }
@@ -80,6 +141,15 @@ class AprTrackerShort extends React.Component {
     const data = await response.json();
     console.log(data)
     this.setState({ rowData: data });
+  }
+
+  async fetchLuna() {
+    const response = await fetchLuna();
+    const data = await response.json();
+    console.log(data)
+    let newState = JSON.parse(JSON.stringify(this.state))
+    newState.reports[0].value = '$'+Number(data['terra1m6ywlgn6wrjuagcmmezzz2a029gtldhey5k552']).toLocaleString('en-US', {maximumFractionDigits:2})
+    this.setState(newState)
   }
 
   onGridReady(params) {
@@ -121,6 +191,7 @@ class AprTrackerShort extends React.Component {
     // set to 5 min, the same as the graphql interval
     this.timer = setTimeout(this.fetchAprData, 60000)
     this.timer2 = setTimeout(this.fetchData, 60000)
+    this.timer3 = setTimeout(this.fetchLuna, 60000)
   }
 
 
@@ -128,6 +199,7 @@ class AprTrackerShort extends React.Component {
 
   componentDidMount() {
     this.fetchAprData()
+    this.fetchLuna()
 
   }
 
@@ -136,9 +208,15 @@ class AprTrackerShort extends React.Component {
     return (
       <React.Fragment>
         <Col xl="12">
+          
+         
           <Card >
 
-            <CardBody className="card-body-test">
+          <CardBody className="card-body-test">
+            <Row>
+          {/* mini widgets */}
+          <MiniWidget reports={this.state.reports} />
+          </Row>
               <div style={{height: 1000}}>
               <ResponsiveContainer width="100%" height="100%">
               <ScatterChart
@@ -152,8 +230,8 @@ class AprTrackerShort extends React.Component {
           }}
         >
           <CartesianGrid />
-          <XAxis type="number" dataKey="Loan_Value" name="Loan_Value" tickFormatter={priceFormat2} />
-          <YAxis type="number" dataKey="Luna_Liquidation_Price" name="Luna_Liquidation_Price" tickFormatter={priceFormat2}/>
+          <XAxis type="number" dataKey="Loan_Value" name="Loan_Value" tickFormatter={priceFormat2} domain={['dataMin', 'dataMax']}/>
+          <YAxis type="number" dataKey="Luna_Liquidation_Price" name="Luna_Liquidation_Price" tickFormatter={priceFormat2} domain={['dataMin', 'dataMax']}/>
           <Tooltip cursor={{ strokeDasharray: '3 3' }}  labelFormatter={tick => {return priceFormat(tick);}} formatter={tick => {return priceFormat2(tick);}}/>
           <Legend/>
           <Scatter name="Liquidatuion Prices of Outstanding Loans" data={this.state.data} fill="000000" line={{stroke: 'black', strokeWidth: 3}}/>
