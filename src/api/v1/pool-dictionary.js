@@ -17,9 +17,10 @@ const getAstroDict = () => {
 }
 
 
+
 export default {
   getPoolDict: getPoolDict,
   getNexusDict: getNexusDict,
   getDashboardDict:getDashboardDict,
-  getAstroDict:getAstroDict
+  getAstroDict:getAstroDict,
 }

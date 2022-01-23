@@ -39,6 +39,11 @@ const getHistoricalNexus = (filters) => {
   return api.get(`/historical/nexus/${filters.ticker}`, { params: filters })
 }
 
+const getLiquidationProfile = (filters) => {
+  return api.get('/historical/kujira/profile')
+}
+
+
 const getSpreadHistStats = (filters) => {
   return api.get('/historical/spreadhiststats')
 }
@@ -55,4 +60,5 @@ export default {
   getHistoricalNexus: getHistoricalNexus,
   getSpreadHistStats: getSpreadHistStats,
   getHistoricalAPRCompare:getHistoricalAPRCompare,
+  getLiquidationProfile:getLiquidationProfile
 }

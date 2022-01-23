@@ -13,21 +13,21 @@ class CardWelcome extends Component {
             <Row>
               <Col lg="9" sm="8">
                 <div className="p-4">
-                  <h5 className="text-primary">Farmers Market</h5>
+                  <h5 className="text-primary">Liquidation Nodes</h5>
                   <p>Welcome Alpha Astronaut!</p>
 
                   <div className="text-muted">
                     <p className="mb-1">
                       <i className="mdi mdi-circle-medium align-middle text-primary me-1"/>{" "}
-                      Select Pool to Analyze
+                      Analyze Loan Structure in RealTime
                     </p>
                     <p className="mb-1">
                       <i className="mdi mdi-circle-medium align-middle text-primary me-1"/>{" "}
-                      Track Volume Flows and Compare DEX APRs
+                      Monitor the $ Value of Loans that Would be Liquidated at Each Luna Price Level
                     </p>
                     <p className="mb-0">
                       <i className="mdi mdi-circle-medium align-middle text-primary me-1"/>{" "}
-                      Locate Trading Opportunities
+                      Use Higher Loan Nodes as Support or Areas to Place Liquidatuion Bids at Higher Premiums
                     </p>
                   </div>
                 </div>

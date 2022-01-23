@@ -7,7 +7,7 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 
 //Import Components
 import CardWelcome from "./card-welcome"
-import AprTrackerShort from './chart'
+import AprTrackerShort from './liq-profile'
 import historical from '../../api/v1/historical'
 
 import dayjs from 'dayjs'
@@ -58,7 +58,7 @@ class Dashboard extends Component {
       <React.Fragment>
         <div className="page-content">
           <Container fluid>
-            <Breadcrumbs title="ALPHALABS" breadcrumbItem="FARMERS MARKET" />
+            <Breadcrumbs title="ALPHALABS" breadcrumbItem="Liquidation Nodes" />
             <Row>
               <Col xl="12">
                 <CardWelcome />
