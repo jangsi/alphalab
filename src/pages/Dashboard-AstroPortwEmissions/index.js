@@ -82,13 +82,13 @@ class Dashboard extends Component {
           options: options1,
         },
         {
-          title: "LUNA-bLUNA w Astro Emissions",
+          title: "PSI-UST w Astro Emissions",
           icon: "mdi mdi-email-open",
           imageUrl: "//whitelist.anchorprotocol.com/logo/bLUNA.png",
           color: "primary",
           arrow: 'mdi-arrow-down text-danger',
           value: "",
-          series:  [{ name: "LUNA-bLUNA", data: []}],
+          series:  [{ name: "PSI-UST", data: []}],
           options: options2,
         },
         {
