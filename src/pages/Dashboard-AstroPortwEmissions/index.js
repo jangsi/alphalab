@@ -141,7 +141,7 @@ fetchAprData1() {
       precision = 'hour'
     }
     let filters = {
-      ticker: 'LUNA-bLUNA',
+      ticker: 'PSI-UST',
       precision: precision,
     }
     historical.getHistoricalAstroAllinAprs(filters).then(apiData => {
