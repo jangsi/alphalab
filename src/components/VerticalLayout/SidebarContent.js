@@ -191,20 +191,6 @@ class SidebarContent extends Component {
                       <li>
                       <Link to="/mirror-aprs">{this.props.t("Mirror Protocol APRs")}</Link>
                       </li>
-                      <li>
-                    <Link to="/#" className="has-arrow">
-                      {/* <i className="bx bx-store" /> */}
-                      <span>{this.props.t("Fee Station")}</span>
-                    </Link>
-                    <ul className="sub-menu" aria-expanded="false">
-                      <li>
-                        <Link to="/fee-station-long">{this.props.t("Round Trip Buy")}</Link>
-                      </li>
-                      <li>
-                        <Link to="/fee-station-short">{this.props.t("Round Trip Short Sale")}</Link>
-                      </li>
-                    </ul>
-                  </li>
                 </ul>
               </li>
 
