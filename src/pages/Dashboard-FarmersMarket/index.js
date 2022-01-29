@@ -103,90 +103,12 @@ class Dashboard extends Component {
         },
       ],
     }
-    this.fetchAprData1= this.fetchAprData1.bind(this)
+
   }
 
-fetchAprData1() {
-
-    let precision = 'day'
-    let diff = 605800000
-    // 604800000 = 7 days
-    if (diff < 604800000) {
-      precision = 'hour'
-    }
-    let filters = {
-      ticker: 'LUNA-UST',
-      precision: precision,
-    }
-    historical.getHistoricalAstroAllinAprs(filters).then(apiData => {
-      let formattedData = apiData
-        .filter(obj => obj.apr)
-        .map(obj => {
-          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
-        })
-        console.log(formattedData)
-        //1
-        let newState2 = JSON.parse(JSON.stringify(this.state))
-        newState2.reports[0].value = Number(formattedData[formattedData.length-1].Price*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%'
-        this.setState(newState2)
-    })
-  }
-
-  fetchAprData2() {
-
-    let precision = 'day'
-    let diff = 605800000
-    // 604800000 = 7 days
-    if (diff < 604800000) {
-      precision = 'hour'
-    }
-    let filters = {
-      ticker: 'LUNA-bLUNA',
-      precision: precision,
-    }
-    historical.getHistoricalAstroAllinAprs(filters).then(apiData => {
-      let formattedData = apiData
-        .filter(obj => obj.apr)
-        .map(obj => {
-          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
-        })
-        //2
-        let newState2 = JSON.parse(JSON.stringify(this.state))
-        newState2.reports[1].value = Number(formattedData[formattedData.length-1].Price*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%'
-        this.setState(newState2)
-    })
-  }
-
-  fetchAprData3() {
-
-    let precision = 'day'
-    let diff = 605800000
-    // 604800000 = 7 days
-    if (diff < 604800000) {
-      precision = 'hour'
-    }
-    let filters = {
-      ticker: 'ANC-UST',
-      precision: precision,
-    }
-    historical.getHistoricalAstroAllinAprs(filters).then(apiData => {
-      let formattedData = apiData
-        .filter(obj => obj.apr)
-        .map(obj => {
-          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
-        })
-        //3
-        console.log(formattedData)
-        let newState2 = JSON.parse(JSON.stringify(this.state))
-        newState2.reports[2].value = Number(formattedData[formattedData.length-1].Price*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%'
-        this.setState(newState2)
-    })
-  }
 
   componentDidMount() {
-    this.fetchAprData1()
-    this.fetchAprData2()
-    this.fetchAprData3()
+
   }
 
   render() {

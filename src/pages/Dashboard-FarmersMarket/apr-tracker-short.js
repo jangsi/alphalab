@@ -25,7 +25,7 @@ import { date } from "language-tags"
 import dayjs from 'dayjs'
 
 function pctFormatter(params) {
-  return Number(params.value*100).toFixed(2) + '%';
+  return Number(params.value).toFixed(2) + '%';
 }
 
 function scoreFormatter(params) {
@@ -178,21 +178,24 @@ class AprTrackerShort extends React.Component {
         <Col xl="12">
           <Card>
           <CardBody>
-            <div className="ag-theme-alpine" style={{height: 450}}>
+            <div className="ag-theme-alpine" style={{height: 800}}>
             <Label className="control-label">Hover Mouse for Column Descriptions</Label>
             <AgGridReact
                onGridReady={this.onGridReady.bind(this)}
                rowData={this.state.rowData}>
-                <AgGridColumn field="ticker" sortable={true} filter={true} resizable={true} headerTooltip='Pool Name'></AgGridColumn>
-                <AgGridColumn field="TerraSwap Trading APR" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='TerraSwap Trading APR'></AgGridColumn>
-                <AgGridColumn field="AstroPort Trading APR" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='AstroPort Trading APR'></AgGridColumn>
-                <AgGridColumn field="Percent Volume From TerraSwap" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='% Total Volume from TerraSwap'></AgGridColumn>
-                <AgGridColumn field="Percent Volume From Astroport" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='% Total Volume from Astroport'></AgGridColumn>
+                <AgGridColumn field="Symbol" sortable={true} filter={true} resizable={true} headerTooltip='Pool Name'></AgGridColumn>
+                <AgGridColumn field="Terraswap" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='TerraSwap Trading APR'></AgGridColumn>
+                <AgGridColumn field="Astroport" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='AstroPort Trading APR'></AgGridColumn>
+                <AgGridColumn field="Loop" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='Loop Trading APR'></AgGridColumn>
+                <AgGridColumn field="Terraswap Volume Dominance" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='% Total Volume from TerraSwap'></AgGridColumn>
+                <AgGridColumn field="Astroport Volume Dominance" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='% Total Volume from Astroport'></AgGridColumn>
+                <AgGridColumn field="Loop Volume Dominance" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='% Total Volume from Loop'></AgGridColumn>
             </AgGridReact>
+            <Label className="control-label">***0.00% indicates pool is not offered on that DEX</Label>
             </div>
           </CardBody>
           </Card>
-          <Card >
+          {/*<Card >
 
             <CardBody className="card-body-test">
               <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
@@ -234,7 +237,7 @@ class AprTrackerShort extends React.Component {
              </ResponsiveContainer>
              </div>
             </CardBody>
-          </Card>*
+          </Card>**/}
         </Col>
       </React.Fragment>
     )
