@@ -24,6 +24,9 @@ import { ConsoleWriter } from "istanbul-lib-report"
 import { date } from "language-tags"
 import dayjs from 'dayjs'
 
+import ChartHeader from '../../components/ChartHelpers/chartHeader'
+import FullscreenComponent from '../../components/FullscreenComponent'
+
 function pctFormatter(params) {
   return Number(params.value*100).toFixed(2) + '%';
 }
@@ -155,53 +158,63 @@ class AprTrackerShort extends React.Component {
 
   }
 
-
   render() {
     return (
       <React.Fragment>
         <Col xl="12">
-        <Card >
-            <CardBody className="card-body-test">
-              <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
-                <Label className="control-label">TERRASWAP TRADING APRS</Label>
-                <Select
-                  classNamePrefix="form-control"
-                  placeholder="TYPE or CHOOSE ..."
-                  title="mAsset"
-                  options={this.state.tickerOptions}
-                  defaultValue={this.state.defaultOption}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-              <FormGroup className="w-25 d-inline-block pb-2 me-2">
-                <DatePicker
-                  className="form-control"
-                  selected={this.state.longDates[0]}
-                  onChange={this.handleStartDateChange}
-                />
-              </FormGroup>
-              <div className="d-inline-block me-2">~</div>
-              <FormGroup className="w-25 d-inline-block pb-2">
-                <DatePicker
-                  className="form-control"
-                  selected={this.state.longDates[1]}
-                  onChange={this.handleEndDateChange}
-                />
-              </FormGroup>
-              <div style={{height: 600}}>
-              <ResponsiveContainer width="100%" height="100%">
-              <LineChart width={2000} height={600}
-                      margin={{top: 20, right: 30, left: 0, bottom: 0}}>
-                <XAxis dataKey='xaxis1' type="category" domain={['dataMin', 'dataMax']} tickFormatter={formatXAxis}/>
-                <YAxis  domain={['auto', 'auto']} tickFormatter={priceFormat}/>
-                <Tooltip labelFormatter={tick => {return formatXAxis(tick);}} formatter={tick => {return priceFormat(tick);}}/>
-                <Legend />
-                <Line data={this.state.data} type="linear" dataKey="APR" dot={false} strokeWidth={4} stroke="#8884d8"/>
-             </LineChart>
-             </ResponsiveContainer>
-             </div>
-            </CardBody>
-          </Card>
+          <FullscreenComponent defaultHeight={600}>
+            {({ toggleFullscreen, icon, height }) => (
+              <Card >
+                <CardBody className="card-body-test">
+                  <ChartHeader
+                    title="TERRASWAP TRADING APRS"
+                    callbackOpts={{ action: toggleFullscreen, icon }}
+                  />
+                  <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
+                    <Select
+                      classNamePrefix="form-control"
+                      placeholder="TYPE or CHOOSE ..."
+                      title="mAsset"
+                      options={this.state.tickerOptions}
+                      defaultValue={this.state.defaultOption}
+                      onChange={this.handleChange}
+                    />
+                  </FormGroup>
+                  <FormGroup className="w-25 d-inline-block pb-2 me-2">
+                    <DatePicker
+                      className="form-control"
+                      selected={this.state.longDates[0]}
+                      onChange={this.handleStartDateChange}
+                    />
+                  </FormGroup>
+                  <div className="d-inline-block me-2">~</div>
+                  <FormGroup className="w-25 d-inline-block pb-2">
+                    <DatePicker
+                      className="form-control"
+                      selected={this.state.longDates[1]}
+                      onChange={this.handleEndDateChange}
+                    />
+                  </FormGroup>
+                  <div style={{ height }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart
+                        key={icon}
+                        width={2000}
+                        height={height}
+                        margin={{top: 20, right: 30, left: 0, bottom: 0}}
+                      >
+                        <XAxis dataKey='xaxis1' type="category" domain={['dataMin', 'dataMax']} tickFormatter={formatXAxis}/>
+                        <YAxis  domain={['auto', 'auto']} tickFormatter={priceFormat}/>
+                        <Tooltip labelFormatter={tick => {return formatXAxis(tick);}} formatter={tick => {return priceFormat(tick);}}/>
+                        <Legend />
+                        <Line data={this.state.data} type="linear" dataKey="APR" dot={false} strokeWidth={4} stroke="#8884d8"/>
+                      </LineChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardBody>
+              </Card>
+            )}
+          </FullscreenComponent>
           <Card>
           <CardBody>
             <div className="ag-theme-alpine" style={{height: 400}}>

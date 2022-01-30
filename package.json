@@ -105,6 +105,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:legacy-ssl": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts --max_old_space_size=8000 build",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
