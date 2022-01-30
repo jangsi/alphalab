@@ -16,8 +16,6 @@ import {AgGridColumn, AgGridReact} from 'ag-grid-react'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
-// import {LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from 'recharts'
-
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import { ConsoleWriter } from "istanbul-lib-report"
@@ -26,6 +24,9 @@ import dayjs from 'dayjs'
 
 import ChartHeader from '../../components/ChartHelpers/chartHeader'
 import FullscreenComponent from '../../components/FullscreenComponent'
+
+import { Line } from 'react-chartjs-2'
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -36,7 +37,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js'
-import { Line } from 'react-chartjs-2'
+import { Chart } from 'react-chartjs-2'
 
 ChartJS.register(
   CategoryScale,
@@ -48,6 +49,7 @@ ChartJS.register(
   Legend
 )
 
+
 function pctFormatter(params) {
   return Number(params.value*100).toFixed(2) + '%';
 }
@@ -57,7 +59,7 @@ function scoreFormatter(params) {
 }
 
 function formatXAxis(tickItem) {
-  return dayjs(tickItem).format('MM/DD/YYYY HH:mm:ss')
+  return dayjs(tickItem).format('MM/DD/YYYY')
 }
 
 function priceFormat(tickItem) {
@@ -181,108 +183,118 @@ class AprTrackerShort extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
+      <>
         <Col xl="12">
           <FullscreenComponent defaultHeight={600}d defaultWidth={2000}>
-            {({ toggleFullscreen, icon, chartParams, isFullScreen }) => (
+            {({ toggleFullscreen, icon, chartParams, isFullscreen }) => {
+              const lineChartDimensions = isFullscreen ? chartParams.reverseContainer() : chartParams.container
+              return (
+                <Card>
+                  <CardBody className="card-body-test">
+                    <ChartHeader
+                      title="TERRASWAP TRADING APRS"
+                      callbackOpts={{ action: toggleFullscreen, icon }}
+                    />
+                    <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
+                      <Select
+                        classNamePrefix="form-control"
+                        placeholder="TYPE or CHOOSE ..."
+                        title="mAsset"
+                        options={this.state.tickerOptions}
+                        defaultValue={this.state.defaultOption}
+                        onChange={this.handleChange}
+                      />
+                    </FormGroup>
+                    <FormGroup className="w-25 d-inline-block pb-2 me-2">
+                      <DatePicker
+                        className="form-control"
+                        selected={this.state.longDates[0]}
+                        onChange={this.handleStartDateChange}
+                      />
+                    </FormGroup>
+                    <div className="d-inline-block me-2">~</div>
+                    <FormGroup className="w-25 d-inline-block pb-2">
+                      <DatePicker
+                        className="form-control"
+                        selected={this.state.longDates[1]}
+                        onChange={this.handleEndDateChange}
+                      />
+                    </FormGroup>
+                    <div style={chartParams.container}>
+                      <Line
+                        redraw
+                        {...lineChartDimensions}
+                        data={{
+                          datasets: [{
+                            label: 'apr',
+                            data: this.state.data.map(d => ({ y: d.APR, x: d.xaxis1 })),
+                            borderColor: '#8884d8',
+                          }]
+                        }}
+                        options={{
+                          responsive: false,
+                          maintainAspectRatio: false,
+                          plugins: {
+                            legend: {
+                              position: 'bottom',
+                            },
+                            title: {
+                              display: false,
+                            },
+                          },
+                          scales: {
+                            y: {
+                              ticks: {
+                                callback: (apr) => priceFormat(apr),
+                              },
+                            },
+                          },
+                        }}
+                      />
+                    </div>
+                  </CardBody>
+                </Card>
+              )
+            }}
+          </FullscreenComponent>
+        </Col>
+        <Col xl="12">
+          <FullscreenComponent defaultHeight={400}>
+            {({ toggleFullscreen, icon, chartParams, isFullscreen }) => (
               <Card>
-                <CardBody className="card-body-test">
+                <CardBody>
                   <ChartHeader
-                    title="TERRASWAP TRADING APRS"
+                    title="Hover Mouse for Column Descriptions"
                     callbackOpts={{ action: toggleFullscreen, icon }}
                   />
-                  <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
-                    <Select
-                      classNamePrefix="form-control"
-                      placeholder="TYPE or CHOOSE ..."
-                      title="mAsset"
-                      options={this.state.tickerOptions}
-                      defaultValue={this.state.defaultOption}
-                      onChange={this.handleChange}
-                    />
-                  </FormGroup>
-                  <FormGroup className="w-25 d-inline-block pb-2 me-2">
-                    <DatePicker
-                      className="form-control"
-                      selected={this.state.longDates[0]}
-                      onChange={this.handleStartDateChange}
-                    />
-                  </FormGroup>
-                  <div className="d-inline-block me-2">~</div>
-                  <FormGroup className="w-25 d-inline-block pb-2">
-                    <DatePicker
-                      className="form-control"
-                      selected={this.state.longDates[1]}
-                      onChange={this.handleEndDateChange}
-                    />
-                  </FormGroup>
-                  <div style={chartParams.container}>
-                    <Line
-                      redraw
-                      data={{
-                        datasets: [{
-                          label: 'apr',
-                          data: this.state.data.map(d => ({ y: d.APR, x: d.xaxis1 })),
-                          borderColor: '#8884d8',
-                        }]
+                  <div className="ag-theme-alpine" style={isFullscreen ? chartParams.reverseContainer(40) : chartParams.container}>
+                    <AgGridReact
+                      onGridReady={this.onGridReady.bind(this)}
+                      rowData={this.state.rowData}
+                      defaultColDef={{ resizable: true, minWidth: 200 }}
+                      onFirstDataRendered={(params) => {
+                        params.api.sizeColumnsToFit();
                       }}
-                      options={{
-                        maintainAspectRatio: false,
-                        plugins: {
-                          legend: {
-                            position: 'bottom',
-                          },
-                          title: {
-                            display: false,
-                          },
-                        },
-                      }}
-                    />
-                    {/**
-                     * <ResponsiveContainer {...chartParams.container}>
-                      <LineChart
-                        {...chartParams.container}
-                        {...chartParams.graph}
-                        margin={{top: 20, right: 30, left: 0, bottom: 0}}
-                      >
-                        <XAxis dataKey='xaxis1' type="category" domain={['dataMin', 'dataMax']} tickFormatter={formatXAxis}/>
-                        <YAxis domain={['auto', 'auto']} tickFormatter={priceFormat}/>
-                        <Tooltip labelFormatter={tick => {return formatXAxis(tick);}} formatter={tick => {return priceFormat(tick);}}/>
-                        <Legend />
-                        <Line data={this.state.data} type="linear" dataKey="APR" dot={false} strokeWidth={4} stroke="#8884d8"/>
-                      </LineChart>
-                    </ResponsiveContainer>
-                     */}
-                    
+                    >
+                      <AgGridColumn field="symbol" sortable={true} filter={true} headerTooltip='Symbol'></AgGridColumn>
+                      <AgGridColumn field="AlphaDefi APR Score" sortable={true} filter={true} valueFormatter={scoreFormatter}  headerTooltip='Current Yield / rolling 21 day vol'></AgGridColumn>
+                      <AgGridColumn field="current" sortable={true} filter={true} valueFormatter={pctFormatter}  headerTooltip='most recently calculated APY'></AgGridColumn>
+                      <AgGridColumn field="mean" sortable={true} filter={true} valueFormatter={pctFormatter}  headerTooltip='mean historical apr, normally the apr this pool trades at'></AgGridColumn>
+                      <AgGridColumn field="Three SD" sortable={true} filter={true} valueFormatter={pctFormatter}  headerTooltip='+ three standard deviations from mean'></AgGridColumn>
+                      <AgGridColumn field="Neg Three SD" sortable={true} filter={true} valueFormatter={pctFormatter}  headerTooltip='- three standard deviations from mean'></AgGridColumn>
+                      <AgGridColumn field="max" sortable={true} filter={true} valueFormatter={pctFormatter}  headerTooltip='max apr last 21 days'></AgGridColumn>
+                      <AgGridColumn field="min" sortable={true} filter={true} valueFormatter={pctFormatter}   headerTooltip='min apr last 21 days'></AgGridColumn>
+                      <AgGridColumn field="std" sortable={true} filter={true} valueFormatter={pctFormatter}  headerTooltip='std of historical apr'></AgGridColumn>
+                      <AgGridColumn field="Historical 5th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter}  headerTooltip='Historical 5th % APR'></AgGridColumn>
+                      <AgGridColumn field="Historical 95th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter}  headerTooltip='Historical 95th % APR'></AgGridColumn>
+                    </AgGridReact>
                   </div>
                 </CardBody>
               </Card>
             )}
           </FullscreenComponent>
-          <Card>
-          <CardBody>
-            <div className="ag-theme-alpine" style={{height: 400}}>
-            <Label className="control-label">Hover Mouse for Column Descriptions</Label>
-            <AgGridReact
-               onGridReady={this.onGridReady.bind(this)}
-               rowData={this.state.rowData}>
-                <AgGridColumn field="symbol" sortable={true} filter={true} resizable={true} headerTooltip='Symbol'></AgGridColumn>
-                <AgGridColumn field="AlphaDefi APR Score" sortable={true} filter={true} valueFormatter={scoreFormatter} resizable={true}  headerTooltip='Current Yield / rolling 21 day vol'></AgGridColumn>
-                <AgGridColumn field="current" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='most recently calculated APY'></AgGridColumn>
-                <AgGridColumn field="mean" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='mean historical apr, normally the apr this pool trades at'></AgGridColumn>
-                <AgGridColumn field="Three SD" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='+ three standard deviations from mean'></AgGridColumn>
-                <AgGridColumn field="Neg Three SD" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='- three standard deviations from mean'></AgGridColumn>
-                <AgGridColumn field="max" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='max apr last 21 days'></AgGridColumn>
-                <AgGridColumn field="min" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}   headerTooltip='min apr last 21 days'></AgGridColumn>
-                <AgGridColumn field="std" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='std of historical apr'></AgGridColumn>
-                <AgGridColumn field="Historical 5th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='Historical 5th % APR'></AgGridColumn>
-                <AgGridColumn field="Historical 95th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true}  headerTooltip='Historical 95th % APR'></AgGridColumn>
-            </AgGridReact>
-            </div>
-          </CardBody>
-          </Card>
         </Col>
-      </React.Fragment>
+      </>
     )
   }
 }

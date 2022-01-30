@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import './index.scss'
@@ -7,15 +7,13 @@ import { isMobileOrTablet } from '../../pages/Utility/isMobileOrTablet'
 const FullscreenComponent = (props) => {
   const [isFullscreen, setFullscreen] = useState(false)
   const [icon, setIcon] = useState('dripicons-expand')
-  const [innerHeight, setInnerHeight] = useState(window.innerHeight - (isMobileOrTablet() ? 20 : 121) - 60)
+  const [innerHeight, setInnerHeight] = useState(window.innerHeight - (isMobileOrTablet() ? 20 : 121) - 20)
   const [innerWidth, setInnerWidth] = useState(window.innerWidth - (isMobileOrTablet() ? 121 : 20))
   useEffect(() => {
     /* 121 is the sum of heights of all parts of the card, excluding the actual graph */
-    setInnerHeight(window.innerHeight - (isMobileOrTablet() ? 20 : 121) - 60)
+    setInnerHeight(window.innerHeight - (isMobileOrTablet() ? 20 : 121) - 20)
     setInnerWidth(window.innerWidth - (isMobileOrTablet() ? 121 : 20))
   }, [window.innerHeight, window.innerWidth])
-
-  console.log('innerHeight', innerHeight, 'innerWidth', innerWidth)
 
   const [screenAngle, setScreenAngle] = useState(0)
   useEffect(() => {
@@ -29,7 +27,7 @@ const FullscreenComponent = (props) => {
       return () => window.removeEventListener('orientationchange', orientationchangeListener)
     }
   }, [])
-  
+
   // useEffect(() => {
   //   alert(`screen angle changed ${screenAngle}`)
   // }, [screenAngle])
@@ -52,7 +50,7 @@ const FullscreenComponent = (props) => {
     classes.push('mobile')
   }
 
-  const childrenProps = useMemo(() => ({
+  const childrenProps = {
     toggleFullscreen,
     icon,
     chartParams: {
@@ -60,13 +58,13 @@ const FullscreenComponent = (props) => {
         height: isFullscreen ? innerHeight : props.defaultHeight,
         width: isFullscreen ? innerWidth : undefined,
       },
-      reverseContainer: {
-        height: isFullscreen ? innerWidth : undefined,
-        width: isFullscreen ? innerHeight : props.defaultHeight,
-      }
+      reverseContainer: (adj) => ({
+        height: innerWidth + (adj || 0),
+        width: innerHeight,
+      })
     },
     isFullscreen,
-  }), [isFullscreen, innerHeight, innerWidth, icon])
+  }
 
   const computedStyles = {
     height: '100%',
@@ -97,7 +95,6 @@ const FullscreenComponent = (props) => {
 FullscreenComponent.propTypes = {
   children: PropTypes.func,
   defaultHeight: PropTypes.number,
-  defaultWidth: PropTypes.number,
 }
 
 export default FullscreenComponent
