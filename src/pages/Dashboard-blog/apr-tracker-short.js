@@ -16,7 +16,7 @@ import {AgGridColumn, AgGridReact} from 'ag-grid-react'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
-import {LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from 'recharts'
+// import {LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
@@ -26,6 +26,27 @@ import dayjs from 'dayjs'
 
 import ChartHeader from '../../components/ChartHelpers/chartHeader'
 import FullscreenComponent from '../../components/FullscreenComponent'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js'
+import { Line } from 'react-chartjs-2'
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+)
 
 function pctFormatter(params) {
   return Number(params.value*100).toFixed(2) + '%';
@@ -122,7 +143,7 @@ class AprTrackerShort extends React.Component {
       let formattedData = apiData
         .filter(obj => obj.apr)
         .map(obj => {
-          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), APR: obj.apr}
+          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY'), APR: obj.apr}
         })
       this.setState(_ => ({
         data: formattedData,
@@ -162,9 +183,9 @@ class AprTrackerShort extends React.Component {
     return (
       <React.Fragment>
         <Col xl="12">
-          <FullscreenComponent defaultHeight={600}>
-            {({ toggleFullscreen, icon, height }) => (
-              <Card >
+          <FullscreenComponent defaultHeight={600}d defaultWidth={2000}>
+            {({ toggleFullscreen, icon, chartParams, isFullScreen }) => (
+              <Card>
                 <CardBody className="card-body-test">
                   <ChartHeader
                     title="TERRASWAP TRADING APRS"
@@ -195,21 +216,44 @@ class AprTrackerShort extends React.Component {
                       onChange={this.handleEndDateChange}
                     />
                   </FormGroup>
-                  <div style={{ height }}>
-                    <ResponsiveContainer width="100%" height="100%">
+                  <div style={chartParams.container}>
+                    <Line
+                      redraw
+                      data={{
+                        datasets: [{
+                          label: 'apr',
+                          data: this.state.data.map(d => ({ y: d.APR, x: d.xaxis1 })),
+                          borderColor: '#8884d8',
+                        }]
+                      }}
+                      options={{
+                        maintainAspectRatio: false,
+                        plugins: {
+                          legend: {
+                            position: 'bottom',
+                          },
+                          title: {
+                            display: false,
+                          },
+                        },
+                      }}
+                    />
+                    {/**
+                     * <ResponsiveContainer {...chartParams.container}>
                       <LineChart
-                        key={icon}
-                        width={2000}
-                        height={height}
+                        {...chartParams.container}
+                        {...chartParams.graph}
                         margin={{top: 20, right: 30, left: 0, bottom: 0}}
                       >
                         <XAxis dataKey='xaxis1' type="category" domain={['dataMin', 'dataMax']} tickFormatter={formatXAxis}/>
-                        <YAxis  domain={['auto', 'auto']} tickFormatter={priceFormat}/>
+                        <YAxis domain={['auto', 'auto']} tickFormatter={priceFormat}/>
                         <Tooltip labelFormatter={tick => {return formatXAxis(tick);}} formatter={tick => {return priceFormat(tick);}}/>
                         <Legend />
                         <Line data={this.state.data} type="linear" dataKey="APR" dot={false} strokeWidth={4} stroke="#8884d8"/>
                       </LineChart>
                     </ResponsiveContainer>
+                     */}
+                    
                   </div>
                 </CardBody>
               </Card>
