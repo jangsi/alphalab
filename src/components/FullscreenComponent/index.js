@@ -6,7 +6,7 @@ import { isMobileOrTablet } from '../../pages/Utility/isMobileOrTablet'
 
 const FullscreenComponent = (props) => {
   const [isFullscreen, setFullscreen] = useState(false)
-  const [icon, setIcon] = useState('dripicons-expand')
+  const [icon, setIcon] = useState('mdi mdi-18px mdi-arrow-expand')
   const [innerHeight, setInnerHeight] = useState(window.innerHeight)
   const [innerWidth, setInnerWidth] = useState(window.innerWidth)
   useEffect(() => {
@@ -29,10 +29,10 @@ const FullscreenComponent = (props) => {
 
   const toggleFullscreen = () => {
     setFullscreen(!isFullscreen)
-    if (icon === 'dripicons-expand') {
-      setIcon('dripicons-contract')
+    if (icon === 'mdi mdi-18px mdi-arrow-expand') {
+      setIcon('mdi mdi-18px mdi-arrow-collapse')
     } else {
-      setIcon('dripicons-expand')
+      setIcon('mdi mdi-18px mdi-arrow-expand')
     }
   }
 

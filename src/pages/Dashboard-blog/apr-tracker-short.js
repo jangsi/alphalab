@@ -223,7 +223,7 @@ class AprTrackerShort extends React.Component {
                           }]
                         }}
                         options={{
-                          responsive: false,
+                          responsive: !isFullscreen,
                           maintainAspectRatio: false,
                           plugins: {
                             legend: {

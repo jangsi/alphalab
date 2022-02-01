@@ -1,5 +1,5 @@
 import React from 'react';
-import { Label } from "reactstrap"
+import { Label, Button } from "reactstrap"
 import PropTypes from 'prop-types';
 
 /**
@@ -37,7 +37,7 @@ const ChartHeader = (props) => {
     <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
       <Label className="control-label">{title}</Label>
       {action ? (
-        <button onClick={action}><i className={icon} /></button>
+        <Button size="sm" outline onClick={action}><i className={icon} /></Button>
       ) : null}
     </div>
   )
