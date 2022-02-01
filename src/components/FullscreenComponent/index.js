@@ -7,12 +7,11 @@ import { isMobileOrTablet } from '../../pages/Utility/isMobileOrTablet'
 const FullscreenComponent = (props) => {
   const [isFullscreen, setFullscreen] = useState(false)
   const [icon, setIcon] = useState('dripicons-expand')
-  const [innerHeight, setInnerHeight] = useState(window.innerHeight - (isMobileOrTablet() ? 20 : 121) - 20)
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth - (isMobileOrTablet() ? 121 : 20))
+  const [innerHeight, setInnerHeight] = useState(window.innerHeight)
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth)
   useEffect(() => {
-    /* 121 is the sum of heights of all parts of the card, excluding the actual graph */
-    setInnerHeight(window.innerHeight - (isMobileOrTablet() ? 20 : 121) - 20)
-    setInnerWidth(window.innerWidth - (isMobileOrTablet() ? 121 : 20))
+    setInnerHeight(window.innerHeight)
+    setInnerWidth(window.innerWidth)
   }, [window.innerHeight, window.innerWidth])
 
   const [screenAngle, setScreenAngle] = useState(0)
@@ -27,10 +26,6 @@ const FullscreenComponent = (props) => {
       return () => window.removeEventListener('orientationchange', orientationchangeListener)
     }
   }, [])
-
-  // useEffect(() => {
-  //   alert(`screen angle changed ${screenAngle}`)
-  // }, [screenAngle])
 
   const toggleFullscreen = () => {
     setFullscreen(!isFullscreen)
@@ -56,12 +51,12 @@ const FullscreenComponent = (props) => {
     chartParams: {
       container: {
         height: isFullscreen ? innerHeight : props.defaultHeight,
-        width: isFullscreen ? innerWidth : undefined,
+        width: isFullscreen ? innerWidth : '100%',
       },
-      reverseContainer: (adj) => ({
-        height: innerWidth + (adj || 0),
+      reverseContainer: {
+        height: innerWidth,
         width: innerHeight,
-      })
+      }
     },
     isFullscreen,
   }
@@ -69,7 +64,6 @@ const FullscreenComponent = (props) => {
   const computedStyles = {
     height: '100%',
     width: '100%',
-    overflow: 'auto',
   }
 
   if (isMobileOrTablet() && screenAngle === 0) {

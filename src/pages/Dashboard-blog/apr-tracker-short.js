@@ -3,12 +3,10 @@ import Select from "react-select"
 import {
   Col,
   FormGroup,
-  Label,
   Card,
   CardBody
 } from "reactstrap"
 import poolDictApi from '../../api/v1/pool-dictionary'
-import mirrorGraphql from '../../api/v1/mirror-graphql'
 import historical from '../../api/v1/historical'
 import {AgGridColumn, AgGridReact} from 'ag-grid-react'
 
@@ -18,8 +16,6 @@ import "react-datepicker/dist/react-datepicker.css"
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
-import { ConsoleWriter } from "istanbul-lib-report"
-import { date } from "language-tags"
 import dayjs from 'dayjs'
 
 import ChartHeader from '../../components/ChartHelpers/chartHeader'
@@ -37,7 +33,6 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js'
-import { Chart } from 'react-chartjs-2'
 
 ChartJS.register(
   CategoryScale,
@@ -56,10 +51,6 @@ function pctFormatter(params) {
 
 function scoreFormatter(params) {
   return Number(params.value).toFixed(2);
-}
-
-function formatXAxis(tickItem) {
-  return dayjs(tickItem).format('MM/DD/YYYY')
 }
 
 function priceFormat(tickItem) {
@@ -185,9 +176,9 @@ class AprTrackerShort extends React.Component {
     return (
       <>
         <Col xl="12">
-          <FullscreenComponent defaultHeight={600}d defaultWidth={2000}>
+          <FullscreenComponent defaultHeight={600}>
             {({ toggleFullscreen, icon, chartParams, isFullscreen }) => {
-              const lineChartDimensions = isFullscreen ? chartParams.reverseContainer() : chartParams.container
+              const lineChartDimensions = isFullscreen ? chartParams.reverseContainer : chartParams.container
               return (
                 <Card>
                   <CardBody className="card-body-test">
@@ -267,26 +258,26 @@ class AprTrackerShort extends React.Component {
                     title="Hover Mouse for Column Descriptions"
                     callbackOpts={{ action: toggleFullscreen, icon }}
                   />
-                  <div className="ag-theme-alpine" style={isFullscreen ? chartParams.reverseContainer(40) : chartParams.container}>
+                  <div className="ag-theme-alpine" style={isFullscreen ? chartParams.reverseContainer : chartParams.container}>
                     <AgGridReact
                       onGridReady={this.onGridReady.bind(this)}
                       rowData={this.state.rowData}
-                      defaultColDef={{ resizable: true, minWidth: 200 }}
+                      defaultColDef={{ resizable: true, minWidth: 200, filter: true, sortable: true }}
                       onFirstDataRendered={(params) => {
                         params.api.sizeColumnsToFit();
                       }}
                     >
-                      <AgGridColumn field="symbol" sortable={true} filter={true} headerTooltip='Symbol'></AgGridColumn>
-                      <AgGridColumn field="AlphaDefi APR Score" sortable={true} filter={true} valueFormatter={scoreFormatter}  headerTooltip='Current Yield / rolling 21 day vol'></AgGridColumn>
-                      <AgGridColumn field="current" sortable={true} filter={true} valueFormatter={pctFormatter}  headerTooltip='most recently calculated APY'></AgGridColumn>
-                      <AgGridColumn field="mean" sortable={true} filter={true} valueFormatter={pctFormatter}  headerTooltip='mean historical apr, normally the apr this pool trades at'></AgGridColumn>
-                      <AgGridColumn field="Three SD" sortable={true} filter={true} valueFormatter={pctFormatter}  headerTooltip='+ three standard deviations from mean'></AgGridColumn>
-                      <AgGridColumn field="Neg Three SD" sortable={true} filter={true} valueFormatter={pctFormatter}  headerTooltip='- three standard deviations from mean'></AgGridColumn>
-                      <AgGridColumn field="max" sortable={true} filter={true} valueFormatter={pctFormatter}  headerTooltip='max apr last 21 days'></AgGridColumn>
-                      <AgGridColumn field="min" sortable={true} filter={true} valueFormatter={pctFormatter}   headerTooltip='min apr last 21 days'></AgGridColumn>
-                      <AgGridColumn field="std" sortable={true} filter={true} valueFormatter={pctFormatter}  headerTooltip='std of historical apr'></AgGridColumn>
-                      <AgGridColumn field="Historical 5th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter}  headerTooltip='Historical 5th % APR'></AgGridColumn>
-                      <AgGridColumn field="Historical 95th % Spread" sortable={true} filter={true} valueFormatter={pctFormatter}  headerTooltip='Historical 95th % APR'></AgGridColumn>
+                      <AgGridColumn field="symbol" headerTooltip='Symbol' />
+                      <AgGridColumn field="AlphaDefi APR Score" valueFormatter={scoreFormatter}  headerTooltip='Current Yield / rolling 21 day vol' />
+                      <AgGridColumn field="current" valueFormatter={pctFormatter}  headerTooltip='most recently calculated APY' />
+                      <AgGridColumn field="mean" valueFormatter={pctFormatter}  headerTooltip='mean historical apr, normally the apr this pool trades at' />
+                      <AgGridColumn field="Three SD" valueFormatter={pctFormatter}  headerTooltip='+ three standard deviations from mean' />
+                      <AgGridColumn field="Neg Three SD" valueFormatter={pctFormatter}  headerTooltip='- three standard deviations from mean' />
+                      <AgGridColumn field="max" valueFormatter={pctFormatter}  headerTooltip='max apr last 21 days' />
+                      <AgGridColumn field="min" valueFormatter={pctFormatter}   headerTooltip='min apr last 21 days' />
+                      <AgGridColumn field="std" valueFormatter={pctFormatter}  headerTooltip='std of historical apr' />
+                      <AgGridColumn field="Historical 5th % Spread" valueFormatter={pctFormatter}  headerTooltip='Historical 5th % APR' />
+                      <AgGridColumn field="Historical 95th % Spread" valueFormatter={pctFormatter}  headerTooltip='Historical 95th % APR' />
                     </AgGridReact>
                   </div>
                 </CardBody>

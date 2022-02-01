@@ -34,7 +34,7 @@ const ChartHeader = (props) => {
     }
   }
   return (
-    <div style={{ width: '85%', display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+    <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
       <Label className="control-label">{title}</Label>
       {action ? (
         <button onClick={action}><i className={icon} /></button>
