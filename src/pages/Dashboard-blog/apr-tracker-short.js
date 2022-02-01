@@ -20,6 +20,7 @@ import dayjs from 'dayjs'
 
 import ChartHeader from '../../components/ChartHelpers/chartHeader'
 import FullscreenComponent from '../../components/FullscreenComponent'
+import { isMobileOrTablet } from '../Utility/isMobileOrTablet'
 
 import { Line } from 'react-chartjs-2'
 
@@ -177,44 +178,45 @@ class AprTrackerShort extends React.Component {
       <>
         <Col xl="12">
           <FullscreenComponent defaultHeight={600}>
-            {({ toggleFullscreen, icon, chartParams, isFullscreen }) => {
-              const lineChartDimensions = isFullscreen ? chartParams.reverseContainer : chartParams.container
+            {({ toggleFullscreen, icon, chartParams, isFullscreen, headerRef }) => {
               return (
                 <Card>
                   <CardBody className="card-body-test">
-                    <ChartHeader
-                      title="TERRASWAP TRADING APRS"
-                      callbackOpts={{ action: toggleFullscreen, icon }}
-                    />
-                    <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
-                      <Select
-                        classNamePrefix="form-control"
-                        placeholder="TYPE or CHOOSE ..."
-                        title="mAsset"
-                        options={this.state.tickerOptions}
-                        defaultValue={this.state.defaultOption}
-                        onChange={this.handleChange}
+                    <div ref={headerRef}>
+                      <ChartHeader
+                        title="TERRASWAP TRADING APRS"
+                        callbackOpts={{ action: toggleFullscreen, icon, adjustAction: isFullscreen && isMobileOrTablet() ? 100 : 0 }}
                       />
-                    </FormGroup>
-                    <FormGroup className="w-25 d-inline-block pb-2 me-2">
-                      <DatePicker
-                        className="form-control"
-                        selected={this.state.longDates[0]}
-                        onChange={this.handleStartDateChange}
-                      />
-                    </FormGroup>
-                    <div className="d-inline-block me-2">~</div>
-                    <FormGroup className="w-25 d-inline-block pb-2">
-                      <DatePicker
-                        className="form-control"
-                        selected={this.state.longDates[1]}
-                        onChange={this.handleEndDateChange}
-                      />
-                    </FormGroup>
+                      <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
+                        <Select
+                          classNamePrefix="form-control"
+                          placeholder="TYPE or CHOOSE ..."
+                          title="mAsset"
+                          options={this.state.tickerOptions}
+                          defaultValue={this.state.defaultOption}
+                          onChange={this.handleChange}
+                        />
+                      </FormGroup>
+                      <FormGroup className="w-25 d-inline-block pb-2 me-2">
+                        <DatePicker
+                          className="form-control"
+                          selected={this.state.longDates[0]}
+                          onChange={this.handleStartDateChange}
+                        />
+                      </FormGroup>
+                      <div className="d-inline-block me-2">~</div>
+                      <FormGroup className="w-25 d-inline-block pb-2">
+                        <DatePicker
+                          className="form-control"
+                          selected={this.state.longDates[1]}
+                          onChange={this.handleEndDateChange}
+                        />
+                      </FormGroup>
+                    </div>
                     <div style={chartParams.container}>
                       <Line
                         redraw
-                        {...lineChartDimensions}
+                        {...chartParams.maybeRotatedContainer()}
                         data={{
                           datasets: [{
                             label: 'apr',
@@ -223,7 +225,8 @@ class AprTrackerShort extends React.Component {
                           }]
                         }}
                         options={{
-                          responsive: !isFullscreen,
+                          // when fullscreen && mobile we want to have full control over sizing
+                          responsive: !isFullscreen || !isMobileOrTablet(),
                           maintainAspectRatio: false,
                           plugins: {
                             legend: {
@@ -250,39 +253,41 @@ class AprTrackerShort extends React.Component {
           </FullscreenComponent>
         </Col>
         <Col xl="12">
-          <FullscreenComponent defaultHeight={400}>
-            {({ toggleFullscreen, icon, chartParams, isFullscreen }) => (
-              <Card>
-                <CardBody>
-                  <ChartHeader
-                    title="Hover Mouse for Column Descriptions"
-                    callbackOpts={{ action: toggleFullscreen, icon }}
-                  />
-                  <div className="ag-theme-alpine" style={isFullscreen ? chartParams.reverseContainer : chartParams.container}>
-                    <AgGridReact
-                      onGridReady={this.onGridReady.bind(this)}
-                      rowData={this.state.rowData}
-                      defaultColDef={{ resizable: true, minWidth: 200, filter: true, sortable: true }}
-                      onFirstDataRendered={(params) => {
-                        params.api.sizeColumnsToFit();
-                      }}
-                    >
-                      <AgGridColumn field="symbol" headerTooltip='Symbol' />
-                      <AgGridColumn field="AlphaDefi APR Score" valueFormatter={scoreFormatter}  headerTooltip='Current Yield / rolling 21 day vol' />
-                      <AgGridColumn field="current" valueFormatter={pctFormatter}  headerTooltip='most recently calculated APY' />
-                      <AgGridColumn field="mean" valueFormatter={pctFormatter}  headerTooltip='mean historical apr, normally the apr this pool trades at' />
-                      <AgGridColumn field="Three SD" valueFormatter={pctFormatter}  headerTooltip='+ three standard deviations from mean' />
-                      <AgGridColumn field="Neg Three SD" valueFormatter={pctFormatter}  headerTooltip='- three standard deviations from mean' />
-                      <AgGridColumn field="max" valueFormatter={pctFormatter}  headerTooltip='max apr last 21 days' />
-                      <AgGridColumn field="min" valueFormatter={pctFormatter}   headerTooltip='min apr last 21 days' />
-                      <AgGridColumn field="std" valueFormatter={pctFormatter}  headerTooltip='std of historical apr' />
-                      <AgGridColumn field="Historical 5th % Spread" valueFormatter={pctFormatter}  headerTooltip='Historical 5th % APR' />
-                      <AgGridColumn field="Historical 95th % Spread" valueFormatter={pctFormatter}  headerTooltip='Historical 95th % APR' />
-                    </AgGridReact>
-                  </div>
-                </CardBody>
-              </Card>
-            )}
+          <FullscreenComponent defaultHeight={600}>
+            {({ toggleFullscreen, icon, chartParams, isFullscreen, headerRef }) => {
+              return (
+                <Card>
+                  <CardBody>
+                    <div ref={headerRef} style={{ paddingBottom: 20 }}>
+                      <ChartHeader
+                        title="Hover Mouse for Column Descriptions"
+                        callbackOpts={{ action: toggleFullscreen, icon, adjustAction: isFullscreen && isMobileOrTablet() ? 100 : 0 }}
+                      />
+                    </div>
+                    <div className="ag-theme-alpine" style={chartParams.maybeRotatedContainer()}>
+                      <AgGridReact
+                        style={chartParams.maybeRotatedContainer()}
+                        onGridReady={this.onGridReady.bind(this)}
+                        rowData={this.state.rowData}
+                        defaultColDef={{ resizable: true, minWidth: 200, filter: true, sortable: true }}
+                      >
+                        <AgGridColumn field="symbol" headerTooltip='Symbol' />
+                        <AgGridColumn field="AlphaDefi APR Score" valueFormatter={scoreFormatter}  headerTooltip='Current Yield / rolling 21 day vol' />
+                        <AgGridColumn field="current" valueFormatter={pctFormatter}  headerTooltip='most recently calculated APY' />
+                        <AgGridColumn field="mean" valueFormatter={pctFormatter}  headerTooltip='mean historical apr, normally the apr this pool trades at' />
+                        <AgGridColumn field="Three SD" valueFormatter={pctFormatter}  headerTooltip='+ three standard deviations from mean' />
+                        <AgGridColumn field="Neg Three SD" valueFormatter={pctFormatter}  headerTooltip='- three standard deviations from mean' />
+                        <AgGridColumn field="max" valueFormatter={pctFormatter}  headerTooltip='max apr last 21 days' />
+                        <AgGridColumn field="min" valueFormatter={pctFormatter}   headerTooltip='min apr last 21 days' />
+                        <AgGridColumn field="std" valueFormatter={pctFormatter}  headerTooltip='std of historical apr' />
+                        <AgGridColumn field="Historical 5th % Spread" valueFormatter={pctFormatter}  headerTooltip='Historical 5th % APR' />
+                        <AgGridColumn field="Historical 95th % Spread" valueFormatter={pctFormatter}  headerTooltip='Historical 95th % APR' />
+                      </AgGridReact>
+                    </div>
+                  </CardBody>
+                </Card>
+              )
+            }}
           </FullscreenComponent>
         </Col>
       </>

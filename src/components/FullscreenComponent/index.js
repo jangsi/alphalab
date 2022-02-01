@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import './index.scss'
@@ -7,11 +7,25 @@ import { isMobileOrTablet } from '../../pages/Utility/isMobileOrTablet'
 const FullscreenComponent = (props) => {
   const [isFullscreen, setFullscreen] = useState(false)
   const [icon, setIcon] = useState('mdi mdi-18px mdi-arrow-expand')
-  const [innerHeight, setInnerHeight] = useState(window.innerHeight)
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth)
+  // accomodate the padding
+  // todo: get from variable
+  const [innerHeight, setInnerHeight] = useState(window.innerHeight - 40)
+  const [innerWidth, setInnerWidth] = useState(window.innerWidth - 40)
+  const headerRef = useRef()
+
   useEffect(() => {
-    setInnerHeight(window.innerHeight)
-    setInnerWidth(window.innerWidth)
+    if (!headerRef.current || !isFullscreen) return
+
+    const boundingBox = headerRef.current.getBoundingClientRect()
+    if (boundingBox.height && !isMobileOrTablet()) {
+      // make room for the header
+      setInnerHeight(window.innerHeight - 40 - boundingBox.height)
+    }
+  }, [headerRef, isFullscreen])
+
+  useEffect(() => {
+    setInnerHeight(window.innerHeight - 40)
+    setInnerWidth(window.innerWidth - 40)
   }, [window.innerHeight, window.innerWidth])
 
   const [screenAngle, setScreenAngle] = useState(0)
@@ -53,12 +67,23 @@ const FullscreenComponent = (props) => {
         height: isFullscreen ? innerHeight : props.defaultHeight,
         width: isFullscreen ? innerWidth : '100%',
       },
-      reverseContainer: {
-        height: innerWidth,
-        width: innerHeight,
+      maybeRotatedContainer: function() {
+        if (isMobileOrTablet() && isFullscreen) {
+          let adjustment = 0
+          if (headerRef.current) {
+            const boundingBox = headerRef.current.getBoundingClientRect()
+            adjustment = boundingBox.height
+          }
+          return {
+            height: this.container.width - adjustment,
+            width: this.container.height,
+          }
+        }
+        return this.container
       }
     },
     isFullscreen,
+    headerRef,
   }
 
   const computedStyles = {
@@ -66,11 +91,10 @@ const FullscreenComponent = (props) => {
     width: '100%',
   }
 
-  if (isMobileOrTablet() && screenAngle === 0) {
+  if (isFullscreen && isMobileOrTablet() && screenAngle === 0) {
     computedStyles.height = '100vw'
     computedStyles.width = '100vh'
   }
-  // const computedStyles = {}
 
   return (
     <>

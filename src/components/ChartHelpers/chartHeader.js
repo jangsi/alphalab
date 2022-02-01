@@ -22,7 +22,7 @@ import PropTypes from 'prop-types';
  */
 const ChartHeader = (props) => {
   const { title, callbackOpts } = props
-  let action, icon
+  let action, icon, adjustAction
   if (callbackOpts) {
     action = callbackOpts.action
     icon = callbackOpts.icon
@@ -32,12 +32,19 @@ const ChartHeader = (props) => {
     if (!icon || typeof icon !== 'string') {
       console.warn('Supplied callback opts without a valid icon. A button will not be rendered.')
     }
+    if (!isNaN(callbackOpts.adjustAction)) {
+      adjustAction = callbackOpts.adjustAction
+    } else {
+      adjustAction = 0
+    }
   }
   return (
-    <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+    <div>
       <Label className="control-label">{title}</Label>
       {action ? (
-        <Button size="sm" outline onClick={action}><i className={icon} /></Button>
+        <div style={{ position: 'absolute', right: 20 + adjustAction, top: 20 }}>
+          <Button size="sm" outline onClick={action}><i className={icon} /></Button>
+        </div>
       ) : null}
     </div>
   )
@@ -48,6 +55,7 @@ ChartHeader.propTypes = {
   callbackOpts: PropTypes.shape({
     action: PropTypes.func,
     icon: PropTypes.string,
+    adjustAction: PropTypes.number,
   }),
 }
 
