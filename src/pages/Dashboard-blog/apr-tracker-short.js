@@ -170,7 +170,6 @@ class AprTrackerShort extends React.Component {
   componentDidMount() {
     // load latest month by default
     this.fetchTickers()
-
   }
 
   render() {
@@ -185,7 +184,7 @@ class AprTrackerShort extends React.Component {
                     <div ref={headerRef}>
                       <ChartHeader
                         title="TERRASWAP TRADING APRS"
-                        callbackOpts={{ action: toggleFullscreen, icon, adjustAction: isFullscreen && isMobileOrTablet() ? 100 : 0 }}
+                        callbackOpts={{ action: toggleFullscreen, icon, adjustAction: isFullscreen && isMobileOrTablet() ? window.innerHeight * .12 : 0 }}
                       />
                       <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
                         <Select
@@ -261,7 +260,7 @@ class AprTrackerShort extends React.Component {
                     <div ref={headerRef} style={{ paddingBottom: 20 }}>
                       <ChartHeader
                         title="Hover Mouse for Column Descriptions"
-                        callbackOpts={{ action: toggleFullscreen, icon, adjustAction: isFullscreen && isMobileOrTablet() ? 100 : 0 }}
+                        callbackOpts={{ action: toggleFullscreen, icon, adjustAction: isFullscreen && isMobileOrTablet() ? window.innerHeight * .12 : 0 }}
                       />
                     </div>
                     <div className="ag-theme-alpine" style={chartParams.maybeRotatedContainer()}>
