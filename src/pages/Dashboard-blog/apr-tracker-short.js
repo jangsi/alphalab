@@ -269,19 +269,19 @@ class AprTrackerShort extends React.Component {
                         style={chartParams.maybeRotatedContainer()}
                         onGridReady={this.onGridReady.bind(this)}
                         rowData={this.state.rowData}
-                        defaultColDef={{ resizable: true, minWidth: 200, filter: true, sortable: true }}
+                        defaultColDef={{ resizable: true, minWidth: 140, filter: true, sortable: true }}
                       >
-                        <AgGridColumn field="symbol" headerTooltip='Symbol' />
-                        <AgGridColumn field="AlphaDefi APR Score" valueFormatter={scoreFormatter}  headerTooltip='Current Yield / rolling 21 day vol' />
-                        <AgGridColumn field="current" valueFormatter={pctFormatter}  headerTooltip='most recently calculated APY' />
-                        <AgGridColumn field="mean" valueFormatter={pctFormatter}  headerTooltip='mean historical apr, normally the apr this pool trades at' />
-                        <AgGridColumn field="Three SD" valueFormatter={pctFormatter}  headerTooltip='+ three standard deviations from mean' />
+                        <AgGridColumn field="symbol" headerTooltip='Symbol' pinned="left" />
+                        <AgGridColumn field="AlphaDefi APR Score" valueFormatter={scoreFormatter} minWidth={200} headerTooltip='Current Yield / rolling 21 day vol' />
+                        <AgGridColumn field="current" valueFormatter={pctFormatter} headerTooltip='most recently calculated APY' />
+                        <AgGridColumn field="mean" valueFormatter={pctFormatter} headerTooltip='mean historical apr, normally the apr this pool trades at' />
+                        <AgGridColumn field="Three SD" valueFormatter={pctFormatter} headerTooltip='+ three standard deviations from mean' />
                         <AgGridColumn field="Neg Three SD" valueFormatter={pctFormatter}  headerTooltip='- three standard deviations from mean' />
-                        <AgGridColumn field="max" valueFormatter={pctFormatter}  headerTooltip='max apr last 21 days' />
-                        <AgGridColumn field="min" valueFormatter={pctFormatter}   headerTooltip='min apr last 21 days' />
-                        <AgGridColumn field="std" valueFormatter={pctFormatter}  headerTooltip='std of historical apr' />
-                        <AgGridColumn field="Historical 5th % Spread" valueFormatter={pctFormatter}  headerTooltip='Historical 5th % APR' />
-                        <AgGridColumn field="Historical 95th % Spread" valueFormatter={pctFormatter}  headerTooltip='Historical 95th % APR' />
+                        <AgGridColumn field="max" valueFormatter={pctFormatter} headerTooltip='max apr last 21 days' />
+                        <AgGridColumn field="min" valueFormatter={pctFormatter} headerTooltip='min apr last 21 days' />
+                        <AgGridColumn field="std" valueFormatter={pctFormatter} headerTooltip='std of historical apr' />
+                        <AgGridColumn field="Historical 5th % Spread" valueFormatter={pctFormatter} minWidth={200} headerTooltip='Historical 5th % APR' />
+                        <AgGridColumn field="Historical 95th % Spread" valueFormatter={pctFormatter} minWidth={250} headerTooltip='Historical 95th % APR' />
                       </AgGridReact>
                     </div>
                   </CardBody>

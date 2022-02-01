@@ -6,12 +6,12 @@
   &.mobile {
     transform: rotate(90deg) translateY(-100%);
     transform-origin: 0 0;
-  }
-}
 
-.counterRotation-90 {
-  transform: rotate(90deg) translateY(-100%);
-}
-.counterRotation90 {
-  transform: rotate(-90deg) translateY(-100%);
+    &.counterRotation-90 {
+      transform: rotate(0deg) translateY(0);
+    }
+    &.counterRotation90 {
+      transform: rotate(0deg) translateY(0);
+    }
+  }
 }

@@ -28,17 +28,14 @@ const FullscreenComponent = (props) => {
     setInnerWidth(window.innerWidth - 40)
   }, [window.innerHeight, window.innerWidth])
 
-  const [screenAngle, setScreenAngle] = useState(0)
+  const [screenAngle, setScreenAngle] = useState(window.orientation)
   useEffect(() => {
-    // device doesn't support the ScreenOrientation interface... fallback to orientationchange event
-    if (!screen.orientation && window.orientation !== null && window.orientation !== undefined) {
-      const orientationchangeListener = () => {
-        setScreenAngle(window.orientation)
-      }
-      window.addEventListener('orientationchange', orientationchangeListener)
-
-      return () => window.removeEventListener('orientationchange', orientationchangeListener)
+    const orientationchangeListener = () => {
+      setScreenAngle(window.orientation)
     }
+    window.addEventListener('orientationchange', orientationchangeListener)
+
+    return () => window.removeEventListener('orientationchange', orientationchangeListener)
   }, [])
 
   const toggleFullscreen = () => {
@@ -74,6 +71,15 @@ const FullscreenComponent = (props) => {
             const boundingBox = headerRef.current.getBoundingClientRect()
             adjustment = boundingBox.height
           }
+
+          if (screenAngle !== 0) {
+            const container = this.container
+            return {
+              ...container,
+              height: container.height - adjustment
+            }
+          }
+          
           return {
             height: this.container.width - adjustment,
             width: this.container.height,
