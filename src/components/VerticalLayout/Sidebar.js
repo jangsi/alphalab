@@ -1,47 +1,65 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { connect } from "react-redux"
-import { withRouter } from "react-router-dom"
-import { } from "../../store/actions"
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import {} from "../../store/actions";
 
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 //i18n
-import { withTranslation } from "react-i18next"
-import SidebarContent from "./SidebarContent"
-
-import logo from "../../assets/images/logo.svg"
-import logoLightPng from "../../assets/images/logo-light.png"
-import logoLightSvg from "../../assets/images/logo-light.svg"
-import logoDark from "../../assets/images/logo-dark.png"
+import { withTranslation } from "react-i18next";
+import SidebarContent from "./SidebarContent";
 
 class Sidebar extends Component {
   constructor(props) {
-    super(props)
-    this.state = {}
+    super(props);
+    this.state = {};
   }
 
   render() {
     return (
       <React.Fragment>
-
         <div className="vertical-menu">
           <div className="navbar-brand-box">
             <Link to="/dashboard" className="logo logo-dark">
               <span className="logo-sm">
-                <img src={"https://alphadefi.fund/wp-content/uploads/2021/08/noun_alpha_1359359.svg"} alt="" height="22" />
+                <img
+                  src={
+                    "https://alphadefi.fund/wp-content/uploads/2021/08/noun_alpha_1359359.svg"
+                  }
+                  alt=""
+                  height="22"
+                />
               </span>
               <span className="logo-lg">
-                <img src={"https://alphadefi.fund/wp-content/uploads/2021/08/noun_alpha_1359359.svg"} alt="" height="17" />
+                <img
+                  src={
+                    "https://alphadefi.fund/wp-content/uploads/2021/08/noun_alpha_1359359.svg"
+                  }
+                  alt=""
+                  height="17"
+                />
               </span>
             </Link>
 
             <Link to="/dashboard" className="logo logo-light">
               <span className="logo-sm">
-                <img src={"https://alphadefi.fund/wp-content/uploads/2021/08/noun_alpha_1359359.svg"} alt="" height="50" />
+                <img
+                  src={
+                    "https://alphadefi.fund/wp-content/uploads/2021/08/noun_alpha_1359359.svg"
+                  }
+                  alt=""
+                  height="50"
+                />
               </span>
               <span className="logo-lg">
-                <img src={"https://alphadefi.fund/wp-content/uploads/2021/08/noun_alpha_1359359.svg"} alt="" height="50" />
+                <img
+                  src={
+                    "https://alphadefi.fund/wp-content/uploads/2021/08/noun_alpha_1359359.svg"
+                  }
+                  alt=""
+                  height="50"
+                />
               </span>
             </Link>
           </div>
@@ -55,20 +73,20 @@ class Sidebar extends Component {
           <div className="sidebar-background"></div>
         </div>
       </React.Fragment>
-    )
+    );
   }
 }
 
 Sidebar.propTypes = {
   type: PropTypes.string,
-}
+};
 
 const mapStateToProps = state => {
   return {
     layout: state.Layout,
-  }
-}
+  };
+};
 export default connect(
   mapStateToProps,
   {}
-)(withRouter(withTranslation()(Sidebar)))
+)(withRouter(withTranslation()(Sidebar)));
