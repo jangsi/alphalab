@@ -1,8 +1,6 @@
 import React, { Component } from "react"
-import { Row, Col, Card } from "reactstrap"
+import { Row, Col, Card, Label } from "reactstrap"
 
-//Import Image
-import features from "../../assets/images/crypto/features-img/img-2.png"
 
 class CardWelcome extends Component {
   render() {
@@ -25,16 +23,20 @@ class CardWelcome extends Component {
                       <i className="mdi mdi-circle-medium align-middle text-primary me-1"/>{" "}
                       Monitor the $ Value of Loans that Would be Liquidated at Each Luna Price Level
                     </p>
-                    <p className="mb-0">
+                    <p className="mb-3">
                       <i className="mdi mdi-circle-medium align-middle text-primary me-1"/>{" "}
                       Use Higher Loan Nodes as Support or Areas to Place Liquidatuion Bids at Higher Premiums
                     </p>
+                    <p className="mb-1">
+                    <Label className="control-label">*** HISTORICAL DATABASE STARTS 2/3/2022 ***</Label>
+                    </p>
+                    <Label className="control-label">*** REFRESH TO GET BACK TO LIVE PROFILE ***</Label>
                   </div>
                 </div>
               </Col>
               <Col lg="3" sm="4" className="align-self-center">
                 <div>
-                  <img src="//alphadefi.fund/wp-content/uploads/2021/08/687474703a2f2f74657272612e6d6f6e65792f6c6f676f732f74657272615f6c6f676f2e737667.svg" alt="" className="img-fluid d-block" />
+                  <img src="//alphadefi.fund/wp-content/uploads/2021/08/1359359-84.png" alt="" className="img-fluid d-block" />
                 </div>
               </Col>
             </Row>

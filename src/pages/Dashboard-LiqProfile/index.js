@@ -62,8 +62,6 @@ class Dashboard extends Component {
             <Row>
               <Col xl="12">
                 <CardWelcome />
-                <Row>
-                </Row>
               </Col>
             </Row>
             <Row>

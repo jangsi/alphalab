@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from 'react';
 import {
   Row,
   Col,
@@ -19,6 +19,9 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import dayjs from 'dayjs'
 import MiniWidget from "./mini-widget"
+
+import DateTimePicker from 'react-datetime-picker';
+
 
 
 const options = {
@@ -46,10 +49,6 @@ function pctFormatter2(params) {
   return Number(params.value).toFixed(2) + "%";
 }
 
-function formatXAxis(tickItem) {
-  return dayjs(tickItem).format("MM/DD/YYYY HH:mm:ss");
-}
-
 function priceFormat(tickItem) {
   return (
     "$" +
@@ -69,21 +68,17 @@ const fetchLuna = () => {
   return fetch("https://api.alphadefi.fund/info/liqprofile");
 };
 
+
+
 class AprTrackerShort extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
-      tickerOptions: [],
-      tickerOptions2: [],
       tokenAddresses: {},
       rowData: [],
       rowData2: [],
-      selectedShortTicker: "LUNA-UST Astroport",
-      defaultOption: {
-        label: "LUNA-UST Astroport",
-        value: "LUNA-UST Astroport",
-      },
+      selectedDate: [new Date()],
       longDates: [dayjs().subtract(6, "month").toDate(), dayjs().toDate()],
       reports: [
         {
@@ -119,6 +114,7 @@ class AprTrackerShort extends React.Component {
       ],
     };
     this.fetchAprData = this.fetchAprData.bind(this);
+    this.fetchHistoricalProfile = this.fetchHistoricalProfile.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.fetchLuna = this.fetchLuna.bind(this);
 
@@ -127,6 +123,7 @@ class AprTrackerShort extends React.Component {
     this.timer3 = null;
     this.clearTimer = this.clearTimer.bind(this);
     this.scheduleFetch = this.scheduleFetch.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   async fetchData() {
@@ -185,11 +182,59 @@ class AprTrackerShort extends React.Component {
     });
   }
 
+  fetchHistoricalProfile() {
+    let filters = {
+      datetime: this.state.selectedDate, 
+    }
+    historical.getHistoricalLiquidationProfile(filters).then(apiData => {
+      let formattedData = apiData.map(obj => {
+        return {
+          Luna_Liquidation_Price: obj.Luna_Liquidation_Price,
+          Loan_Value: obj.Loan_Value,
+          collateral_value: obj.collateral_value,
+          ltv: obj.ltv,
+          percent_of_loans: obj.percent_of_loans,
+          luna_price: obj.luna_price,
+          bigrisk: obj.bigrisk,
+          areatowatch: obj.areatowatch
+
+        };
+      });
+      this.setState(_ => ({
+        data: formattedData,
+        rowData: formattedData 
+      }));
+      console.log(this.state.data);
+      this.clearTimer();
+
+      let newState = JSON.parse(JSON.stringify(this.state));
+    newState.reports[0].value =
+      "Luna - $" +
+      Number(formattedData[0]["luna_price"]).toLocaleString("en-US", {
+        maximumFractionDigits: 2,
+      });
+    newState.reports[1].value =
+      "Luna - $" +
+      Number(formattedData[0]["bigrisk"]).toLocaleString("en-US", {
+        maximumFractionDigits: 2,
+      });
+    newState.reports[2].value =
+      "Luna - $" +
+      Number(formattedData[0]["areatowatch"]).toLocaleString("en-US", {
+        maximumFractionDigits: 2,
+      });
+    this.setState(newState);
+    });
+  }
+
   clearTimer() {
     if (this.timer) {
       clearTimeout(this.timer);
+      clearTimeout(this.timer2);
+      clearTimeout(this.timer3);
       this.timer = null;
       this.timer2 = null;
+      this.timer3 = null;
     }
   }
 
@@ -201,6 +246,16 @@ class AprTrackerShort extends React.Component {
     this.timer3 = setTimeout(this.fetchLuna, 60000);
   }
 
+  handleChange(selectedOption) {
+    
+    let newDate = selectedOption
+    console.log(selectedOption)
+    this.setState({
+      selectedDate: newDate
+    }, () => this.fetchHistoricalProfile())
+  }
+
+
   componentDidMount() {
     this.fetchAprData();
     this.fetchLuna();
@@ -210,35 +265,47 @@ class AprTrackerShort extends React.Component {
     return (
       <React.Fragment>
         <Col xl="12">
-          
-         
-          <Card >
-
-          <CardBody className="card-body-test">
+        <Card>
+          <CardBody>
           <Row>
-          {/* mini widgets */}
-          <MiniWidget reports={this.state.reports} />
           <Label className="control-label">ALPHADEFI LIQUIDATION PROFILE</Label>
+            <div>
+              <DateTimePicker
+                value={new Date(this.state.selectedDate)}
+                onChange={this.handleChange}
+              />
+            </div>
           </Row>
-              <div style={{height: 1000}}>
-              <ResponsiveContainer width="100%" height="100%">
+          </CardBody>
+          </Card>
+          <Card >
+          <CardBody >
+          <Row>
+          <MiniWidget reports={this.state.reports} />
+          </Row>
+          </CardBody>
+          </Card>
+          <Card>
+          <CardBody>
+          <div style={{height: 1000}}>
+            <ResponsiveContainer width="100%" height="100%">
               <ScatterChart
-          width={400}
-          height={400}
-          margin={{
-            top: 20,
-            right: 20,
-            bottom: 20,
-            left: 20,
-          }}
-        >
-          <CartesianGrid />
-          <XAxis type="number" dataKey="Loan_Value" name="Loan_Value" tickFormatter={priceFormat2} domain={['dataMin', 'dataMax']}/>
-          <YAxis type="number" dataKey="Luna_Liquidation_Price" name="Luna_Liquidation_Price" tickFormatter={priceFormat2} domain={['dataMin', 'dataMax']}/>
-          <Tooltip cursor={{ strokeDasharray: '3 3' }}  labelFormatter={tick => {return priceFormat(tick);}} formatter={tick => {return priceFormat2(tick);}}/>
-          <Legend/>
-          <Scatter name="Liquidatuion Prices of Outstanding Loans" data={this.state.data} fill="000000" line={{stroke: 'black', strokeWidth: 3}}/>
-          </ScatterChart>
+                width={400}
+                height={400}
+                margin={{
+                  top: 20,
+                  right: 20,
+                  bottom: 20,
+                  left: 20,
+                }}
+                  >
+              <CartesianGrid />
+              <XAxis type="number" dataKey="Loan_Value" name="Loan_Value" tickFormatter={priceFormat2} domain={['dataMin', 'dataMax']}/>
+              <YAxis type="number" dataKey="Luna_Liquidation_Price" name="Luna_Liquidation_Price" tickFormatter={priceFormat2} domain={['dataMin', 'dataMax']}/>
+              <Tooltip cursor={{ strokeDasharray: '3 3' }}  labelFormatter={tick => {return priceFormat(tick);}} formatter={tick => {return priceFormat2(tick);}}/>
+              <Legend/>
+              <Scatter name="Liquidatuion Prices of Outstanding Loans" data={this.state.data} fill="000000" line={{stroke: 'black', strokeWidth: 3}}/>
+              </ScatterChart>
          
              </ResponsiveContainer>
              </div>
