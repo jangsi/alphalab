@@ -1,5 +1,4 @@
 import React from "react"
-import Select from "react-select"
 import {
   Row,
   Col,
@@ -8,24 +7,19 @@ import {
   Card,
   CardBody
 } from "reactstrap"
-import poolDictApi from '../../api/v1/pool-dictionary'
-import mirrorGraphql from '../../api/v1/mirror-graphql'
 import historical from '../../api/v1/historical'
 import {AgGridColumn, AgGridReact} from 'ag-grid-react'
 
 //Import Date Picker
-import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
 import {CartesianGrid, Scatter, ScatterChart, LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
-import { ConsoleWriter } from "istanbul-lib-report"
-import { date } from "language-tags"
 import dayjs from 'dayjs'
 import MiniWidget from "./mini-widget"
-import AttachedFiles from "pages/Projects/ProjectOverview/attachedFiles"
+
 
 const options = {
   chart: { sparkline: { enabled: !0 } },
@@ -215,9 +209,10 @@ class AprTrackerShort extends React.Component {
           <Card >
 
           <CardBody className="card-body-test">
-            <Row>
+          <Row>
           {/* mini widgets */}
           <MiniWidget reports={this.state.reports} />
+          <Label className="control-label">ALPHADEFI LIQUIDATION PROFILE</Label>
           </Row>
               <div style={{height: 1000}}>
               <ResponsiveContainer width="100%" height="100%">
