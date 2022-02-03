@@ -36,45 +36,42 @@ const options = {
     },
   },
   tooltip: { fixed: { enabled: !1 }, x: { show: !1 }, marker: { show: !1 } },
-}
+};
 
 function pctFormatter(params) {
-  return Number(params.value*100).toFixed(2) + '%';
+  return Number(params.value * 100).toFixed(2) + "%";
 }
 
 function pctFormatter2(params) {
-  return Number(params.value).toFixed(2) + '%';
+  return Number(params.value).toFixed(2) + "%";
 }
 
-
 function formatXAxis(tickItem) {
-  return dayjs(tickItem).format('MM/DD/YYYY HH:mm:ss')
+  return dayjs(tickItem).format("MM/DD/YYYY HH:mm:ss");
 }
 
 function priceFormat(tickItem) {
-  return '$'+((Number(tickItem.value)).toLocaleString('en-US', {maximumFractionDigits:2}))
+  return (
+    "$" +
+    Number(tickItem.value).toLocaleString("en-US", { maximumFractionDigits: 2 })
+  );
 }
 
 function priceFormat2(tickItem) {
-  return (Number(tickItem)).toLocaleString('en-US', {maximumFractionDigits:2})
+  return Number(tickItem).toLocaleString("en-US", { maximumFractionDigits: 2 });
 }
 
-
 const fetchStats = () => {
-  return fetch(
-    "https://api.alphadefi.fund/info/liqprofile"
-  );
+  return fetch("https://api.alphadefi.fund/info/liqprofile");
 };
 
 const fetchLuna = () => {
-  return fetch(
-    "https://api.alphadefi.fund/info/liqprofile"
-  );
+  return fetch("https://api.alphadefi.fund/info/liqprofile");
 };
 
 class AprTrackerShort extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       data: [],
       tickerOptions: [],
@@ -82,9 +79,12 @@ class AprTrackerShort extends React.Component {
       tokenAddresses: {},
       rowData: [],
       rowData2: [],
-      selectedShortTicker: 'LUNA-UST Astroport',
-      defaultOption: { label: 'LUNA-UST Astroport', value: 'LUNA-UST Astroport' },
-      longDates: [dayjs().subtract(6, 'month').toDate(), dayjs().toDate()],
+      selectedShortTicker: "LUNA-UST Astroport",
+      defaultOption: {
+        label: "LUNA-UST Astroport",
+        value: "LUNA-UST Astroport",
+      },
+      longDates: [dayjs().subtract(6, "month").toDate(), dayjs().toDate()],
       reports: [
         {
           title: "Live",
@@ -92,8 +92,8 @@ class AprTrackerShort extends React.Component {
           imageUrl: "//whitelist.mirror.finance/images/Luna.png",
           color: "warning",
           value: "",
-          arrow: 'mdi-arrow-up text-success',
-          series: [{ name: "LUNA", data: []}],
+          arrow: "mdi-arrow-up text-success",
+          series: [{ name: "LUNA", data: [] }],
           options: options,
         },
         {
@@ -101,9 +101,9 @@ class AprTrackerShort extends React.Component {
           icon: "mdi mdi-email-open",
           imageUrl: "//whitelist.mirror.finance/images/Luna.png",
           color: "primary",
-          arrow: 'mdi-arrow-down text-danger',
+          arrow: "mdi-arrow-down text-danger",
           value: "",
-          series:  [{ name: "Loan Risk", data: []}],
+          series: [{ name: "Loan Risk", data: [] }],
           options: options,
         },
         {
@@ -111,41 +111,52 @@ class AprTrackerShort extends React.Component {
           icon: "mdi mdi-email-open",
           imageUrl: "//whitelist.mirror.finance/images/Luna.png",
           color: "info",
-          arrow: 'mdi-arrow-up text-success',
+          arrow: "mdi-arrow-up text-success",
           value: "",
-          series:  [{ name: "Price to Watch", data: []}],
+          series: [{ name: "Price to Watch", data: [] }],
           options: options,
         },
       ],
-
-    }
-    this.fetchAprData = this.fetchAprData.bind(this)
+    };
+    this.fetchAprData = this.fetchAprData.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.fetchLuna = this.fetchLuna.bind(this);
 
-    this.timer = null
-    this.timer2 = null
-    this.timer3= null
-    this.clearTimer = this.clearTimer.bind(this)
-    this.scheduleFetch = this.scheduleFetch.bind(this)
+    this.timer = null;
+    this.timer2 = null;
+    this.timer3 = null;
+    this.clearTimer = this.clearTimer.bind(this);
+    this.scheduleFetch = this.scheduleFetch.bind(this);
   }
 
   async fetchData() {
     const response = await fetchStats();
     const data = await response.json();
-    console.log(data)
+    console.log(data);
     this.setState({ rowData: data });
   }
 
   async fetchLuna() {
     const response = await fetchLuna();
     const data = await response.json();
-    console.log(data)
-    let newState = JSON.parse(JSON.stringify(this.state))
-    newState.reports[0].value = 'Luna - $'+Number(data[0]['luna_price']).toLocaleString('en-US', {maximumFractionDigits:2})
-    newState.reports[1].value = 'Luna - $'+Number(data[0]['bigrisk']).toLocaleString('en-US', {maximumFractionDigits:2})
-    newState.reports[2].value = 'Luna - $'+Number(data[0]['areatowatch']).toLocaleString('en-US', {maximumFractionDigits:2})
-    this.setState(newState)
+    console.log(data);
+    let newState = JSON.parse(JSON.stringify(this.state));
+    newState.reports[0].value =
+      "Luna - $" +
+      Number(data[0]["luna_price"]).toLocaleString("en-US", {
+        maximumFractionDigits: 2,
+      });
+    newState.reports[1].value =
+      "Luna - $" +
+      Number(data[0]["bigrisk"]).toLocaleString("en-US", {
+        maximumFractionDigits: 2,
+      });
+    newState.reports[2].value =
+      "Luna - $" +
+      Number(data[0]["areatowatch"]).toLocaleString("en-US", {
+        maximumFractionDigits: 2,
+      });
+    this.setState(newState);
   }
 
   onGridReady(params) {
@@ -156,49 +167,44 @@ class AprTrackerShort extends React.Component {
     this.fetchData();
     //this.gridColumnApi.autoSizeColumns();
     this.gridApi.sizeColumnsToFit();
-
   }
-
 
   fetchAprData() {
     historical.getLiquidationProfile().then(apiData => {
-      let formattedData = apiData
-        .map(obj => {
-          return {Luna_Liquidation_Price: obj.Luna_Liquidation_Price, Loan_Value: obj.Loan_Value, }
-        })
+      let formattedData = apiData.map(obj => {
+        return {
+          Luna_Liquidation_Price: obj.Luna_Liquidation_Price,
+          Loan_Value: obj.Loan_Value,
+        };
+      });
       this.setState(_ => ({
         data: formattedData,
-      }))
-      console.log(this.state.data)
-      this.scheduleFetch()
-    })
+      }));
+      console.log(this.state.data);
+      this.scheduleFetch();
+    });
   }
 
   clearTimer() {
     if (this.timer) {
-      clearTimeout(this.timer)
-      this.timer = null
-      this.timer2 = null
+      clearTimeout(this.timer);
+      this.timer = null;
+      this.timer2 = null;
     }
   }
 
   scheduleFetch() {
-    this.clearTimer()
+    this.clearTimer();
     // set to 5 min, the same as the graphql interval
-    this.timer = setTimeout(this.fetchAprData, 60000)
-    this.timer2 = setTimeout(this.fetchData, 60000)
-    this.timer3 = setTimeout(this.fetchLuna, 60000)
+    this.timer = setTimeout(this.fetchAprData, 60000);
+    this.timer2 = setTimeout(this.fetchData, 60000);
+    this.timer3 = setTimeout(this.fetchLuna, 60000);
   }
-
-
-
 
   componentDidMount() {
-    this.fetchAprData()
-    this.fetchLuna()
-
+    this.fetchAprData();
+    this.fetchLuna();
   }
-
 
   render() {
     return (
@@ -237,34 +243,73 @@ class AprTrackerShort extends React.Component {
              </ResponsiveContainer>
              </div>
             </CardBody>
-          </Card>*
+          </Card>
+          *
           <Card>
-          <CardBody>
-            <div className="ag-theme-alpine" style={{height: 800}}>
-            <Label className="control-label">Hover Mouse for Column Descriptions</Label>
-            <AgGridReact
-               onGridReady={this.onGridReady.bind(this)}
-               rowData={this.state.rowData}>
-                <AgGridColumn field="ltv" sortable={true} filter={true} valueFormatter={pctFormatter} resizable={true} headerTooltip=''></AgGridColumn>
-                <AgGridColumn field="collateral_value" sortable={true} filter={true} valueFormatter={priceFormat} resizable={true}  headerTooltip=''></AgGridColumn>
-                <AgGridColumn field="Loan_Value" sort='desc'sortable={true} filter={true} valueFormatter={priceFormat} resizable={true}  headerTooltip=''></AgGridColumn>
-                <AgGridColumn field="percent_of_loans" sortable={true} filter={true} valueFormatter={pctFormatter2} resizable={true}  headerTooltip=''></AgGridColumn>
-                <AgGridColumn field="Luna_Liquidation_Price" sortable={true} filter={true} valueFormatter={priceFormat} resizable={true}  headerTooltip=''></AgGridColumn>
-            </AgGridReact>
-            </div>
-          </CardBody>
+            <CardBody>
+              <div className="ag-theme-alpine" style={{ height: 800 }}>
+                <Label className="control-label">
+                  Hover Mouse for Column Descriptions
+                </Label>
+                <AgGridReact
+                  onGridReady={this.onGridReady.bind(this)}
+                  rowData={this.state.rowData}
+                >
+                  <AgGridColumn
+                    field="ltv"
+                    sortable={true}
+                    filter={true}
+                    valueFormatter={pctFormatter}
+                    resizable={true}
+                    headerTooltip=""
+                  ></AgGridColumn>
+                  <AgGridColumn
+                    field="collateral_value"
+                    sortable={true}
+                    filter={true}
+                    valueFormatter={priceFormat}
+                    resizable={true}
+                    headerTooltip=""
+                  ></AgGridColumn>
+                  <AgGridColumn
+                    field="Loan_Value"
+                    sort="desc"
+                    sortable={true}
+                    filter={true}
+                    valueFormatter={priceFormat}
+                    resizable={true}
+                    headerTooltip=""
+                  ></AgGridColumn>
+                  <AgGridColumn
+                    field="percent_of_loans"
+                    sortable={true}
+                    filter={true}
+                    valueFormatter={pctFormatter2}
+                    resizable={true}
+                    headerTooltip=""
+                  ></AgGridColumn>
+                  <AgGridColumn
+                    field="Luna_Liquidation_Price"
+                    sortable={true}
+                    filter={true}
+                    valueFormatter={priceFormat}
+                    resizable={true}
+                    headerTooltip=""
+                  ></AgGridColumn>
+                </AgGridReact>
+              </div>
+            </CardBody>
           </Card>
         </Col>
       </React.Fragment>
-    )
+    );
   }
 }
 
-export default AprTrackerShort
+export default AprTrackerShort;
 
-
-
-{/*//fetch kujira data (not working because its blocked so might have to make own API to get around it)
+{
+  /*//fetch kujira data (not working because its blocked so might have to make own API to get around it)
 const fetchNodes = () => {
   return fetch(
     "https://api.coinhall.org/api/v1/charts/terra/candles?bars=320&from=1641492129&interval=1h&pairAddress=terra1tndcaqxkpc5ce9qee5ggqf430mr2z3pefe5wj6&quoteAsset=uusd&to=1642644129"
@@ -286,8 +331,5 @@ const fetchLivePrice = () => {
   return fetch(
     "https://fcd.terra.dev/wasm/contracts/terra1tndcaqxkpc5ce9qee5ggqf430mr2z3pefe5wj6/store?query_msg={%22pool%22:{}}"
   );
-};*/}
-
-
-
-
+};*/
+}
