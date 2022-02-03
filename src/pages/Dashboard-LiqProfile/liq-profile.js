@@ -273,6 +273,7 @@ class AprTrackerShort extends React.Component {
               <DateTimePicker
                 value={new Date(this.state.selectedDate)}
                 onChange={this.handleChange}
+                minDate={dayjs('2/3/2022').toDate()}
               />
             </div>
           </Row>
