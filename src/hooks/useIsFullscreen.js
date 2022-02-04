@@ -1,17 +1,8 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 
 export const IsFullscreenContext = React.createContext({
   isFullscreen: false,
-  setIsFullscreen: () => {}
+  setIsFullscreen: (_) => null
 })
 
 export const useIsFullscreenContext = () => useContext(IsFullscreenContext)
-
-export const useIsFullScreen = () => {
-  const [isFullscreen, setIsFullscreen] = useState(false)
-
-  return {
-    isFullscreen,
-    setIsFullscreen
-  }
-}

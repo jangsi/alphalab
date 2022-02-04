@@ -1,6 +1,5 @@
-import React, { Component } from "react"
+import React, { useState, useEffect } from "react"
 import { Container, Row, Col } from "reactstrap"
-import MetaTags from 'react-meta-tags';
 
 //Import Breadcrumb
 import Breadcrumbs from "../../components/Common/Breadcrumb"
@@ -9,10 +8,11 @@ import Breadcrumbs from "../../components/Common/Breadcrumb"
 import CardWelcome from "./card-welcome"
 import MiniWidget from "./mini-widget"
 import AprTrackerShort from './apr-tracker-short'
-import mirrorGraphql from '../../api/v1/mirror-graphql'
 import historical from '../../api/v1/historical'
 
 import dayjs from 'dayjs'
+import './index.scss';
+import { useIsFullscreenContext } from '../../hooks/useIsFullscreen';
 
 const options1 = {
   chart: { sparkline: { enabled: !0 } },
@@ -65,49 +65,43 @@ const options3 = {
   tooltip: { fixed: { enabled: !1 }, x: { show: !1 }, marker: { show: !1 } },
 }
 
-class Dashboard extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selectedLongTicker: '',
-      reports: [
-        {
-          title: "mNFLX-UST APR",
-          icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/NFLX.png",
-          color: "warning",
-          value: "",
-          arrow: 'mdi-arrow-up text-success',
-          series: [{ name: "mNFLX", data: []}],
-          options: options1,
-        },
-        {
-          title: "mAAPL-UST APR",
-          icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/AAPL.png",
-          color: "primary",
-          arrow: 'mdi-arrow-down text-danger',
-          value: "",
-          series:  [{ name: "mAAPL", data: []}],
-          options: options2,
-        },
-        {
-          title: "mCOIN-UST APR",
-          icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/COIN.png",
-          color: "info",
-          arrow: 'mdi-arrow-up text-success',
-          value: "",
-          series:  [{ name: "mCOIN", data: []}],
-          options: options3,
-        },
-      ],
-    }
-    this.fetchAprData1= this.fetchAprData1.bind(this)
-  }
+const Dashboard = () => {
+  const [reports, setReports] = useState([
+    {
+      title: "mNFLX-UST APR",
+      icon: "mdi mdi-email-open",
+      imageUrl: "//whitelist.mirror.finance/images/NFLX.png",
+      color: "warning",
+      value: "",
+      arrow: 'mdi-arrow-up text-success',
+      series: [{ name: "mNFLX", data: []}],
+      options: options1,
+    },
+    {
+      title: "mAAPL-UST APR",
+      icon: "mdi mdi-email-open",
+      imageUrl: "//whitelist.mirror.finance/images/AAPL.png",
+      color: "primary",
+      arrow: 'mdi-arrow-down text-danger',
+      value: "",
+      series:  [{ name: "mAAPL", data: []}],
+      options: options2,
+    },
+    {
+      title: "mCOIN-UST APR",
+      icon: "mdi mdi-email-open",
+      imageUrl: "//whitelist.mirror.finance/images/COIN.png",
+      color: "info",
+      arrow: 'mdi-arrow-up text-success',
+      value: "",
+      series:  [{ name: "mCOIN", data: []}],
+      options: options3,
+    },
+  ]);
 
-fetchAprData1() {
+  const fullscreen = useIsFullscreenContext();
 
+  const fetchAprData1 = () => {
     let precision = 'day'
     let diff = 605800000
     // 604800000 = 7 days
@@ -125,14 +119,13 @@ fetchAprData1() {
           return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
         })
         console.log(formattedData)
-        let newState2 = JSON.parse(JSON.stringify(this.state))
-        newState2.reports[0].value = String(Number(formattedData[formattedData.length-1].Price *100).toFixed(2)) + '%'
-        this.setState(newState2)
+        const newReports = [...reports];
+        newReports[0].value = String(Number(formattedData[formattedData.length-1].Price *100).toFixed(2)) + '%'
+        setReports(newReports)
     })
   }
 
-  fetchAprData2() {
-
+  const fetchAprData2 = () => {
     let precision = 'day'
     let diff = 605800000
     // 604800000 = 7 days
@@ -149,14 +142,13 @@ fetchAprData1() {
         .map(obj => {
           return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
         })
-        let newState2 = JSON.parse(JSON.stringify(this.state))
-        newState2.reports[1].value = String(Number(formattedData[formattedData.length-1].Price *100).toFixed(2)) + '%'
-        this.setState(newState2)
+        const newReports = [...reports];
+        newReports[1].value = String(Number(formattedData[formattedData.length-1].Price *100).toFixed(2)) + '%'
+        setReports(newReports)
     })
   }
 
-  fetchAprData3() {
-
+  const fetchAprData3 = () => {
     let precision = 'day'
     let diff = 605800000
     // 604800000 = 7 days
@@ -173,70 +165,73 @@ fetchAprData1() {
         .map(obj => {
           return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.apr}
         })
-        let newState2 = JSON.parse(JSON.stringify(this.state))
-        newState2.reports[2].value = String(Number(formattedData[formattedData.length-1].Price *100).toFixed(2)) + '%'
-        this.setState(newState2)
+        const newReports = [...reports];
+        newReports[2].value = String(Number(formattedData[formattedData.length-1].Price *100).toFixed(2)) + '%'
+        setReports(newReports)
     })
   }
 
-  componentDidMount() {
-    this.fetchAprData1()
-    this.fetchAprData2()
-    this.fetchAprData3()
+  useEffect(() => {
+    fetchAprData1()
+    fetchAprData2()
+    fetchAprData3()
+  }, []);
+
+  const classes = ['page-content'];
+  if (fullscreen.isFullscreen) {
+    classes.push('fullscreen');
   }
 
-  render() {
-    return (
-      <React.Fragment>
-        <div className="page-content">
-          {/*<MetaTags>
-            <title>Crypto Dashboard | Skote - React Admin & Dashboard Template</title>
-          </MetaTags>*/}
-          <Container fluid>
-            {/* Render Breadcrumb */}
-            <Breadcrumbs title="Dashboards" breadcrumbItem="TERRASWAP" />
-            <Row>
-              {/* card user */}
-              {/*<CardUser />*/}
+  return (
+    <React.Fragment>
+      <div className={classes.join(' ')}>
+        {/*<MetaTags>
+          <title>Crypto Dashboard | Skote - React Admin & Dashboard Template</title>
+        </MetaTags>*/}
+        <Container fluid>
+          {/* Render Breadcrumb */}
+          <Breadcrumbs title="Dashboards" breadcrumbItem="TERRASWAP" />
+          <Row>
+            {/* card user */}
+            {/*<CardUser />*/}
 
-              <Col xl="12">
-                {/* card welcome */}
-                <CardWelcome />
+            <Col xl="12">
+              {/* card welcome */}
+              <CardWelcome />
 
-                <Row>
-                  {/* mini widgets */}
-                  <MiniWidget reports={this.state.reports} />
-                </Row>
-              </Col>
-            </Row>
+              <Row>
+                {/* mini widgets */}
+                <MiniWidget reports={reports} />
+              </Row>
+            </Col>
+          </Row>
 
-            <Row>
-              {/* wallet balance
-              <WalletBalance />*/}
+          <Row>
+            {/* wallet balance
+            <WalletBalance />*/}
 
-              {/* overview
-              <OverView />*/}
-            </Row>
+            {/* overview
+            <OverView />*/}
+          </Row>
 
-            <Row >
-            <AprTrackerShort />
-            </Row>
+          <Row >
+          <AprTrackerShort />
+          </Row>
 
-            {/*<Row>
-               transactions
-              <Transactions />
+          {/*<Row>
+             transactions
+            <Transactions />
 
-              {/* notifications
-              <Notifications />
+            {/* notifications
+            <Notifications />
 
-               buy sell
-              <BuySell />
-            </Row>*/}
-          </Container>
-        </div>
-      </React.Fragment>
-    )
-  }
+             buy sell
+            <BuySell />
+          </Row>*/}
+        </Container>
+      </div>
+    </React.Fragment>
+  );
 }
 
 export default Dashboard

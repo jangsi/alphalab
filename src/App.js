@@ -13,11 +13,19 @@ import VerticalLayout from "./components/VerticalLayout/";
 // Import scss
 import "./assets/scss/theme.scss";
 
+import { IsFullscreenContext } from './hooks/useIsFullscreen';
+
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isFullscreen: false,
+    };
     this.getLayout = this.getLayout.bind(this);
+  }
+
+  setFullscreen = (val) => {
+    this.setState({ isFullscreen: val })
   }
 
   /**
@@ -32,7 +40,7 @@ class App extends Component {
     const Layout = this.getLayout();
 
     return (
-      <React.Fragment>
+      <IsFullscreenContext.Provider value={{ isFullscreen: this.state.isFullscreen, setIsFullscreen: this.setFullscreen }}>
         <Router>
           <Switch>
             {publicRoutes.map((route, idx) => (
@@ -57,7 +65,7 @@ class App extends Component {
             ))}
           </Switch>
         </Router>
-      </React.Fragment>
+      </IsFullscreenContext.Provider>
     );
   }
 }

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import './index.scss'
 import { isMobileOrTablet } from '../../pages/Utility/isMobileOrTablet'
+import { useIsFullscreenContext } from '../../hooks/useIsFullscreen'
 
 const FullscreenComponent = (props) => {
   const [isFullscreen, setFullscreen] = useState(false)
@@ -12,6 +13,7 @@ const FullscreenComponent = (props) => {
   const [innerHeight, setInnerHeight] = useState(window.innerHeight - 40)
   const [innerWidth, setInnerWidth] = useState(window.innerWidth - 40)
   const headerRef = useRef()
+  const fullscreenContext = useIsFullscreenContext()
 
   useEffect(() => {
     if (!headerRef.current || !isFullscreen) return
@@ -44,6 +46,7 @@ const FullscreenComponent = (props) => {
   }, [])
 
   const toggleFullscreen = () => {
+    fullscreenContext.setIsFullscreen(!isFullscreen)
     setFullscreen(!isFullscreen)
     if (icon === 'mdi mdi-18px mdi-arrow-expand') {
       setIcon('mdi mdi-18px mdi-arrow-collapse')
