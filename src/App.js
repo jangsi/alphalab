@@ -13,8 +13,6 @@ import VerticalLayout from "./components/VerticalLayout/";
 // Import scss
 import "./assets/scss/theme.scss";
 
-import { IsFullscreenContext, useIsFullScreen } from './hooks/useIsFullscreen'
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -33,43 +31,32 @@ class App extends Component {
   render() {
     const Layout = this.getLayout();
 
-    const FullscreenContextFnComponent = (props) => {
-      const fullscreen = useIsFullScreen()
-      return (
-        <IsFullscreenContext value={fullscreen}>
-          {props.children}
-        </IsFullscreenContext>
-      )
-    }
-
     return (
       <React.Fragment>
-        <FullscreenContextFnComponent>
-          <Router>
-            <Switch>
-              {publicRoutes.map((route, idx) => (
-                <AppRoute
-                  path={route.path}
-                  layout={Layout}
-                  component={route.component}
-                  key={idx}
-                  isAuthProtected={false}
-                />
-              ))}
+        <Router>
+          <Switch>
+            {publicRoutes.map((route, idx) => (
+              <AppRoute
+                path={route.path}
+                layout={Layout}
+                component={route.component}
+                key={idx}
+                isAuthProtected={false}
+              />
+            ))}
 
-              {authProtectedRoutes.map((route, idx) => (
-                <AppRoute
-                  path={route.path}
-                  layout={Layout}
-                  component={route.component}
-                  key={idx}
-                  isAuthProtected={false}
-                  exact
-                />
-              ))}
-            </Switch>
-          </Router>
-        </FullscreenContextFnComponent>
+            {authProtectedRoutes.map((route, idx) => (
+              <AppRoute
+                path={route.path}
+                layout={Layout}
+                component={route.component}
+                key={idx}
+                isAuthProtected={false}
+                exact
+              />
+            ))}
+          </Switch>
+        </Router>
       </React.Fragment>
     );
   }
