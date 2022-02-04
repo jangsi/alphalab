@@ -24,9 +24,14 @@ const FullscreenComponent = (props) => {
   }, [headerRef, isFullscreen])
 
   useEffect(() => {
-    setInnerHeight(window.innerHeight - 40)
-    setInnerWidth(window.innerWidth - 40)
-  }, [window.innerHeight, window.innerWidth])
+    const updateWindowDimensions = () => {
+      setInnerHeight(window.innerHeight - 40)
+      setInnerWidth( window.innerWidth - 40)
+    }
+
+    window.addEventListener('resize', updateWindowDimensions);
+    return () => window.removeEventListener('resize', updateWindowDimensions) 
+  }, [])
 
   const [screenAngle, setScreenAngle] = useState(window.orientation)
   useEffect(() => {

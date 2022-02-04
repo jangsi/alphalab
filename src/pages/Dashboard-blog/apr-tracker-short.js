@@ -178,6 +178,7 @@ class AprTrackerShort extends React.Component {
         <Col xl="12">
           <FullscreenComponent defaultHeight={600}>
             {({ toggleFullscreen, icon, chartParams, isFullscreen, headerRef }) => {
+              // alert(`${chartParams.container.height}, ${chartParams.container.width}`)
               return (
                 <Card>
                   <CardBody className="card-body-test">
@@ -214,7 +215,6 @@ class AprTrackerShort extends React.Component {
                     </div>
                     <div style={chartParams.container}>
                       <Line
-                        redraw
                         {...chartParams.maybeRotatedContainer()}
                         data={{
                           datasets: [{
