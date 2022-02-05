@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 import Dashboard from "../pages/Dashboard/index";
 import DashboardSaas from "../pages/Dashboard-saas/index";
 import DashboardCrypto from "../pages/Dashboard-crypto/index";
-import DashboardTerraSwap from "../pages/Dashboard-TerraSwap";
+import DashboardTerraSwap from "../pages/Dashboard-terraswap-apr";
 import DashboardTLVs from "../pages/Dashboard-tlvs/index";
 import DashboardAnchor from "../pages/Dashboard-Anchor/index";
 import DashboardNexus from "../pages/Dashboard-Nexus/index";
