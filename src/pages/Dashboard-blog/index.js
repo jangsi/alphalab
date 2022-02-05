@@ -174,8 +174,8 @@ const Dashboard = () => {
     fetchAprData3()
   }, []);
 
+  // prevent scrolling on the page when in fullscreen mode
   const overflowLock = useIsOverflowLockContext();
-
   const [styles, setStyles] = useState({});
   useEffect(() => {
     if (overflowLock.isOverflowLock) {

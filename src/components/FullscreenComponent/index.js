@@ -8,9 +8,9 @@ import { useIsOverflowLockContext } from '../../hooks/useIsOverflowLock'
 const FullscreenComponent = (props) => {
   const [isFullscreen, setFullscreen] = useState(false)
   const [icon, setIcon] = useState('mdi mdi-18px mdi-arrow-expand')
-  // accomodate the padding
-  // todo: get from variable
-  const [innerHeight, setInnerHeight] = useState(window.innerHeight - 40)
+  const defaultCardPadding = 40
+  // accomodate the card padding (40px)
+  const [innerHeight, setInnerHeight] = useState(window.innerHeight - defaultCardPadding)
   const headerRef = useRef()
   const overflowLockContext = useIsOverflowLockContext()
 
@@ -20,28 +20,16 @@ const FullscreenComponent = (props) => {
     const boundingBox = headerRef.current.getBoundingClientRect()
     if (boundingBox.height && !isMobileOrTablet()) {
       // make room for the header
-      setInnerHeight(window.innerHeight - 40 - boundingBox.height)
+      setInnerHeight(window.innerHeight - defaultCardPadding - boundingBox.height)
     }
   }, [headerRef, isFullscreen])
 
-  useEffect(() => {
-    const resizeListener = () => {
-      const boundingBox = headerRef.current.getBoundingClientRect()
-      if (boundingBox.height && !isMobileOrTablet()) {
-        // make room for the header
-        setInnerHeight(window.innerHeight - 40 - boundingBox.height)
-      } else {
-        setInnerHeight(window.innerHeight - 40)
-      }
-    }
-
-    window.addEventListener('resize', resizeListener)
-    return () => window.removeEventListener('resize', resizeListener)
-  }, [])
-
   const [screenAngle, setScreenAngle] = useState(window.orientation)
   useEffect(() => {
-    const orientationchangeListener = () =>  setScreenAngle(window.orientation)
+    const orientationchangeListener = () =>  {
+      setScreenAngle(window.orientation)
+      setInnerHeight(window.innerHeight - defaultCardPadding)
+    }
     window.addEventListener('orientationchange', orientationchangeListener)
     return () => window.removeEventListener('orientationchange', orientationchangeListener)
   }, [])
@@ -71,7 +59,7 @@ const FullscreenComponent = (props) => {
     chartParams: {
       container: {
         height: isFullscreen ? innerHeight : props.defaultHeight,
-        width: isFullscreen ? window.innerWidth - 40 : '100%',
+        width: isFullscreen ? window.innerWidth - defaultCardPadding : '100%',
       },
       maybeRotatedContainer: function() {
         if (isMobileOrTablet() && isFullscreen) {
