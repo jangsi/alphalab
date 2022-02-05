@@ -13,6 +13,28 @@ import AprTrackerShort from './apr-tracker-short'
 
 import { fetchAprData } from './fetchAprData';
 
+// Initialize ChartJS for any child components that might use it
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
 const Dashboard = (props) => {
   const [reports, setReports] = useState(props.reports)
 
