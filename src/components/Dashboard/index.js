@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Row, Col } from 'reactstrap';
-import { uid } from 'uid/single';
 
 //Import Breadcrumb
 import Breadcrumbs from '../Common/Breadcrumb';
