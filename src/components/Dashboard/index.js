@@ -63,7 +63,7 @@ const Dashboard = (props) => {
             </Row>
           </Col>
         </Row>
-        {props.aprTrackers.map((Tracker) => <Tracker key={uid()} />)}
+        {props.aprTrackers.map((Tracker, i) => <Tracker key={`${props.title}-tracker-${i}`} />)}
       </Container>
     </div>
   );
