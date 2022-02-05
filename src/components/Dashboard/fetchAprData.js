@@ -1,6 +1,7 @@
 import dayjs from 'dayjs'
 
 export const fetchAprData = (report) => {
+  if (!report.ticker) return;
   const filter = {
     ticker: report.ticker,
     precision: 'day',

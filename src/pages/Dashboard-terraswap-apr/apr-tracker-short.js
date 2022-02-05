@@ -127,7 +127,7 @@ class AprTrackerShort extends React.Component {
         <Col xl="12">
           <LineChart
             data={this.state.data}
-            onAssetChange={this.state.handleChange}
+            onAssetChange={this.handleChange}
             startDate={this.state.longDates[0]}
             onStartDateChange={this.handleStartDateChange}
             endDate={this.state.longDates[1]}

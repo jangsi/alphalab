@@ -11,18 +11,21 @@ const DashboardTerraSwap = () => {
       title: 'mNFLX-UST APR',
       imageUrl: '//whitelist.mirror.finance/images/NFLX.png',
       value: '',
+      ticker: 'mNFLX-UST',
       action: historical.getHistoricalCommAprs,
     },
     {
       title: 'mAAPL-UST APR',
       imageUrl: '//whitelist.mirror.finance/images/AAPL.png',
       value: '',
+      ticker: 'mAAPL-UST',
       action: historical.getHistoricalCommAprs,
     },
     {
       title: 'mCOIN-UST APR',
       imageUrl: '//whitelist.mirror.finance/images/COIN.png',
       value: '',
+      ticker: 'mCOIN-UST',
       action: historical.getHistoricalCommAprs,
     },
   ];
