@@ -68,6 +68,17 @@ const fetchLuna = () => {
   return fetch("https://api.alphadefi.fund/info/liqprofile");
 };
 
+function GetSortOrder(prop) {    
+  return function(a, b) {    
+      if (a[prop] > b[prop]) {    
+          return 1;    
+      } else if (a[prop] < b[prop]) {    
+          return -1;    
+      }    
+      return 0;    
+  }    
+} 
+
 
 
 class AprTrackerShort extends React.Component {
@@ -180,7 +191,7 @@ class AprTrackerShort extends React.Component {
       console.log(this.state.data);
       this.scheduleFetch();
     });
-  }
+  } 
 
   fetchHistoricalProfile() {
     let filters = {
@@ -201,7 +212,7 @@ class AprTrackerShort extends React.Component {
         };
       });
       this.setState(_ => ({
-        data: formattedData,
+        data: formattedData.sort(GetSortOrder("Luna_Liquidation_Price")),
         rowData: formattedData 
       }));
       console.log(this.state.data);
