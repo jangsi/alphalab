@@ -7,9 +7,9 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import dayjs from 'dayjs'
 
-import LineChart from '../Charts/LineChart';
-import Table from '../Charts/Table';
-import { scoreFormatter, pctFormatter } from '../utils';
+import LineChart from '../../components/Charts/LineChart';
+import Table from '../../components/Charts/Table';
+import { scoreFormatter, pctFormatter } from '../../components/utils';
 
 const fetchStats = () => {
   return fetch(
@@ -130,7 +130,7 @@ class AprTrackerShort extends React.Component {
             onAssetChange={this.state.handleChange}
             startDate={this.state.longDates[0]}
             onStartDateChange={this.handleStartDateChange}
-            startDate={this.state.longDates[1]}
+            endDate={this.state.longDates[1]}
             onEndDateChange={this.handleEndDateChange}
             tickers={this.state.tickerOptions}
           />

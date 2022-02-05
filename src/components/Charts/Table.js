@@ -1,6 +1,12 @@
 import React from 'react';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react'
 import { TableProps } from '../types/ChartPropTypes';
+import ChartHeader from '../../components/ChartHelpers/chartHeader';
+import FullscreenComponent from '../../components/FullscreenComponent';
+import {
+  Card,
+  CardBody,
+} from 'reactstrap';
 
 const Table = (props) => (
   <FullscreenComponent defaultHeight={600}>

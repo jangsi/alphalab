@@ -10,10 +10,10 @@ export const ChartProps = {
   onStartDateChange: PropTypes.func,
   endDate: PropTypes.any,
   onEndDateChange: PropTypes.func,
-  tickers: PropTypes.shape({
+  tickers: PropTypes.arrayOf(PropTypes.shape({
     label: PropTypes.string,
     value: PropTypes.string,
-  }),
+  })),
 };
 
 const TableColums = PropTypes.shape({

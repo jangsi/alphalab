@@ -57,21 +57,13 @@ const Dashboard = (props) => {
         <Breadcrumbs title={props.title} breadcrumbItem={props.breadcrumbItem} />
         <Row>
           <Col xl="12">
-            <DashboardHeader
-              title=""
-              subTitle=""
-              desc=""
-              imgSrc=""
-            />
+            <DashboardHeader {...props.headerProps} />
             <Row>
               <MiniWidget reports={reports} />
             </Row>
           </Col>
         </Row>
         {props.aprTrackers.map((Tracker) => <Tracker key={uid()} />)}
-        <Row>
-          <AprTrackerShort />
-        </Row>
       </Container>
     </div>
   );
@@ -82,12 +74,12 @@ Dashboard.propTypes = {
   breadcrumbItem: PropTypes.string,
   reports: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string,
-    imgUrl: PropTypes.stirng,
+    imgUrl: PropTypes.string,
     value: PropTypes.string,
     action: PropTypes.func,
   })),
-  headerProps: DashboardHeaderProps,
-  aprTrackers: PropTypes.arrayOf(PropTypes.element),
+  headerProps: PropTypes.shape(DashboardHeaderProps),
+  aprTrackers: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.element, PropTypes.func])),
   style: PropTypes.object,
 }
 

@@ -8,21 +8,21 @@ import Dashboard from '../../components/Dashboard'
 const DashboardTerraSwap = () => {
   const reports = [
     {
-      title: "mNFLX-UST APR",
-      imageUrl: "//whitelist.mirror.finance/images/NFLX.png",
-      value: "",
+      title: 'mNFLX-UST APR',
+      imageUrl: '//whitelist.mirror.finance/images/NFLX.png',
+      value: '',
       action: historical.getHistoricalCommAprs,
     },
     {
-      title: "mAAPL-UST APR",
-      imageUrl: "//whitelist.mirror.finance/images/AAPL.png",
-      value: "",
+      title: 'mAAPL-UST APR',
+      imageUrl: '//whitelist.mirror.finance/images/AAPL.png',
+      value: '',
       action: historical.getHistoricalCommAprs,
     },
     {
-      title: "mCOIN-UST APR",
-      imageUrl: "//whitelist.mirror.finance/images/COIN.png",
-      value: "",
+      title: 'mCOIN-UST APR',
+      imageUrl: '//whitelist.mirror.finance/images/COIN.png',
+      value: '',
       action: historical.getHistoricalCommAprs,
     },
   ];
@@ -48,7 +48,7 @@ const DashboardTerraSwap = () => {
     <Dashboard
       title="Dashboards"
       breadcrumbItem="MIRROR APRS"
-      dashboardHeaderProps={{
+      headerProps={{
         title: 'TERRASWAP',
         subTitle: 'Select Pool to Analyze',
         desc: 'View Historical APR Data',

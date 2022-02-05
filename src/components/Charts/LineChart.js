@@ -3,13 +3,15 @@ import { ChartProps } from '../types/ChartPropTypes';
 import {
   FormGroup,
   Card,
-  CardBody
+  CardBody,
 } from 'reactstrap';
+import Select from 'react-select';
 import ChartHeader from '../../components/ChartHelpers/chartHeader';
 import FullscreenComponent from '../../components/FullscreenComponent';
-import { isMobileOrTablet } from '../Utility/isMobileOrTablet';
+import { isMobileOrTablet } from '../../pages/Utility/isMobileOrTablet';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { priceFormat } from '../utils';
 
 import { Line } from 'react-chartjs-2';
 
