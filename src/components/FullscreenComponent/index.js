@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import './index.scss'
 import { isMobileOrTablet } from '../../pages/Utility/isMobileOrTablet'
-import { useIsFullscreenContext } from '../../hooks/useIsFullscreen'
+import { useIsOverflowLockContext } from '../../hooks/useIsOverflowLock'
 
 const FullscreenComponent = (props) => {
   const [isFullscreen, setFullscreen] = useState(false)
@@ -11,9 +11,8 @@ const FullscreenComponent = (props) => {
   // accomodate the padding
   // todo: get from variable
   const [innerHeight, setInnerHeight] = useState(window.innerHeight - 40)
-  const [innerWidth, setInnerWidth] = useState(window.innerWidth - 40)
   const headerRef = useRef()
-  const fullscreenContext = useIsFullscreenContext()
+  const overflowLockContext = useIsOverflowLockContext()
 
   useEffect(() => {
     if (!headerRef.current || !isFullscreen) return
@@ -26,27 +25,29 @@ const FullscreenComponent = (props) => {
   }, [headerRef, isFullscreen])
 
   useEffect(() => {
-    const updateWindowDimensions = () => {
-      setInnerHeight(window.innerHeight - 40)
-      setInnerWidth( window.innerWidth - 40)
+    const resizeListener = () => {
+      const boundingBox = headerRef.current.getBoundingClientRect()
+      if (boundingBox.height && !isMobileOrTablet()) {
+        // make room for the header
+        setInnerHeight(window.innerHeight - 40 - boundingBox.height)
+      } else {
+        setInnerHeight(window.innerHeight - 40)
+      }
     }
 
-    window.addEventListener('resize', updateWindowDimensions);
-    return () => window.removeEventListener('resize', updateWindowDimensions) 
+    window.addEventListener('resize', resizeListener)
+    return () => window.removeEventListener('resize', resizeListener)
   }, [])
 
   const [screenAngle, setScreenAngle] = useState(window.orientation)
   useEffect(() => {
-    const orientationchangeListener = () => {
-      setScreenAngle(window.orientation)
-    }
+    const orientationchangeListener = () =>  setScreenAngle(window.orientation)
     window.addEventListener('orientationchange', orientationchangeListener)
-
     return () => window.removeEventListener('orientationchange', orientationchangeListener)
   }, [])
 
   const toggleFullscreen = () => {
-    fullscreenContext.setIsFullscreen(!isFullscreen)
+    overflowLockContext.setIsOverflowLock(!isFullscreen)
     setFullscreen(!isFullscreen)
     if (icon === 'mdi mdi-18px mdi-arrow-expand') {
       setIcon('mdi mdi-18px mdi-arrow-collapse')
@@ -70,7 +71,7 @@ const FullscreenComponent = (props) => {
     chartParams: {
       container: {
         height: isFullscreen ? innerHeight : props.defaultHeight,
-        width: isFullscreen ? innerWidth : '100%',
+        width: isFullscreen ? window.innerWidth - 40 : '100%',
       },
       maybeRotatedContainer: function() {
         if (isMobileOrTablet() && isFullscreen) {
@@ -84,7 +85,7 @@ const FullscreenComponent = (props) => {
             const container = this.container
             return {
               ...container,
-              height: container.height - adjustment
+              height: container.height - adjustment,
             }
           }
           

@@ -185,7 +185,7 @@ class AprTrackerShort extends React.Component {
                     <div ref={headerRef}>
                       <ChartHeader
                         title="TERRASWAP TRADING APRS"
-                        callbackOpts={{ action: toggleFullscreen, icon, adjustAction: isFullscreen && isMobileOrTablet() ? window.innerHeight * .12 : 0 }}
+                        callbackOpts={{ action: toggleFullscreen, icon }}
                       />
                       <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
                         <Select
@@ -215,6 +215,7 @@ class AprTrackerShort extends React.Component {
                     </div>
                     <div style={chartParams.container}>
                       <Line
+                        redraw
                         {...chartParams.maybeRotatedContainer()}
                         data={{
                           datasets: [{
@@ -253,14 +254,14 @@ class AprTrackerShort extends React.Component {
         </Col>
         <Col xl="12">
           <FullscreenComponent defaultHeight={600}>
-            {({ toggleFullscreen, icon, chartParams, isFullscreen, headerRef }) => {
+            {({ toggleFullscreen, icon, chartParams, headerRef }) => {
               return (
                 <Card>
                   <CardBody>
                     <div ref={headerRef} style={{ paddingBottom: 20 }}>
                       <ChartHeader
                         title="Hover Mouse for Column Descriptions"
-                        callbackOpts={{ action: toggleFullscreen, icon, adjustAction: isFullscreen && isMobileOrTablet() ? window.innerHeight * .12 : 0 }}
+                        callbackOpts={{ action: toggleFullscreen, icon }}
                       />
                     </div>
                     <div className="ag-theme-alpine" style={chartParams.maybeRotatedContainer()}>

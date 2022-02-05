@@ -11,8 +11,7 @@ import AprTrackerShort from './apr-tracker-short'
 import historical from '../../api/v1/historical'
 
 import dayjs from 'dayjs'
-import './index.scss';
-import { useIsFullscreenContext } from '../../hooks/useIsFullscreen';
+import { useIsOverflowLockContext } from '../../hooks/useIsOverflowLock';
 
 const options1 = {
   chart: { sparkline: { enabled: !0 } },
@@ -99,8 +98,6 @@ const Dashboard = () => {
     },
   ]);
 
-  const fullscreen = useIsFullscreenContext();
-
   const fetchAprData1 = () => {
     let precision = 'day'
     let diff = 605800000
@@ -177,14 +174,26 @@ const Dashboard = () => {
     fetchAprData3()
   }, []);
 
-  const classes = ['page-content'];
-  if (fullscreen.isFullscreen) {
-    classes.push('fullscreen');
-  }
+  const overflowLock = useIsOverflowLockContext();
+
+  const [styles, setStyles] = useState({});
+  useEffect(() => {
+    if (overflowLock.isOverflowLock) {
+      setStyles({
+        position: 'fixed',
+        top: `${window.scrollY}px`,
+      })
+    } else {
+      setStyles({
+        position: '',
+        top: '',
+      })
+    }
+  }, [overflowLock.isOverflowLock])
 
   return (
     <React.Fragment>
-      <div className={classes.join(' ')}>
+      <div style={styles} className="page-content">
         {/*<MetaTags>
           <title>Crypto Dashboard | Skote - React Admin & Dashboard Template</title>
         </MetaTags>*/}
