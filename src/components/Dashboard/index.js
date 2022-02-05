@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { Container, Row, Col } from 'reactstrap';
+import { uid } from 'uid/single';
 
 //Import Breadcrumb
 import Breadcrumbs from '../Common/Breadcrumb';
 
 //Import Components
-import DashboardHeader from '../DashboardHeader';
+import { DashboardHeader, DashboardHeaderProps } from '../DashboardHeader';
 import MiniWidget from '../MiniWidget';
-
-import AprTracker from './apr-tracker'
-import AprTrackerShort from './apr-tracker-short'
 
 import { fetchAprData } from './fetchAprData';
 
@@ -53,26 +52,43 @@ const Dashboard = (props) => {
   }, []);
 
   return (
-    <div className="page-content">
+    <div style={props.style} className="page-content">
       <Container fluid>
-        <Breadcrumbs title="Dashboards" breadcrumbItem="MIRROR APRS" />
+        <Breadcrumbs title={props.title} breadcrumbItem={props.breadcrumbItem} />
         <Row>
           <Col xl="12">
-            <DashboardHeader />
+            <DashboardHeader
+              title=""
+              subTitle=""
+              desc=""
+              imgSrc=""
+            />
             <Row>
               <MiniWidget reports={reports} />
             </Row>
           </Col>
         </Row>
-        <Row >
-          <AprTracker />
-        </Row>
-        <Row >
+        {props.aprTrackers.map((Tracker) => <Tracker key={uid()} />)}
+        <Row>
           <AprTrackerShort />
         </Row>
       </Container>
     </div>
   );
 };
+
+Dashboard.propTypes = {
+  title: PropTypes.string,
+  breadcrumbItem: PropTypes.string,
+  reports: PropTypes.arrayOf(PropTypes.shape({
+    title: PropTypes.string,
+    imgUrl: PropTypes.stirng,
+    value: PropTypes.string,
+    action: PropTypes.func,
+  })),
+  headerProps: DashboardHeaderProps,
+  aprTrackers: PropTypes.arrayOf(PropTypes.element),
+  style: PropTypes.object,
+}
 
 export default Dashboard;

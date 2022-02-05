@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col, Card } from 'reactstrap';
 
-const DashboardHeader = (props) => (
+export const DashboardHeader = (props) => (
   <Card>
     <div>
       <Row>
@@ -37,11 +37,11 @@ const DashboardHeader = (props) => (
   </Card>
 );
 
-DashboardHeader.propTypes = {
+export const DashboardHeaderProps = {
   title: PropTypes.string.isRequired,
   subTitle: PropTypes.string.isRequired,
   desc: PropTypes.string.isRequired,
   imgSrc: PropTypes.string.isRequired,
-}
+};
 
-export default DashboardHeader;
+DashboardHeader.propTypes = DashboardHeaderProps;
