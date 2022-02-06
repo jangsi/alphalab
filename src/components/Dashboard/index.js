@@ -9,7 +9,7 @@ import Breadcrumbs from '../Common/Breadcrumb';
 import { DashboardHeader, DashboardHeaderProps } from '../DashboardHeader';
 import MiniWidget from '../MiniWidget';
 
-import { fetchAprData } from './fetchAprData';
+import { fetchData } from './fetchAprData';
 
 // Initialize ChartJS for any child components that might use it
 import {
@@ -41,7 +41,7 @@ const Dashboard = (props) => {
     const reportData = []
     for (let i = 0; i < reports.length; i ++) {
       const report = reports[i];
-      const value = await fetchAprData(report);
+      const value = await fetchData(report, props.widgetFormatter, props.fieldKey);
       reportData.push({
         ...report,
         value
@@ -80,6 +80,8 @@ Dashboard.propTypes = {
   headerProps: PropTypes.shape(DashboardHeaderProps),
   aprTrackers: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.element, PropTypes.func])),
   style: PropTypes.object,
+  widgetFormatter: PropTypes.func,
+  fieldKey: PropTypes.string,
 }
 
 export default Dashboard;

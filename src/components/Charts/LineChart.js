@@ -11,7 +11,6 @@ import FullscreenComponent from '../../components/FullscreenComponent';
 import { isMobileOrTablet } from '../../pages/Utility/isMobileOrTablet';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { priceFormat } from '../utils';
 
 import { Line } from 'react-chartjs-2';
 
@@ -25,7 +24,7 @@ const LineChart = (props) => {
             <CardBody className="card-body-test">
               <div ref={headerRef}>
                 <ChartHeader
-                  title="TERRASWAP TRADING APRS"
+                  title={props.title}
                   callbackOpts={{ action: toggleFullscreen, icon: icon }}
                 />
                 <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
@@ -60,8 +59,8 @@ const LineChart = (props) => {
                   {...chartParams.maybeRotatedContainer()}
                   data={{
                     datasets: [{
-                      label: 'apr',
-                      data: data.map(d => ({ y: d.APR, x: d.xaxis1 })),
+                      label: props.yAxisKey,
+                      data: data.map(d => ({ y: d[props.yAxisKey], x: d.xaxis1 })),
                       borderColor: '#8884d8',
                     }]
                   }}
@@ -80,7 +79,7 @@ const LineChart = (props) => {
                     scales: {
                       y: {
                         ticks: {
-                          callback: (apr) => priceFormat(apr),
+                          callback: (v) => props.yAxisFormatter ? props.yAxisFormatter(v) : v,
                         },
                       },
                     },

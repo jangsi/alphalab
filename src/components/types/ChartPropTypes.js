@@ -14,6 +14,9 @@ export const ChartProps = {
     label: PropTypes.string,
     value: PropTypes.string,
   })),
+  title: PropTypes.string,
+  yAxisKey: PropTypes.string,
+  yAxisFormatter: PropTypes.func,
 };
 
 const TableColums = PropTypes.shape({
