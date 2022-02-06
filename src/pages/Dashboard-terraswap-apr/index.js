@@ -60,6 +60,10 @@ const DashboardTerraSwapApr = () => {
       style={styles}
       reports={reports}
       aprTrackers={[AprTrackerShort]}
+      widgetFormatter={(data) => {
+        return `${String(Number(data.Price * 100).toFixed(2))}%`;
+      }}
+      fieldKey="apr"
     />
   );
 }

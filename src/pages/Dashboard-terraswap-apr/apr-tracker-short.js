@@ -133,6 +133,9 @@ class AprTrackerShort extends React.Component {
             endDate={this.state.longDates[1]}
             onEndDateChange={this.handleEndDateChange}
             tickers={this.state.tickerOptions}
+            title="TERRASWAP TRADING APRS"
+            yAxisKey="APR"
+            yAxisFormatter={pctFormatter}
           />
         </Col>
         <Col xl="12">
@@ -145,54 +148,54 @@ class AprTrackerShort extends React.Component {
               {
                 field: 'AlphaDefi APR Score',
                 tooltip: 'Current Yield / rolling 21 day vol',
-                formatter: scoreFormatter,
+                formatter: (d) => scoreFormatter(d.value),
                 minWidth: 200,
               },
               {
                 field: 'current',
                 tooltip: 'Most recently calculated APY',
-                formatter: pctFormatter,
+                formatter: (d) => pctFormatter(d.value),
               },
               {
                 field: 'mean',
                 tooltip: 'Mean historical APR, normally the APR this pool trades at',
-                formatter: pctFormatter,
+                formatter: (d) => pctFormatter(d.value),
               },
               {
                 field: 'Three SD',
                 tooltip: '+ three standard deviations from mean',
-                formatter: pctFormatter,
+                formatter: (d) => pctFormatter(d.value),
               },
               {
                 field: 'Neg Three SD',
                 tooltip: '- three standard deviations from mean',
-                formatter: pctFormatter,
+                formatter: (d) => pctFormatter(d.value),
               },
               {
                 field: 'max',
                 tooltip: 'max apr last 21 days',
-                formatter: pctFormatter,
+                formatter: (d) => pctFormatter(d.value),
               },
               {
                 field: 'min',
                 tooltip: 'min apr last 21 days',
-                formatter: pctFormatter,
+                formatter: (d) => pctFormatter(d.value),
               },
               {
                 field: 'std',
                 tooltip: 'std of historical apr',
-                formatter: pctFormatter,
+                formatter: (d) => pctFormatter(d.value),
               },
               {
                 field: 'Historical 5th % Spread',
                 tooltip: 'Historical 5th % APR',
-                formatter: pctFormatter,
+                formatter: (d) => pctFormatter(d.value),
                 minWidth: 200,
               },
               {
                 field: 'Historical 95th % Spread',
                 tooltip: 'Historical 95th % APR',
-                formatter: pctFormatter,
+                formatter: (d) => pctFormatter(d.value),
                 minWidth: 250,
               },
             ]}

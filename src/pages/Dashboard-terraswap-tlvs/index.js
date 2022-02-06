@@ -9,7 +9,7 @@ const DashboardTerraSwapTlvs = () => {
   const reports = [
     {
       title: 'ANC-UST Liquidity',
-      imageUrl: '//app.anchorprotocol.com/assets/Logo.114ab559.svg',
+      imageUrl: '//whitelist.mirror.finance/images/UST.png',
       value: '',
       ticker: 'ANC-UST',
       action: historical.getHistoricalTlvs,
@@ -60,6 +60,10 @@ const DashboardTerraSwapTlvs = () => {
       style={styles}
       reports={reports}
       aprTrackers={[AprTrackerShort]}
+      widgetFormatter={(data) => {
+        return Number(data.Price).toLocaleString('en-US', {maximumFractionDigits:2});
+      }}
+      fieldKey="value"
     />
   );
 }

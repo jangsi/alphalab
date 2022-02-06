@@ -8,12 +8,7 @@ import LineChart from '../../components/Charts/LineChart';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
 import dayjs from 'dayjs'
-
-const fetchStats = () => {
-  return fetch(
-    "https://api.alphadefi.fund/historical/poolhiststats"
-  );
-};
+import { numberFormat } from '../../components/utils';
 
 class AprTrackerShort extends React.Component {
   constructor(props) {
@@ -114,6 +109,9 @@ class AprTrackerShort extends React.Component {
           endDate={this.state.longDates[1]}
           onEndDateChange={this.handleEndDateChange}
           tickers={this.state.tickerOptions}
+          title="POOL LIQUIDITY"
+          yAxisKey="LIQUIDITY"
+          yAxisFormatter={numberFormat}
         />
       </Col>
     );
