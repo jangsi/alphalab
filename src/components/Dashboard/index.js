@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Container, Row, Col } from 'reactstrap';
+import { useLocation } from 'react-router-dom';
+import { useIsOverflowLockContext } from '../../hooks/useIsOverflowLock'
 
 //Import Breadcrumb
 import Breadcrumbs from '../Common/Breadcrumb';
@@ -34,7 +36,13 @@ ChartJS.register(
 );
 
 const Dashboard = (props) => {
-  const [reports, setReports] = useState(props.reports)
+  const [reports, setReports] = useState(props.reports);
+  const overflowLockContext = useIsOverflowLockContext();
+  const location = useLocation();
+  useEffect(() => {
+    // reset the overflow lock if the user navigates
+    overflowLockContext.setIsOverflowLock(false);
+  }, [location.pathname, location.search, location.hash]);
 
   // load dashboard apr reports
   useEffect(async () => {
