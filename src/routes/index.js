@@ -4,8 +4,8 @@ import { Redirect } from "react-router-dom";
 import Dashboard from "../pages/Dashboard/index";
 import DashboardSaas from "../pages/Dashboard-saas/index";
 import DashboardCrypto from "../pages/Dashboard-crypto/index";
-import DashboardBlog from "../pages/Dashboard-blog/index";
-import DashboardTLVs from "../pages/Dashboard-tlvs/index";
+import DashboardTerraSwapApr from "../pages/Dashboard-terraswap-apr";
+import DashboardTerraSwapTlvs from "../pages/Dashboard-terraswap-tlvs/index";
 import DashboardAnchor from "../pages/Dashboard-Anchor/index";
 import DashboardNexus from "../pages/Dashboard-Nexus/index";
 import DashboardAstroPort from "../pages/Dashboard-AstroPort/index";
@@ -34,8 +34,8 @@ const publicRoutes = [
   { path: "/dashboard", component: Dashboard },
   { path: "/mirror-aprs", component: DashboardSaas },
   { path: "/terradash", component: DashboardTerra },
-  { path: "/terra-pool-aprs", component: DashboardBlog },
-  { path: "/terra-pool-tlvs", component: DashboardTLVs },
+  { path: "/terra-pool-aprs", component: DashboardTerraSwapApr },
+  { path: "/terra-pool-tlvs", component: DashboardTerraSwapTlvs },
   { path: "/anchor", component: DashboardAnchor },
   { path: "/nexus", component: DashboardNexus },
   { path: "/astro-pool-aprs", component: DashboardAstroPort },

@@ -13,11 +13,19 @@ import VerticalLayout from "./components/VerticalLayout/";
 // Import scss
 import "./assets/scss/theme.scss";
 
+import { IsOverflowLockContext } from './hooks/useIsOverflowLock';
+
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isOverflowLock: false,
+    };
     this.getLayout = this.getLayout.bind(this);
+  }
+
+  setIsOverflowLock = (val) => {
+    this.setState({ isOverflowLock: val })
   }
 
   /**
@@ -32,7 +40,7 @@ class App extends Component {
     const Layout = this.getLayout();
 
     return (
-      <React.Fragment>
+      <IsOverflowLockContext.Provider value={{ isOverflowLock: this.state.isOverflowLock, setIsOverflowLock: this.setIsOverflowLock }}>
         <Router>
           <Switch>
             {publicRoutes.map((route, idx) => (
@@ -57,7 +65,7 @@ class App extends Component {
             ))}
           </Switch>
         </Router>
-      </React.Fragment>
+      </IsOverflowLockContext.Provider>
     );
   }
 }
