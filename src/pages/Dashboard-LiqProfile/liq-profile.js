@@ -89,8 +89,9 @@ class AprTrackerShort extends React.Component {
       tokenAddresses: {},
       rowData: [],
       rowData2: [],
+      liquidationData: [],
       selectedDate: [new Date()],
-      longDates: [dayjs().subtract(6, "month").toDate(), dayjs().toDate()],
+      longDates: [dayjs().subtract(1, "month").toDate(), dayjs().toDate()],
       reports: [
         {
           title: "Live",
@@ -123,9 +124,42 @@ class AprTrackerShort extends React.Component {
           options: options,
         },
       ],
+      reports2: [
+        {
+          title: "Largest Executed Bid (Last 30 Days)",
+          icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
+          color: "warning",
+          value: "",
+          arrow: "mdi-arrow-up text-success",
+          series: [{ name: "Biggest Loan Liquidated", data: [] }],
+          options: options,
+        },
+        {
+          title: "Best Discount Captured (Last 30 Days)",
+          icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
+          color: "primary",
+          arrow: "mdi-arrow-down text-danger",
+          value: "",
+          series: [{ name: "Best Discount Captured", data: [] }],
+          options: options,
+        },
+        {
+          title: "Average Discount Captured (Last 30 Days)",
+          icon: "mdi mdi-email-open",
+          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
+          color: "info",
+          arrow: "mdi-arrow-up text-success",
+          value: "",
+          series: [{ name: "Average Discount Captured", data: [] }],
+          options: options,
+        },
+      ],
     };
     this.fetchAprData = this.fetchAprData.bind(this);
     this.fetchHistoricalProfile = this.fetchHistoricalProfile.bind(this);
+    this.fetchLiquidations = this.fetchLiquidations.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.fetchLuna = this.fetchLuna.bind(this);
 
@@ -238,6 +272,40 @@ class AprTrackerShort extends React.Component {
     });
   }
 
+  fetchLiquidations() {
+    
+    let filters = {
+      from: this.state.longDates[0],
+      to: this.state.longDates[1],
+    }
+    historical.getHistoricalLiquidations(filters).then(apiData => {
+      let formattedData = apiData
+        .map(obj => {
+          return{
+          executed_at: obj.executed_at,
+          Total_Amount_Paid_for_Collateral: obj.Total_Amount_Paid_for_Collateral,
+          Discounted_Price_Per_Unit_Paid: obj.Discounted_Price_Per_Unit_Paid,
+          Discount_vs_UST_DEX_Price_at_Liquidation: obj.Discount_vs_UST_DEX_Price_at_Liquidation,
+          symbol: obj.symbol,
+          max: obj.max_amount,
+          best: obj.best_discount,
+          average: obj.average_discount
+          }
+        })
+      this.setState(_ => ({
+        liquidationData: formattedData,
+      }))
+      
+      let newState = JSON.parse(JSON.stringify(this.state))
+      newState.reports2[0].value = '$'+ Number(formattedData[formattedData.length-1].max).toLocaleString('en-US', {maximumFractionDigits:2})
+      newState.reports2[1].value = Number(formattedData[formattedData.length-1].best*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%'
+      newState.reports2[2].value = Number(formattedData[formattedData.length-1].average*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%'
+      this.setState(newState)
+
+      console.log(this.state.liquidationData)
+    })
+  }
+
   clearTimer() {
     if (this.timer) {
       clearTimeout(this.timer);
@@ -251,7 +319,7 @@ class AprTrackerShort extends React.Component {
 
   scheduleFetch() {
     this.clearTimer();
-    // set to 5 min, the same as the graphql interval
+    // set to 1 min, the same as the graphql interval
     this.timer = setTimeout(this.fetchAprData, 60000);
     this.timer2 = setTimeout(this.fetchData, 60000);
     this.timer3 = setTimeout(this.fetchLuna, 60000);
@@ -270,6 +338,7 @@ class AprTrackerShort extends React.Component {
   componentDidMount() {
     this.fetchAprData();
     this.fetchLuna();
+    this.fetchLiquidations()
   }
 
   render() {
@@ -372,6 +441,68 @@ class AprTrackerShort extends React.Component {
                     sortable={true}
                     filter={true}
                     valueFormatter={priceFormat}
+                    resizable={true}
+                    headerTooltip=""
+                  ></AgGridColumn>
+                </AgGridReact>
+              </div>
+            </CardBody>
+          </Card>
+          <Card >
+          <CardBody >
+          <Row>
+          <MiniWidget reports={this.state.reports2} />
+          </Row>
+          </CardBody>
+          </Card>
+          <Card>
+            <CardBody>
+              <div className="ag-theme-alpine" style={{ height: 800 }}>
+                <Label className="control-label">
+                  Liquidations - Last 30 Days
+                </Label>
+                <AgGridReact
+                  onGridReady={this.onGridReady.bind(this)}
+                  rowData={this.state.liquidationData}
+                >
+                  <AgGridColumn
+                    field="executed_at"
+                    sort="desc"
+                    sortable={true}
+                    filter={true}
+                    //valueFormatter={pctFormatter}
+                    resizable={true}
+                    headerTooltip=""
+                  ></AgGridColumn>
+                  <AgGridColumn
+                    field="symbol"
+                    sortable={true}
+                    filter={true}
+                    //valueFormatter={priceFormat}
+                    resizable={true}
+                    headerTooltip=""
+                  ></AgGridColumn>
+                  <AgGridColumn
+                    field="Total_Amount_Paid_for_Collateral"
+                    sortable={true}
+                    filter={true}
+                    valueFormatter={priceFormat}
+                    resizable={true}
+                    headerTooltip=""
+                  ></AgGridColumn>
+                  <AgGridColumn
+                    field="Discounted_Price_Per_Unit_Paid"
+                    sortable={true}
+                    filter={true}
+                    valueFormatter={priceFormat}
+                    resizable={true}
+                    headerTooltip=""
+                  ></AgGridColumn>
+                  <AgGridColumn
+                    field="Discount_vs_UST_DEX_Price_at_Liquidation"
+                    sortable={true}
+                    filter={true}
+                    valueFormatter={pctFormatter}
                     resizable={true}
                     headerTooltip=""
                   ></AgGridColumn>
