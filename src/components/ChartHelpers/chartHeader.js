@@ -34,13 +34,9 @@ const ChartHeader = (props) => {
     }
   }
   return (
-    <div>
+    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
       <Label className="control-label">{title}</Label>
-      {action ? (
-        <div style={{ position: 'absolute', right: 20, top: 20 }}>
-          <Button size="sm" outline onClick={action}><i className={icon} /></Button>
-        </div>
-      ) : null}
+      {action ? <Button size="sm" outline onClick={action}><i className={icon} /></Button> : null}
     </div>
   )
 }

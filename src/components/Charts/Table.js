@@ -14,7 +14,7 @@ const Table = (props) => (
       return (
         <Card>
           <CardBody>
-            <div ref={headerRef} style={{ paddingBottom: 20 }}>
+            <div ref={headerRef} style={{ paddingBottom: 20,width: chartParams.maybeRotatedContainer().width }}>
               <ChartHeader
                 title="Hover Mouse for Column Descriptions"
                 callbackOpts={{ action: toggleFullscreen, icon }}

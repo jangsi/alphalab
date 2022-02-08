@@ -22,7 +22,7 @@ const LineChart = (props) => {
         return (
           <Card>
             <CardBody className="card-body-test">
-              <div ref={headerRef}>
+              <div ref={headerRef} style={{ width: chartParams.maybeRotatedContainer().width }}>
                 <ChartHeader
                   title={props.title}
                   callbackOpts={{ action: toggleFullscreen, icon: icon }}
