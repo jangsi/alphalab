@@ -166,6 +166,7 @@ class AprTrackerShort extends React.Component {
     this.timer = null;
     this.timer2 = null;
     this.timer3 = null;
+    this.timer4 = null;
     this.clearTimer = this.clearTimer.bind(this);
     this.scheduleFetch = this.scheduleFetch.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -311,9 +312,11 @@ class AprTrackerShort extends React.Component {
       clearTimeout(this.timer);
       clearTimeout(this.timer2);
       clearTimeout(this.timer3);
+      clearTimeout(this.timer4);
       this.timer = null;
       this.timer2 = null;
       this.timer3 = null;
+      this.timer4 = null;
     }
   }
 
@@ -323,6 +326,7 @@ class AprTrackerShort extends React.Component {
     this.timer = setTimeout(this.fetchAprData, 60000);
     this.timer2 = setTimeout(this.fetchData, 60000);
     this.timer3 = setTimeout(this.fetchLuna, 60000);
+    this.timer4 = setTimeout(this.fetchLiquidations, 300000);
   }
 
   handleChange(selectedOption) {
@@ -359,6 +363,8 @@ class AprTrackerShort extends React.Component {
           </Row>
           </CardBody>
           </Card>
+
+          
           <Card >
           <CardBody >
           <Row>
@@ -366,8 +372,12 @@ class AprTrackerShort extends React.Component {
           </Row>
           </CardBody>
           </Card>
+          
           <Card>
           <CardBody>
+          <Label className="control-label">
+                  Use Datetime Picker Above To Look At Historical Data
+          </Label>
           <div style={{height: 1000}}>
             <ResponsiveContainer width="100%" height="100%">
               <ScatterChart
@@ -395,10 +405,10 @@ class AprTrackerShort extends React.Component {
           *
           <Card>
             <CardBody>
+            <Label className="control-label">
+                  Use Datetime Picker Above To Look At Historical Data
+            </Label>
               <div className="ag-theme-alpine" style={{ height: 800 }}>
-                <Label className="control-label">
-                  Hover Mouse for Column Descriptions
-                </Label>
                 <AgGridReact
                   onGridReady={this.onGridReady.bind(this)}
                   rowData={this.state.rowData}
@@ -448,6 +458,7 @@ class AprTrackerShort extends React.Component {
               </div>
             </CardBody>
           </Card>
+          
           <Card >
           <CardBody >
           <Row>
@@ -455,12 +466,13 @@ class AprTrackerShort extends React.Component {
           </Row>
           </CardBody>
           </Card>
+
           <Card>
             <CardBody>
-              <div className="ag-theme-alpine" style={{ height: 800 }}>
-                <Label className="control-label">
+            <Label className="control-label">
                   Liquidations - Last 30 Days
-                </Label>
+            </Label>
+              <div className="ag-theme-alpine" style={{ height: 800 }}>
                 <AgGridReact
                   onGridReady={this.onGridReady.bind(this)}
                   rowData={this.state.liquidationData}
