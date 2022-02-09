@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Row,
   Col,
-  FormGroup,
   Label,
   Card,
   CardBody
@@ -13,7 +12,7 @@ import {AgGridColumn, AgGridReact} from 'ag-grid-react'
 //Import Date Picker
 import "react-datepicker/dist/react-datepicker.css"
 
-import {CartesianGrid, Scatter, ScatterChart, LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from 'recharts'
+import {CartesianGrid, Scatter, ScatterChart, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from 'recharts'
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
@@ -375,7 +374,7 @@ class AprTrackerShort extends React.Component {
           
           <Card>
           <CardBody>
-          <Label className="control-label">
+          <Label>
                   Use Datetime Picker Above To Look At Historical Data
           </Label>
           <div style={{height: 1000}}>

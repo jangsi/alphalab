@@ -179,7 +179,7 @@ class AprTrackerShort extends React.Component {
           <Card>
           <CardBody>
             <div className="ag-theme-alpine" style={{height: 800}}>
-            <Label className="control-label">Hover Mouse for Column Descriptions</Label>
+            <Label className="control-label">Compare APRs for any Pool offered on 2 or more DEXs</Label>
             <AgGridReact
                onGridReady={this.onGridReady.bind(this)}
                rowData={this.state.rowData}>
