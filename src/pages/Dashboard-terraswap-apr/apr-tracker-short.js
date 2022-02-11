@@ -26,6 +26,7 @@ class AprTrackerShort extends React.Component {
       tokenAddresses: {},
       rowData: [],
       selectedShortTicker: 'mAAPL-UST',
+      defaultOption: { label: 'mAAPL-UST', value: 'mAAPL-UST' },
       longDates: [dayjs().subtract(6, 'month').toDate(), dayjs().toDate()],
     }
     this.fetchAprData = this.fetchAprData.bind(this)
@@ -127,6 +128,7 @@ class AprTrackerShort extends React.Component {
         <Col xl="12">
           <LineChart
             data={this.state.data}
+            defaultOption={this.state.defaultOption}
             onAssetChange={this.handleChange}
             startDate={this.state.longDates[0]}
             onStartDateChange={this.handleStartDateChange}

@@ -99,15 +99,17 @@ const FullscreenComponent = (props) => {
     computedStyles.width = '100vh'
   }
 
+  const ChartView = props.children(childrenProps);
+
   return (
     <>
       {
         isFullscreen ? ReactDOM.createPortal(
           <div style={computedStyles} className={classes.join(' ')}>
-            {props.children(childrenProps)}
+            {ChartView}
           </div>,
           document.body,
-        ) : props.children(childrenProps)
+        ) : ChartView
       }
     </>
   )

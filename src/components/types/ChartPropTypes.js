@@ -5,6 +5,7 @@ export const ChartProps = {
     APR: PropTypes.number,
     xaxis1: PropTypes.string,
   })),
+  defaultOption: PropTypes.any,
   onAssetChange: PropTypes.func,
   startDate: PropTypes.any,
   onStartDateChange: PropTypes.func,
