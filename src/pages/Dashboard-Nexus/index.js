@@ -1,246 +1,53 @@
-import React, { Component } from "react"
-import { Container, Row, Col } from "reactstrap"
-import MetaTags from 'react-meta-tags';
+import React from 'react'
 
-//Import Breadcrumb
-import Breadcrumbs from "../../components/Common/Breadcrumb"
+import AprTrackerShort from './apr-tracker-short';
+import historical from '../../api/v1/historical';
 
-//Import Components
-import CardWelcome from "./card-welcome"
-import MiniWidget from "./mini-widget"
-import AprTrackerShort from './apr-tracker-short'
-import mirrorGraphql from '../../api/v1/mirror-graphql'
-import historical from '../../api/v1/historical'
+import Dashboard from '../../components/Dashboard'
 
-import dayjs from 'dayjs'
-
-const options1 = {
-  chart: { sparkline: { enabled: !0 } },
-  stroke: { curve: "smooth", width: 2 },
-  colors: ["#f1b44c"],
-  fill: {
-    type: "gradient",
-    gradient: {
-      shadeIntensity: 1,
-      inverseColors: !1,
-      opacityFrom: 0.45,
-      opacityTo: 0.05,
-      stops: [25, 100, 100, 100],
-    },
-  },
-  tooltip: { fixed: { enabled: !1 }, x: { show: !1 }, marker: { show: !1 } },
-}
-
-const options2 = {
-  chart: { sparkline: { enabled: !0 } },
-  stroke: { curve: "smooth", width: 2 },
-  colors: ["#3452e1"],
-  fill: {
-    type: "gradient",
-    gradient: {
-      shadeIntensity: 1,
-      inverseColors: !1,
-      opacityFrom: 0.45,
-      opacityTo: 0.05,
-      stops: [25, 100, 100, 100],
-    },
-  },
-  tooltip: { fixed: { enabled: !1 }, x: { show: !1 }, marker: { show: !1 } },
-}
-
-const options3 = {
-  chart: { sparkline: { enabled: !0 } },
-  stroke: { curve: "smooth", width: 2 },
-  colors: ["#50a5f1"],
-  fill: {
-    type: "gradient",
-    gradient: {
-      shadeIntensity: 1,
-      inverseColors: !1,
-      opacityFrom: 0.45,
-      opacityTo: 0.05,
-      stops: [25, 100, 100, 100],
-    },
-  },
-  tooltip: { fixed: { enabled: !1 }, x: { show: !1 }, marker: { show: !1 } },
-}
-
-class Dashboard extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selectedLongTicker: '',
-      reports: [
-        {
-          title: "bLuna Vault APR",
-          icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
-          color: "warning",
-          value: "",
-          arrow: 'mdi-arrow-up text-success',
-          series: [{ name: "bLunaVaultApr", data: []}],
-          options: options1,
-        },
-        {
-          title: "Manual bLuna Vault APR",
-          icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/Luna.png",
-          color: "primary",
-          arrow: 'mdi-arrow-down text-danger',
-          value: "",
-          series:  [{ name: "bLunaVaultManualApr", data: []}],
-          options: options2,
-        },
-        {
-          title: "bETH Vault APR",
-          icon: "mdi mdi-email-open",
-          imageUrl: "//whitelist.mirror.finance/images/ETH.png",
-          color: "info",
-          arrow: 'mdi-arrow-up text-success',
-          value: "",
-          series:  [{ name: "bEthVaultApr", data: []}],
-          options: options3,
-        },
-      ],
-    }
-    this.fetchAprData1= this.fetchAprData1.bind(this)
-  }
-
-fetchAprData1() {
-
-    let precision = 'day'
-    let diff = 605800000
-    // 604800000 = 7 days
-    if (diff < 604800000) {
-      precision = 'hour'
-    }
-    let filters = {
+const DashboardNexus = () => {
+  const reports = [
+    {
+      title: 'bLuna Vault APR',
+      imageUrl: '//whitelist.mirror.finance/images/Luna.png',
+      value: '',
       ticker: 'bLunaVaultApr',
-      precision: precision,
-    }
-    historical.getHistoricalNexus(filters).then(apiData => {
-      let formattedData = apiData
-        .filter(obj => obj.value)
-        .map(obj => {
-          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.value}
-        })
-        console.log(formattedData)
-        //1
-        let newState2 = JSON.parse(JSON.stringify(this.state))
-        newState2.reports[0].value = Number(formattedData[formattedData.length-1].Price).toLocaleString('en-US', {maximumFractionDigits:2})
-        this.setState(newState2)
-    })
-  }
-
-  fetchAprData2() {
-
-    let precision = 'day'
-    let diff = 605800000
-    // 604800000 = 7 days
-    if (diff < 604800000) {
-      precision = 'hour'
-    }
-    let filters = {
+      action: historical.getHistoricalNexus,
+    },
+    {
+      title: 'Manual bLuna Vault APR',
+      imageUrl: '//whitelist.mirror.finance/images/Luna.png',
+      value: '',
       ticker: 'bLunaVaultManualApr',
-      precision: precision,
-    }
-    historical.getHistoricalNexus(filters).then(apiData => {
-      let formattedData = apiData
-        .filter(obj => obj.value)
-        .map(obj => {
-          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.value}
-        })
-        //2
-        let newState2 = JSON.parse(JSON.stringify(this.state))
-        newState2.reports[1].value = Number(formattedData[formattedData.length-1].Price).toLocaleString('en-US', {maximumFractionDigits:2})
-        this.setState(newState2)
-    })
-  }
-
-  fetchAprData3() {
-
-    let precision = 'day'
-    let diff = 605800000
-    // 604800000 = 7 days
-    if (diff < 604800000) {
-      precision = 'hour'
-    }
-    let filters = {
+      action: historical.getHistoricalNexus,
+    },
+    {
+      title: 'bETH Vault APR',
+      imageUrl: '//whitelist.mirror.finance/images/ETH.png',
+      value: '',
       ticker: 'bEthVaultApr',
-      precision: precision,
-    }
-    historical.getHistoricalNexus(filters).then(apiData => {
-      let formattedData = apiData
-        .filter(obj => obj.value)
-        .map(obj => {
-          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), Price: obj.value}
-        })
-        //3
-        console.log(formattedData)
-        let newState2 = JSON.parse(JSON.stringify(this.state))
-        newState2.reports[2].value = Number(formattedData[formattedData.length-1].Price).toLocaleString('en-US', {maximumFractionDigits:2})
-        this.setState(newState2)
-    })
-  }
+      action: historical.getHistoricalNexus,
+    },
+  ];
 
-  componentDidMount() {
-    this.fetchAprData1()
-    this.fetchAprData2()
-    this.fetchAprData3()
-  }
-
-  render() {
-    return (
-      <React.Fragment>
-        <div className="page-content">
-          {/*<MetaTags>
-            <title>Crypto Dashboard | Skote - React Admin & Dashboard Template</title>
-          </MetaTags>*/}
-          <Container fluid>
-            {/* Render Breadcrumb */}
-            <Breadcrumbs title="Dashboards" breadcrumbItem="Nexus Protocol" />
-            <Row>
-              {/* card user */}
-              {/*<CardUser />*/}
-
-              <Col xl="12">
-                {/* card welcome */}
-                <CardWelcome />
-
-                <Row>
-                  {/* mini widgets */}
-                  <MiniWidget reports={this.state.reports} />
-                </Row>
-              </Col>
-            </Row>
-
-            <Row>
-              {/* wallet balance
-              <WalletBalance />*/}
-
-              {/* overview
-              <OverView />*/}
-            </Row>
-
-            <Row >
-            <AprTrackerShort />
-            </Row>
-
-            {/*<Row>
-               transactions
-              <Transactions />
-
-              {/* notifications
-              <Notifications />
-
-               buy sell
-              <BuySell />
-            </Row>*/}
-          </Container>
-        </div>
-      </React.Fragment>
-    )
-  }
+  return (
+    <Dashboard
+      title="Dashboards"
+      breadcrumbItem="NEXUS PROTOCOL"
+      headerProps={{
+        title: 'Nexus Protocol',
+        subTitle: 'Select Vault to Analyze',
+        desc: 'View Historical Vault APRS',
+        imgSrc: '//cdn-images-1.medium.com/fit/t/1600/480/1*u9vVW_EhurWnffRmVZibKA.png'
+      }}
+      reports={reports}
+      aprTrackers={[AprTrackerShort]}
+      widgetFormatter={(data) => {
+        return Number(data.Price).toLocaleString('en-US', {maximumFractionDigits:2});
+      }}
+      fieldKey="value"
+    />
+  );
 }
 
-export default Dashboard
+export default DashboardNexus;

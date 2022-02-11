@@ -1,36 +1,11 @@
 import React from "react"
-import Select from "react-select"
-import {
-  Col,
-  FormGroup,
-  Label,
-  Card,
-  CardBody
-} from "reactstrap"
+import { Col } from "reactstrap"
 import poolDictApi from '../../api/v1/pool-dictionary'
-import mirrorGraphql from '../../api/v1/mirror-graphql'
 import historical from '../../api/v1/historical'
-import {AgGridColumn, AgGridReact} from 'ag-grid-react'
 
-//Import Date Picker
-import DatePicker from "react-datepicker"
-import "react-datepicker/dist/react-datepicker.css"
-
-import {LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer} from 'recharts'
-
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-alpine.css'
-import { ConsoleWriter } from "istanbul-lib-report"
-import { date } from "language-tags"
 import dayjs from 'dayjs'
 
-function formatXAxis(tickItem) {
-  return dayjs(tickItem).format('MM/DD/YYYY HH:mm:ss')
-}
-
-function priceFormat(tickItem) {
-  return Number(tickItem).toLocaleString('en-US', {maximumFractionDigits:2})+'%'
-}
+import LineChart from '../../components/Charts/LineChart';
 
 function simpleMovingAverage(prices, window = 5) {
   if (!prices || prices.length < window) {
@@ -59,7 +34,7 @@ class AprTrackerShort extends React.Component {
       averageData: [],
       averageValues:[],
       averageDates:[],
-      tickerOptions: [],
+      tickerOptions: [{ label: 'bLunaVaultApr', value: 'bLunaVaultApr' }],
       averageOptions: [{ label:'10 Period Moving Average', value:10},
       { label:'50 Period Moving Average', value:50},
       { label:'100 Period Moving Average', value:100}],
@@ -79,16 +54,6 @@ class AprTrackerShort extends React.Component {
     this.handleAverageChange = this.handleAverageChange.bind(this)
     this.handleStartDateChange = this.handleStartDateChange.bind(this)
     this.handleEndDateChange = this.handleEndDateChange.bind(this)
-  }
-
-  onGridReady(params) {
-    this.gridApi = params.api;
-    this.gridColumnApi = params.columnApi;
-
-    console.log(">> onGridReady");
-    //this.gridColumnApi.autoSizeColumns();
-    this.gridApi.sizeColumnsToFit();
-
   }
 
   fetchTickers() {
@@ -124,7 +89,7 @@ class AprTrackerShort extends React.Component {
       let formattedData = apiData
         //.filter(obj => obj.value)
         .map(obj => {
-          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY HH:mm:ss'), APR: obj.value}
+          return {xaxis1: dayjs(obj.date).format('MM/DD/YYYY'), APR: obj.value}
         })
       this.setState(_ => ({
         data: formattedData,
@@ -151,7 +116,6 @@ class AprTrackerShort extends React.Component {
       precision: precision,
     }
     historical.getHistoricalNexus(filters).then(apiData => {
-      console.log('i am here')
       const values = []
       const dates = []
       apiData.filter(obj => values.push(obj.value)) 
@@ -208,73 +172,24 @@ class AprTrackerShort extends React.Component {
   componentDidMount() {
     // load latest month by default
     this.fetchTickers()
-
   }
-
 
   render() {
     return (
-      <React.Fragment>
-        <Col xl="12">
-        <Card >
-            <CardBody className="card-body-test">
-              <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
-                <Label className="control-label">POOL APRs</Label>
-                <Select
-                  classNamePrefix="form-control"
-                  placeholder="TYPE or CHOOSE ..."
-                  title="mAsset"
-                  options={this.state.tickerOptions}
-                  defaultValue={this.state.defaultOption}
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-              <FormGroup className="w-25 d-inline-block pb-2 me-2">
-                <DatePicker
-                  className="form-control"
-                  selected={this.state.longDates[0]}
-                  onChange={this.handleStartDateChange}
-                />
-              </FormGroup>
-              <div className="d-inline-block me-2">~</div>
-              <FormGroup className="w-25 d-inline-block pb-2">
-                <DatePicker
-                  className="form-control"
-                  selected={this.state.longDates[1]}
-                  onChange={this.handleEndDateChange}
-                />
-              </FormGroup>
-             {/* <FormGroup className="w-25 select2-container mb-3 d-inline-block me-2">
-                <Label className="control-label">Apply Moving Average</Label>
-                <Select
-                  classNamePrefix="form-control2"
-                  placeholder="TYPE or CHOOSE ..."
-                  title="mAsset"
-                  options={this.state.averageOptions}
-                  onChange={this.handleAverageChange}
-              />
-              </FormGroup>*/}
-              <div style={{height: 600}}>
-              <ResponsiveContainer width="100%" height="100%">
-              <LineChart width={2000} height={600}
-                      margin={{top: 20, right: 30, left: 0, bottom: 0}}>
-                <XAxis xAxisId="one" dataKey='xaxis1' type="category" domain={['dataMin', 'dataMax']} tickFormatter={formatXAxis}/>
-                <YAxis  domain={['auto', 'auto']} tickFormatter={priceFormat}/>
-
-
-                <Tooltip labelFormatter={tick => {return formatXAxis(tick);}} formatter={tick => {return priceFormat(tick);}}/>
-                <Legend />
-
-
-                <Line data={this.state.data} xAxisId="one" type="linear" dataKey="APR" dot={false} strokeWidth={4} stroke="#8884d8"/>
-                {/*<Line data={this.state.averageData} xAxisId="one" type="linear" dataKey="APR_Average" dot={false} strokeWidth={1} stroke="#8884d8"/>*/}
-             </LineChart>
-             </ResponsiveContainer>
-             </div>
-            </CardBody>
-          </Card>
-        </Col>
-      </React.Fragment>
+      <Col xl="12">
+        <LineChart
+          data={this.state.data}
+          onAssetChange={this.handleChange}
+          startDate={this.state.longDates[0]}
+          onStartDateChange={this.handleStartDateChange}
+          endDate={this.state.longDates[1]}
+          onEndDateChange={this.handleEndDateChange}
+          tickers={this.state.tickerOptions}
+          title="Pool APRs"
+          yAxisKey="APR"
+          yAxisFormatter={(val) => val.toFixed(2) + '%'}
+        />
+      </Col>
     )
   }
 }
