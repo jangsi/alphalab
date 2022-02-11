@@ -12,21 +12,21 @@ const DashboardAstroTradingAprs = () => {
       imageUrl: '//assets.terra.money/icon/60/Luna.png',
       value: '',
       ticker: 'LUNA-UST',
-      action: historical.getHistoricalTlvs,
+      action: historical.getHistoricalAstroCommAprs,
     },
     {
       title: 'PSI-UST',
       imageUrl: '//whitelist.anchorprotocol.com/logo/bLUNA.png',
       value: '',
       ticker: 'PSI-UST',
-      action: historical.getHistoricalTlvs,
+      action: historical.getHistoricalAstroCommAprs,
     },
     {
       title: 'ANC-UST',
       imageUrl: '//alphadefi.fund/wp-content/uploads/2022/01/anch-logo.png',
       value: '',
       ticker: 'ANC-UST',
-      action: historical.getHistoricalTlvs,
+      action: historical.getHistoricalAstroCommAprs,
     },
   ];
 
@@ -43,9 +43,9 @@ const DashboardAstroTradingAprs = () => {
       reports={reports}
       aprTrackers={[AprTrackerShort]}
       widgetFormatter={(data) => {
-        return (Number(data.Price)*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%';
+        return Number(data.Price*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%';
       }}
-      fieldKey="value"
+      fieldKey="apr"
     />
   );
 }
