@@ -42,9 +42,11 @@ const DashboardAnchor = () => {
       }}
       reports={reports}
       aprTrackers={[AnchorDashboard]}
-      widgetFormatter={(data) => {
-        console.log('data', data);
-        return Number(data.Price*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%';
+      widgetFormatter={(index) => (data) => {
+        if (index < 2) {
+          return Number(data.Price*100).toLocaleString('en-US', {maximumFractionDigits:2})+'%';
+        }
+        return String(Number(data.Price /1000000).toFixed(2)) + ' M';
       }}
       fieldKey="value"
     />

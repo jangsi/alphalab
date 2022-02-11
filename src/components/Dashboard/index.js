@@ -49,7 +49,11 @@ const Dashboard = (props) => {
     const reportData = []
     for (let i = 0; i < reports.length; i ++) {
       const report = reports[i];
-      const value = await fetchData(report, props.widgetFormatter, props.fieldKey);
+      let formatter = props.widgetFormatter;
+      if (typeof props.widgetFormatter(0) === 'function') {
+        formatter = props.widgetFormatter(i);
+      }
+      const value = await fetchData(report, formatter, props.fieldKey);
       reportData.push({
         ...report,
         value
