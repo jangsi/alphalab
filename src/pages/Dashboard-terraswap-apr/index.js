@@ -30,23 +30,6 @@ const DashboardTerraSwapApr = () => {
     },
   ];
 
-  // prevent scrolling on the page when in fullscreen mode
-  const overflowLock = useIsOverflowLockContext();
-  const [styles, setStyles] = useState({});
-  useEffect(() => {
-    if (overflowLock.isOverflowLock) {
-      setStyles({
-        position: 'fixed',
-        top: `${window.scrollY}px`,
-      });
-    } else {
-      setStyles({
-        position: '',
-        top: '',
-      });
-    }
-  }, [overflowLock.isOverflowLock]);
-
   return (
     <Dashboard
       title="Dashboards"
@@ -57,7 +40,6 @@ const DashboardTerraSwapApr = () => {
         desc: 'View Historical APR Data',
         imgSrc: '//alphadefi.fund/wp-content/uploads/2021/08/687474703a2f2f74657272612e6d6f6e65792f6c6f676f732f74657272615f6c6f676f2e737667.svg'
       }}
-      style={styles}
       reports={reports}
       aprTrackers={[AprTrackerShort]}
       widgetFormatter={(data) => {
