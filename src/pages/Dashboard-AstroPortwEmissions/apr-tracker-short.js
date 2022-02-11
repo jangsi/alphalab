@@ -105,7 +105,7 @@ class AprTrackerShort extends React.Component {
           endDate={this.state.longDates[1]}
           onEndDateChange={this.handleEndDateChange}
           tickers={this.state.tickerOptions}
-          title="TERRASWAP TRADING APRS"
+          title="TRADING APRs w EMISSIONS"
           yAxisKey="APR"
           yAxisFormatter={pctFormatter}
         />
