@@ -9,7 +9,7 @@ import DashboardTerraSwapTlvs from "../pages/Dashboard-terraswap-tlvs/index";
 import DashboardAnchor from "../pages/Dashboard-Anchor/index";
 import DashboardNexus from "../pages/Dashboard-Nexus/index";
 import DashboardAstroTradingAprs from "../pages/Dashboard-AstroPort-trading-aprs/index";
-import DashboardAstroPortEmissions from "../pages/Dashboard-AstroPortwEmissions/index";
+import DashboardAstroWithEmissions from "../pages/Dashboard-AstroPortwEmissions/index";
 import DashboardTerra from "../pages/Dashboard-terradash/index";
 import DashboardFarmers from "../pages/Dashboard-FarmersMarket/index";
 import DashboardLiqProfile from "../pages/Dashboard-LiqProfile/index";
@@ -41,7 +41,7 @@ const publicRoutes = [
   { path: "/astro-pool-aprs", component: DashboardAstroTradingAprs },
   {
     path: "/astro-pool-aprs-emissions",
-    component: DashboardAstroPortEmissions,
+    component: DashboardAstroWithEmissions,
   },
   { path: "/spread-tracker", component: DashboardCrypto },
   { path: "/fee-station-long", component: FeeStationLong },
