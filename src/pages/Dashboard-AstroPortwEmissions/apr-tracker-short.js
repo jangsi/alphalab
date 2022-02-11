@@ -1,5 +1,5 @@
 import React from "react"
-import {  Col } from "reactstrap"
+import { Col } from "reactstrap"
 import poolDictApi from '../../api/v1/pool-dictionary'
 import historical from '../../api/v1/historical'
 import dayjs from 'dayjs'
