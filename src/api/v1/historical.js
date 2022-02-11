@@ -47,6 +47,11 @@ const getHistoricalLiquidationProfile = (filters) => {
   return api.get(`/historical/kujira/profiles/`, {params:  filters})
 }
 
+const getHistoricalLiquidations = (filters) => {
+  return api.get(`/historical/kujira/liquidations/`, {params:  filters})
+}
+
+
 
 const getSpreadHistStats = (filters) => {
   return api.get('/historical/spreadhiststats')
@@ -65,5 +70,6 @@ export default {
   getSpreadHistStats: getSpreadHistStats,
   getHistoricalAPRCompare:getHistoricalAPRCompare,
   getLiquidationProfile:getLiquidationProfile,
-  getHistoricalLiquidationProfile,getHistoricalLiquidationProfile
+  getHistoricalLiquidationProfile:getHistoricalLiquidationProfile,
+  getHistoricalLiquidations:getHistoricalLiquidations
 }
