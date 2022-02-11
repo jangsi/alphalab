@@ -34,6 +34,7 @@ const LineChart = (props) => {
                     options={props.tickers}
                     defaultValue={props.defaultOption}
                     onChange={props.onAssetChange}
+                    value={props.asset}
                   />
                 </FormGroup>
                 <FormGroup className="w-25 d-inline-block pb-2 me-2">

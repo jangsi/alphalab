@@ -100,6 +100,7 @@ class AnchorDashboard extends React.Component {
         <LineChart
           data={this.state.data}
           defaultOption={this.state.defaultOption}
+          asset={this.state.tickerOptions.find(o => o.value === this.state.selectedShortTicker)}
           onAssetChange={this.handleChange}
           startDate={this.state.longDates[0]}
           onStartDateChange={this.handleStartDateChange}
